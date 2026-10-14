@@ -87,7 +87,7 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Carichiamo i font grandi e ben leggibili
+    # Carichiamo i font grandi e definitivi
     try:
       font_grande = ImageFont.truetype("arial.ttf", int(width * 0.045))
       font_medio = ImageFont.truetype("arial.ttf", int(width * 0.035))
@@ -95,9 +95,9 @@ if "39" in tavola_selezionata:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. KM Fine (in alto) - Posizionato correttamente a destra, senza toccare la banchina verde
+    # 1. KM Fine (in alto) - Partenza leggermente più a sinistra (36%) per coprire la "K" ma senza toccare la carreggiata
     box_fine = (
-        int(width * 0.44),
+        int(width * 0.36),
         int(height * 0.00),
         int(width * 0.72),
         int(height * 0.06),
@@ -110,7 +110,7 @@ if "39" in tavola_selezionata:
         font=font_grande,
     )
 
-    # 2. KM Testata / Intermedio (es. 36+110) - Nello spazio bianco a destra della linea nera
+    # 2. KM Testata / Intermedio (es. 36+110)
     box_testata = (
         int(width * 0.61),
         int(height * 0.535),
@@ -125,22 +125,22 @@ if "39" in tavola_selezionata:
         font=font_medio,
     )
 
-    # 3. KM Preavviso (al centro) - Nello spazio bianco a destra della linea nera
+    # 3. KM Preavviso (al centro) - Allargato a sinistra (da 0.55) per coprire interamente la vecchia scritta tagliata
     box_preavviso = (
-        int(width * 0.61),
+        int(width * 0.55),
         int(height * 0.655),
         int(width * 0.95),
         int(height * 0.725),
     )
     draw.rectangle(box_preavviso, fill="white")
     draw.text(
-        (box_preavviso[0] + 5, box_preavviso[1]),
+        (box_preavviso[0] + 65, box_preavviso[1]),
         f"KM {km_preavviso}",
         fill="red",
         font=font_medio,
     )
 
-    # 4. KM Inizio (in basso) - Nello spazio bianco a destra della linea nera
+    # 4. KM Inizio (in basso)
     box_inizio = (
         int(width * 0.61),
         int(height * 0.915),
@@ -163,7 +163,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Aggiornata correttamente",
+        caption="Tavola 39 - Perfetta, pulita e senza residui",
         use_container_width=True,
     )
 
