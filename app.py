@@ -1,6 +1,8 @@
 import io
+import os
 import pandas as pd
 import streamlit as st
+from PIL import Image
 
 st.set_page_config(
     page_title="Gestione Cantieri Stradali - Abaco & Tavole", layout="wide"
@@ -8,7 +10,8 @@ st.set_page_config(
 
 st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 st.write(
-    "Seleziona la tavola, inserisci i dati chilometrici e scarica l'abaco in Excel e la tavola compilata."
+    "Seleziona la tavola, inserisci i dati chilometrici e scarica l'abaco in"
+    " Excel e la tavola compilata."
 )
 
 # Selezione della Tavola
@@ -35,7 +38,6 @@ if "39" in tavola_selezionata:
 
   # Pulsante per generare l'Abaco Excel
   if st.button("Genera Abaco Segnaletica (Excel)"):
-    # Creazione dei dati per l'Excel basati sull'abaco standard
     dati_abaco = {
         "SEGNALE": [
             "Preavviso Cantiere Mobile",
@@ -58,7 +60,6 @@ if "39" in tavola_selezionata:
 
     df_risultato = pd.DataFrame(dati_abaco)
 
-    # Salvataggio in memoria come Excel
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
       df_risultato.to_excel(writer, index=False, sheet_name="Abaco Tavola 39")
@@ -77,14 +78,20 @@ if "39" in tavola_selezionata:
 
   st.divider()
   st.subheader("👀 Anteprima Tavola 39")
-  st.info(
-      "Qui sotto puoi vedere il modello di riferimento caricato. Nello step"
-      " successivo collegheremo la sovrapposizione dinamica delle"
-      " chilometriche."
-  )
-  # Mostriamo l'immagine di esempio della Tavola 39 che hai inviato
-  st.image(
-      "TORRE GUACETO 1 DIR SUD.jpg",
-      caption="Tavola 39 - Riferimento grafico",
-      use_container_width=True,
-  )
+
+  img_path = "TORRE GUACETO 1 DIR SUD.jpg"
+  if os.path.exists(img_path):
+    image = Image.open(img_path)
+    st.image(
+        image,
+        caption=(
+            f"Tavola 39 - Con progressive: {km_inizio}, {km_preavviso},"
+            f" {km_fine}"
+        ),
+        use_container_width=True,
+    )
+  else:
+    st.warning(
+        f"⚠️ L'immagine '{img_path}' non è stata ancora caricata su GitHub."
+        " Caricala per vederla nell'anteprima."
+    )
