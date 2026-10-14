@@ -582,7 +582,7 @@ elif "16" in tavola_selezionata:
 
       # 2. KM Inizio in basso
       x_km_inizio = int(width_16 * 0.49)
-      y_km_inizio = int(height_16 * 0.92)
+      y_km_inizio = int(height_16 * 0.925)
       draw_16.text(
           (x_km_inizio, y_km_inizio),
           f"KM {km_inizio_16}",
