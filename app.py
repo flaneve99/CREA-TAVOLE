@@ -145,4 +145,35 @@ if "39" in tavola_selezionata:
         int(width * 0.58),
         int(height * 0.90),
         int(width * 0.98),
-        int(height * 0
+        int(height * 0.99),
+    )
+    draw.rectangle(box_inizio, fill="white")
+    draw.text(
+        (box_inizio[0] + 10, box_inizio[1] + 5),
+        f"KM {km_inizio}",
+        fill="red",
+        font=font_medio,
+    )
+
+    # Salviamo in memoria
+    img_io = io.BytesIO()
+    base_img.save(img_io, "JPEG")
+    img_io.seek(0)
+
+    # Mostriamo l'anteprima sul sito
+    st.image(
+        base_img,
+        caption="Tavola 39 - Pulita e senza tagliare la strada",
+        use_container_width=True,
+    )
+
+    # Pulsante per scaricare la JPG compilata
+    st.download_button(
+        label="📥 Scarica Tavola in formato JPG",
+        data=img_io,
+        file_name="Tavola_39_Compilata.jpg",
+        mime="image/jpeg",
+    )
+
+  else:
+    st.warning(f"⚠️ L'immagine '{img_path}' non è stata trovata su GitHub.")
