@@ -80,14 +80,16 @@ if "39" in tavola_selezionata:
   st.divider()
   st.subheader("🖼️ Anteprima Tavola 39 Personalizzata")
 
-  img_path = "TORRE GUACETO 1 DIR SUD.jpg"
+  # Nome del file dell'immagine pulita caricata
+  img_path = "TAVOLA 39.jpg"
+
   if os.path.exists(img_path):
     base_img = Image.open(img_path).convert("RGB")
     draw = ImageDraw.Draw(base_img)
 
     width, height = base_img.size
 
-    # Carichiamo i font grandi e definitivi
+    # Carichiamo font grandi e ben leggibili
     try:
       font_grande = ImageFont.truetype("arial.ttf", int(width * 0.045))
       font_medio = ImageFont.truetype("arial.ttf", int(width * 0.035))
@@ -95,61 +97,33 @@ if "39" in tavola_selezionata:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. KM Fine (in alto) - Allarghiamo a sinistra (da 0.34) per coprire la "K" e a destra
-    box_fine = (
-        int(width * 0.34),
-        int(height * 0.00),
-        int(width * 0.75),
-        int(height * 0.065),
-    )
-    draw.rectangle(box_fine, fill="white")
+    # 1. KM Fine (in alto, nello spazio vuoto a destra dell'asse)
     draw.text(
-        (box_fine[0] + 10, box_fine[1] + 2),
+        (int(width * 0.62), int(height * 0.005)),
         f"KM {km_fine}",
         fill="red",
         font=font_grande,
     )
 
     # 2. KM Testata / Intermedio (es. 36+110)
-    box_testata = (
-        int(width * 0.58),
-        int(height * 0.535),
-        int(width * 0.98),
-        int(height * 0.605),
-    )
-    draw.rectangle(box_testata, fill="white")
     draw.text(
-        (box_testata[0] + 10, box_testata[1]),
+        (int(width * 0.61), int(height * 0.535)),
         f"KM {km_testata}",
         fill="red",
         font=font_medio,
     )
 
-    # 3. KM Preavviso (al centro) - Allargato ancora di più a sinistra (da 0.50) per cancellare del tutto i residui vecchi
-    box_preavviso = (
-        int(width * 0.50),
-        int(height * 0.655),
-        int(width * 0.98),
-        int(height * 0.725),
-    )
-    draw.rectangle(box_preavviso, fill="white")
+    # 3. KM Preavviso (al centro)
     draw.text(
-        (box_preavviso[0] + 115, box_preavviso[1]),
+        (int(width * 0.61), int(height * 0.655)),
         f"KM {km_preavviso}",
         fill="red",
         font=font_medio,
     )
 
     # 4. KM Inizio (in basso)
-    box_inizio = (
-        int(width * 0.58),
-        int(height * 0.915),
-        int(width * 0.98),
-        int(height * 0.985),
-    )
-    draw.rectangle(box_inizio, fill="white")
     draw.text(
-        (box_inizio[0] + 10, box_inizio[1]),
+        (int(width * 0.61), int(height * 0.915)),
         f"KM {km_inizio}",
         fill="red",
         font=font_medio,
@@ -163,7 +137,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Pulita senza residui",
+        caption="Tavola 39 - Generata da immagine pulita",
         use_container_width=True,
     )
 
@@ -176,4 +150,7 @@ if "39" in tavola_selezionata:
     )
 
   else:
-    st.warning(f"⚠️ L'immagine '{img_path}' non è stata trovata su GitHub.")
+    st.warning(
+        f"⚠️ L'immagine '{img_path}' non è stata trovata su GitHub. Assicurati"
+        " di averla caricata con questo nome esatto."
+    )
