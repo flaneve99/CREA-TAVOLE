@@ -89,8 +89,8 @@ if "39" in tavola_selezionata:
   st.subheader("📍 Dati e Progressive Chilometriche - Tavola 39")
 
   # Campo di input per l'ubicazione personalizzabile
-  ubicazione_testo = st.text_input(
-      "Ubicazione / Direzione (sotto il riquadro)",
+  ubicazione_testo = st.text_area(
+      "Ubicazione / Direzione (può svilupparsi su più righe)",
       value="DIREZIONE SUD\nVIADOTTO TORRE GUACETO 1",
   )
 
@@ -212,7 +212,9 @@ if "39" in tavola_selezionata:
       # DIMENSIONE FONT
       # ------------------------------------------
       DIMENSIONE_FONT_KM = 60
-      DIMENSIONE_FONT_UBICAZIONE = 50  # Font ben visibile per l'ubicazione
+      DIMENSIONE_FONT_UBICAZIONE = (
+          45  # Leggermente più compatto per stare nei riquadri stretti
+      )
 
       font_km = load_custom_font(DIMENSIONE_FONT_KM)
       font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
@@ -260,20 +262,20 @@ if "39" in tavola_selezionata:
         )
 
       # ------------------------------------------
-      # DISEGNO DELL'UBICAZIONE SOTTO IL RIQUADRO
+      # DISEGNO DELL'UBICAZIONE (SPOSTATA A DESTRA, PIÙ STRETTA E CENTRATA)
       # ------------------------------------------
-      # Posizionato nell'area a destra (allineato attorno al 60% della larghezza e sotto il riquadro giallo)
-      x_ubicazione = int(width * 0.62)
+      x_ubicazione = int(width * 0.73)  # Spostata più a destra
       y_ubicazione = int(
-          height * 0.23
-      )  # Appena sotto il box riassuntivo della Tavola 39
+          height * 0.225
+      )  # Sotto il riquadro giallo superiore
 
       draw.multiline_text(
           (x_ubicazione, y_ubicazione),
           ubicazione_testo,
           fill=(255, 0, 0),
           font=font_ubicazione,
-          spacing=10,  # Spaziatura tra le righe se si usa il ritorno a capo
+          align="center",  # Testo centrato nel blocco
+          spacing=8,
           stroke_width=BORDO,
           stroke_fill=(255, 255, 255),
       )
@@ -297,7 +299,7 @@ if "39" in tavola_selezionata:
       # ------------------------------------------
       st.image(
           base_img,
-          caption="Tavola 39 - Con progressive e ubicazione personalizzata",
+          caption="Tavola 39 - Ubicazione centrata e riposizionata",
           use_container_width=True,
       )
 
@@ -311,7 +313,7 @@ if "39" in tavola_selezionata:
           mime="image/jpeg",
       )
 
-      st.success("Tavola generata correttamente con ubicazione e progressive.")
+      st.success("Tavola generata correttamente con ubicazione ottimizzata.")
 
     except Exception as errore:
 
