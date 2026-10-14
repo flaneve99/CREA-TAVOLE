@@ -345,7 +345,7 @@ elif "16" in tavola_selezionata:
 
   ubicazione_testo_16 = st.text_area(
       "Ubicazione / Direzione (Tavola 16)",
-      value="DIREZIONE SUD\nCHIUSURA CORSIA DI MARCIA",
+      value="DIREZIONE SUD\nVIADOTTO TORRE\nGUACETO 1",
   )
 
   col1, col2 = st.columns(2)
@@ -593,8 +593,8 @@ elif "16" in tavola_selezionata:
       )
 
       # 3. Testo Ubicazione
-      x_ub = int(width_16 * 0.65)
-      y_ub = int(height_16 * 0.225)
+      x_ub = int(width_16 * 0.64)
+      y_ub = int(height_16 * 0.26)
       draw_16.multiline_text(
           (x_ub, y_ub),
           ubicazione_testo_16,
