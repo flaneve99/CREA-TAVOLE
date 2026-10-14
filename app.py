@@ -5,8 +5,8 @@ import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from openpyxl.drawing.image import Image as OpenpyxlImage
-from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor, AnchorMarker
-from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 import openpyxl
 
 # ==================================================
@@ -21,7 +21,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel con le immagini bloccate nelle celle e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel professionale e la Tavola JPG personalizzata."
 )
 
 
@@ -117,114 +117,121 @@ if "39" in tavola_selezionata:
     )
 
   # ==================================================
-  # GENERAZIONE FILE EXCEL (ABACO CON IMMAGINI BLOCCATE NELLE CELLE)
+  # GENERAZIONE FILE EXCEL (ABACO STRUTTURATO E STILIZZATO)
   # ==================================================
   if st.button("Genera Abaco Segnaletica (Excel)"):
 
-    dati_abaco = {
-        "SEGNALE": [
-            "Preavviso Cantiere Mobile",
-            "Lavori in corso",
-            "Fine Cantiere / Via Libera",
-            "Segnale Mobile di Preavviso su Veicolo",
-            "Segnale Mobile di Protezione su Veicolo",
-        ],
-        "FIGURA": [
-            "FIG. II 399",
-            "FIG. II 383",
-            "FIG. II 070",
-            "FIG. II 400",
-            "FIG. II 401",
-        ],
-        "DESCRIZIONE": [
-            "PREAVVISO DI CANTIERE MOBILE",
-            "LAVORI IN CORSO",
-            "FINE CANTIERE",
-            "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA",
-            "VEICOLO DI PROTEZIONE CON PANNELLO A MESSAGGI VARIABILI",
-        ],
-        "PROGRESSIVA CHILOMETRICA": [
-            km_preavviso,
-            km_inizio,
-            km_fine,
-            km_preavviso,
-            km_inizio,
-        ],
-        "SEGNALETICA": [
-            "SEGNALI TEMPORANEI",
-            "SEGNALI TEMPORANEI",
-            "SEGNALI DI PRESCRIZIONE",
-            "SEGNALI COMPLEMENTARI / TEMPORANEI",
-            "SEGNALI COMPLEMENTARI / TEMPORANEI",
-        ],
-    }
+    # Creazione del workbook con openpyxl direttamente
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Tavola 39"
 
-    df_risultato = pd.DataFrame(dati_abaco)
-
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine="openpyxl") as writer:
-      df_risultato.to_excel(writer, index=False, sheet_name="Abaco Tavola 39")
-
-    output.seek(0)
+    # 1. Riga di intestazione principale unificata (Verde chiaro)
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE"
     
-    wb = openpyxl.load_workbook(output)
-    ws = wb["Abaco Tavola 39"]
+    fill_verde_chiaro = PatternFill(start_color="92D050", end_color="92D050", fill_type="solid")
+    fill_verde_scuro = PatternFill(start_color="70AD47", end_color="70AD47", fill_type="solid")
+    
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+
+    bordo_sottile = Border(
+        left=Side(style='thin', color='000000'),
+        right=Side(style='thin', color='000000'),
+        top=Side(style='thin', color='000000'),
+        bottom=Side(style='thin', color='000000')
+    )
+
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(horizontal="center", vertical="center")
+
+    # Applica i bordi a tutta la riga unita 1
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+
+    # 2. Riga delle colonne (SEGNALE, FIGURA, DESCRIZIONE, DETTAGLI, SEGNALETICA)
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+      cell.border = bordo_sottile
+
+    # 3. Dati della tabella
+    dati_righe = [
+        ("fig_399.png", "FIG. II 399", "PREAVVISO DI CANTIERE MOBILE", km_preavviso, "SEGNALI TEMPORANEI"),
+        ("fig_383.png", "FIG. II 383", "LAVORI IN CORSO", km_inizio, "SEGNALI TEMPORANEI"),
+        ("fig_070.png", "FIG. II 070", "FINE CANTIERE", km_fine, "SEGNALI DI PRESCRIZIONE"),
+        ("fig_400.png", "FIG. II 400", "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA", km_preavviso, "SEGNALI COMPLEMENTARI"),
+        ("fig_401.png", "FIG. II 401", "VEICOLO DI PROTEZIONE CON PANNELLO", km_inizio, "SEGNALI COMPLEMENTARI"),
+    ]
 
     cartella_app = os.path.dirname(os.path.abspath(__file__))
     dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
-    mappa_nomi = {
-        "FIG. II 399": ["fig_399.png", "fig_399.jpg", "399.png", "399.jpg"],
-        "FIG. II 383": ["fig_383.png", "fig_383.jpg", "383.png", "383.jpg"],
-        "FIG. II 070": ["fig_070.png", "fig_070.jpg", "070.png", "070.jpg", "70.png"],
-        "FIG. II 400": ["fig_400.png", "fig_400.jpg", "400.png", "400.jpg"],
-        "FIG. II 401": ["fig_401.png", "fig_401.jpg", "401.png", "401.jpg"],
-    }
+    # Impostazione dimensioni colonne e righe per una griglia ordinata
+    ws.column_dimensions['A'].width = 18  # Colonna SEGNALE (per l'immagine)
+    ws.column_dimensions['B'].width = 15  # FIGURA
+    ws.column_dimensions['C'].width = 40  # DESCRIZIONE
+    ws.column_dimensions['D'].width = 20  # DETTAGLI (Progressiva)
+    ws.column_dimensions['E'].width = 25  # SEGNALETICA
 
-    # Impostiamo una larghezza e un'altezza comode per contenere l'icona bloccata nella cella
-    ws.column_dimensions['B'].width = 16
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
 
-    for riga_idx in range(2, len(df_risultato) + 2):
-      ws.row_dimensions[riga_idx].height = 45
-      figura_val = ws.cell(row=riga_idx, column=2).value
+    for i, row_data in enumerate(dati_righe, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      
+      ws.row_dimensions[i].height = 55  # Altezza generosa per contenere l'immagine
 
-      if figura_val in mappa_nomi:
-        file_trovato = None
-        for nome_file in mappa_nomi[figura_val]:
-          percorso_tentativo = os.path.join(dir_immagini, nome_file)
-          if os.path.exists(percorso_tentativo):
-            file_trovato = percorso_tentativo
-            break
-        
-        if file_trovato:
-          try:
-            img_pil = Image.open(file_trovato).convert("RGB")
-            temp_img_path = os.path.join("/tmp", f"temp_sig_{riga_idx}.jpg")
-            img_pil.save(temp_img_path, "JPEG")
+      # Celle di testo
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value=dettagli)
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
 
-            img_obj = OpenpyxlImage(temp_img_path)
-            img_obj.width = 35
-            img_obj.height = 35
-            
-            # Ancoraggio rigido alla cella B(riga_idx) con margine interno per centrarla
-            col_idx = 1 # Indice 0-based per la colonna B (A=0, B=1)
-            row_idx = riga_idx - 1 # Indice 0-based per la riga
-            
-            marker = AnchorMarker(col=col_idx, colOff=50000, row=row_idx, rowOff=50000)
-            img_obj.anchor = OneCellAnchor(_from=marker, ext=XDRPositiveSize2D(35 * 9525, 35 * 9525))
-            
-            ws.add_image(img_obj)
-          except Exception as e:
-            print(f"Errore caricamento immagine riga {riga_idx}: {e}")
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        cell.border = bordo_sottile
 
-    final_output = io.BytesIO()
-    wb.save(final_output)
-    excel_data = final_output.getvalue()
+      # Cella A (SEGNALE) con bordo e immagine inserita
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
 
-    st.success("Abaco Excel generato con successo e immagini bloccate nelle celle!")
+      # Inserimento immagine nella colonna A
+      percorso_img = os.path.join(dir_immagini, img_nome)
+      if os.path.exists(percorso_img):
+        try:
+          img_pil = Image.open(percorso_img).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+
+          img_obj = OpenpyxlImage(temp_path)
+          img_obj.width = 50
+          img_obj.height = 45
+          
+          # Ancoraggio alla cella A della riga
+          cell_coord = f"A{i}"
+          ws.add_image(img_obj, cell_coord)
+        except Exception as e:
+          print(f"Errore immagine riga {i}: {e}")
+
+    # Salvataggio in memoria
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+
+    st.success("Abaco Excel strutturato e formattato generato con successo!")
 
     st.download_button(
-        label="📥 Scarica Excel Abaco Segnaletica con Immagini",
+        label="📥 Scarica Excel Abaco Segnaletica Formattato",
         data=excel_data,
         file_name="Abaco_Segnaletica_Tavola_39.xlsx",
         mime=(
