@@ -36,6 +36,7 @@ if "39" in tavola_selezionata:
 
   with col2:
     km_fine = st.text_input("KM Fine / Rientro (Alto)", "36+600")
+    km_testata = st.text_input("KM Inizio Testata / Intermedio", "36+110")
     distanza_coni = st.text_input("Interasse Coni / Dettagli", "12 m")
 
   # --- 1. GENERAZIONE FILE EXCEL (ABACO) ---
@@ -81,57 +82,88 @@ if "39" in tavola_selezionata:
 
   img_path = "TORRE GUACETO 1 DIR SUD.jpg"
   if os.path.exists(img_path):
-    # Apriamo l'immagine originale
     base_img = Image.open(img_path).convert("RGB")
     draw = ImageDraw.Draw(base_img)
 
     width, height = base_img.size
 
-    # Proviamo a caricare un font standard grande, o usiamo un fallback
+    # Carichiamo i font grandi e ben leggibili
     try:
-      # Scegliamo un font Arial/Sans-serif grande abbastanza (testa di default su arial)
-      font_grande = ImageFont.truetype(
-          "arial.ttf", int(width * 0.038)
-      )  # Circa 60px per larghezza 1600
-      font_medio = ImageFont.truetype("arial.ttf", int(width * 0.028))
+      font_grande = ImageFont.truetype("arial.ttf", int(width * 0.045))
+      font_medio = ImageFont.truetype("arial.ttf", int(width * 0.035))
     except:
-      # Fallback su font di default searial.ttf non trovato (potrebbe apparire diverso)
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # NOTA: Qui calcoliamo e applichiamo rettangoli bianchi per coprire le vecchie scritte
-    # e disegniamo sopra i nuovi testi. Le coordinate sono tarate sull'immagine 1653x2339.
-
-    # 1. Copriamo e scriviamo il KM Fine in alto (KM 36+600)
-    # Spostiamo il riquadro verso destra per non toccare la carreggiata stradale!
-    # Coordinate X di pulizia: (520, 20) a (750, 90). Inseriamo testo nuovo più a destra.
-    # Abbiamo spostato il riquadro e il testo a destra di circa 100 pixel.
-
-    x_pulizia = 520
-    draw.rectangle(
-        [(x_pulizia, 15), (750, 95)], fill="white"
-    )  # Riquadro pulizia alto
+    # 1. KM Fine (in alto) - Posizionato correttamente a destra, senza toccare la banchina verde
+    box_fine = (
+        int(width * 0.44),
+        int(height * 0.00),
+        int(width * 0.72),
+        int(height * 0.06),
+    )
+    draw.rectangle(box_fine, fill="white")
     draw.text(
-        (x_pulizia + 20, 25), f"KM {km_fine}", fill="red", font=font_grande
-    )  # Testo nuovo grande
+        (box_fine[0] + 5, box_fine[1] + 2),
+        f"KM {km_fine}",
+        fill="red",
+        font=font_grande,
+    )
 
-    # 2. Copriamo e aggiorniamo i KM intermedi e di inizio
-    # (Copriamo le coordinate X=640 e scriviamo sopra a X=650)
-    draw.rectangle([(640, 535), (820, 595)], fill="white")
-    draw.text((650, 542), f"KM {km_preavviso}", fill="red", font=font_medio)
+    # 2. KM Testata / Intermedio (es. 36+110) - Nello spazio bianco a destra della linea nera
+    box_testata = (
+        int(width * 0.61),
+        int(height * 0.535),
+        int(width * 0.95),
+        int(height * 0.605),
+    )
+    draw.rectangle(box_testata, fill="white")
+    draw.text(
+        (box_testata[0] + 5, box_testata[1]),
+        f"KM {km_testata}",
+        fill="red",
+        font=font_medio,
+    )
 
-    draw.rectangle([(640, 905), (820, 965)], fill="white")
-    draw.text((650, 912), f"KM {km_inizio}", fill="red", font=font_medio)
+    # 3. KM Preavviso (al centro) - Nello spazio bianco a destra della linea nera
+    box_preavviso = (
+        int(width * 0.61),
+        int(height * 0.655),
+        int(width * 0.95),
+        int(height * 0.725),
+    )
+    draw.rectangle(box_preavviso, fill="white")
+    draw.text(
+        (box_preavviso[0] + 5, box_preavviso[1]),
+        f"KM {km_preavviso}",
+        fill="red",
+        font=font_medio,
+    )
 
-    # Salviamo l'immagine modificata in memoria per il download
+    # 4. KM Inizio (in basso) - Nello spazio bianco a destra della linea nera
+    box_inizio = (
+        int(width * 0.61),
+        int(height * 0.915),
+        int(width * 0.95),
+        int(height * 0.985),
+    )
+    draw.rectangle(box_inizio, fill="white")
+    draw.text(
+        (box_inizio[0] + 5, box_inizio[1]),
+        f"KM {km_inizio}",
+        fill="red",
+        font=font_medio,
+    )
+
+    # Salviamo in memoria
     img_io = io.BytesIO()
     base_img.save(img_io, "JPEG")
     img_io.seek(0)
 
-    # Mostriamo l'anteprima corretta sul sito
+    # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Aggiornata con le progressive senza coprire la strada",
+        caption="Tavola 39 - Aggiornata correttamente",
         use_container_width=True,
     )
 
