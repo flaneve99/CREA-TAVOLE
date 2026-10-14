@@ -213,7 +213,7 @@ if "39" in tavola_selezionata:
       # DIMENSIONE FONT
       # ------------------------------------------
       DIMENSIONE_FONT_KM = 60
-      DIMENSIONE_FONT_UBICAZIONE = 40  # Ottimizzato per stare perfettamente nel box
+      DIMENSIONE_FONT_UBICAZIONE = 70  # Ottimizzato per stare perfettamente nel box
 
       font_km = load_custom_font(DIMENSIONE_FONT_KM)
       font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
