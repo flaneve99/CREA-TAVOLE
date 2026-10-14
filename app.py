@@ -373,4 +373,242 @@ elif "16" in tavola_selezionata:
     fill_verde_chiaro = PatternFill(
         start_color="92D050", end_color="92D050", fill_type="solid"
     )
-    fill_verde_scuro = Pattern
+    fill_verde_scuro = PatternFill(
+        start_color="70AD47", end_color="70AD47", fill_type="solid"
+    )
+
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+
+    bordo_sottile = Border(
+        left=Side(style="thin", color="000000"),
+        right=Side(style="thin", color="000000"),
+        top=Side(style="thin", color="000000"),
+        bottom=Side(style="thin", color="000000"),
+    )
+
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(
+        horizontal="center", vertical="center"
+    )
+
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(
+          horizontal="center", vertical="center", wrap_text=True
+      )
+      cell.border = bordo_sottile
+
+    # Elenco completo e aggiornato dei segnali per la Tavola 16 (incluso Fig. 383 e Fig. 70)
+    dati_righe_16 = [
+        (
+            "fig_383.jpg",
+            "FIG. II 383",
+            "LAVORI IN CORSO",
+            km_inizio_16,
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_082a.jpg",
+            "FIG. II 082/a",
+            "PASSAGGIO OBBLIGATORIO A SINISTRA",
+            km_preavviso_16,
+            "SEGNALI DI OBBLIGO",
+        ),
+        (
+            "fig_048.jpg",
+            "FIG. II 048",
+            "DIVIETO DI SORPASSO",
+            km_inizio_16,
+            "SEGNALI DI DIVIETO",
+        ),
+        (
+            "fig_411a.jpg",
+            "FIG. II 411/a",
+            "SEGNALE DI CORSIA CHIUSA (CHIUSURA CORSIA DI DESTRA)",
+            km_inizio_16,
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig050_lim110.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 110 KM/H",
+            km_limite_1,
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig050_lim90.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 90 KM/H",
+            km_limite_1,
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_050_lim60.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 60 KM/H",
+            km_limite_1,
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_070.jpg",
+            "FIG. II 070",
+            "VIA LIBERA",
+            km_fine_16,
+            "SEGNALI DI DIVIETO",
+        ),
+    ]
+
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 45
+    ws.column_dimensions["D"].width = 20
+    ws.column_dimensions["E"].width = 25
+
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+
+    immagini_inserite = 0
+
+    for i, row_data in enumerate(dati_righe_16, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value="")
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(
+            horizontal="center", vertical="center", wrap_text=True
+        )
+        cell.border = bordo_sottile
+
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+
+      nomi_da_cercare = [
+          img_nome,
+          img_nome.replace(".jpg", ".png"),
+          img_nome.replace(".png", ".jpg"),
+      ]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_16_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(
+              col=0, colOff=150000, row=i - 1, rowOff=40000
+          )
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell", _from=marker_from, to=marker_to
+          )
+
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+
+    st.success(
+        "Abaco Excel Tavola 16 generato! (Immagini inserite:"
+        f" {immagini_inserite}/{len(dati_righe_16)})"
+    )
+    st.download_button(
+        label="📥 Scarica Excel Abaco Tavola 16",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_16.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+
+  st.divider()
+  st.subheader("🖼️ Anteprima Tavola 16 Personalizzata")
+
+  img_path_16 = os.path.join(cartella_app, "TAVOLA 16.jpg")
+  if os.path.exists(img_path_16):
+    try:
+      with Image.open(img_path_16) as immagine_originale:
+        base_img_16 = immagine_originale.convert("RGB")
+
+      width_16, height_16 = base_img_16.size
+      draw_16 = ImageDraw.Draw(base_img_16)
+      font_km_16 = load_custom_font(60)
+      font_ub_16 = load_custom_font(69)
+      BORDO = 2
+
+      etichette_16 = [
+          (int(width_16 * 0.45), int(height_16 * 0.015), f"KM {km_fine_16}"),
+          (int(width_16 * 0.62), int(height_16 * 0.905), f"KM {km_inizio_16}"),
+      ]
+
+      for x, y, testo in etichette_16:
+        draw_16.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km_16,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      draw_16.multiline_text(
+          (int(width_16 * 0.65), int(height_16 * 0.225)),
+          ubicazione_testo_16,
+          fill=(255, 0, 0),
+          font=font_ub_16,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_16 = io.BytesIO()
+      base_img_16.save(img_io_16, format="JPEG", quality=100, subsampling=0)
+      jpg_data_16 = img_io_16.getvalue()
+
+      st.image(
+          base_img_16,
+          caption="Tavola 16 - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola 16 in formato JPG",
+          data=jpg_data_16,
+          file_name="Tavola_16_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 16.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 16.jpg' non trovata nella cartella.")
