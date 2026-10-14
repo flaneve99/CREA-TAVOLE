@@ -348,7 +348,6 @@ elif "16" in tavola_selezionata:
       value="DIREZIONE SUD\nVIADOTTO TORRE\nGUACETO 1",
   )
 
-  # Campi di input suddivisi in due colonne per una gestione pulita e ordinata
   col1, col2 = st.columns(2)
 
   with col1:
@@ -575,30 +574,28 @@ elif "16" in tavola_selezionata:
       width_16, height_16 = base_img_16.size
       draw_16 = ImageDraw.Draw(base_img_16)
 
-      # Font ottimizzati per la Tavola 16
       font_km = load_custom_font(25)
       font_ub_16 = load_custom_font(25)
       BORDO = 2
 
-      # Mappatura delle coordinate verticali e orizzontali precise per ciascun KM sulla Tavola 16
-      # (Colonna dei KM a destra, allineata ai vari livelli dei segnali dall'alto verso il basso)
+      # Mappatura corretta dal basso (0.925) verso l'alto (0.325) in ordine di sequenza dei cartelli:
       etichette_16 = [
           # 1. KM Fine / Rientro (In alto)
           (int(width_16 * 0.34), int(height_16 * 0.07), f"KM {km_fine_16}"),
-          # 2. Inizio Testata (Freccia blu / inizio cantiere)
-          (int(width_16 * 0.49), int(height_16 * 0.10), f"KM {km_inizio_testata}"),
-          # 3. Preavviso Chiusura Corsia 100m
-          (int(width_16 * 0.49), int(height_16 * 0.825), f"KM {km_preavviso_100}"),
-          # 4. Limite 60 km/h
-          (int(width_16 * 0.49), int(height_16 * 0.725), f"KM {km_limite_60}"),
-          # 5. Preavviso Chiusura Corsia 250m
+          # 2. Preavviso 700m (In basso) -> quota y più bassa (es. 0.925)
+          (int(width_16 * 0.49), int(height_16 * 0.925), f"KM {km_preavviso_700}"),
+          # 3. Limite 110 km/h -> salendo (es. 0.825)
+          (int(width_16 * 0.49), int(height_16 * 0.825), f"KM {km_limite_110}"),
+          # 4. Limite 90 km/h -> salendo (es. 0.725)
+          (int(width_16 * 0.49), int(height_16 * 0.725), f"KM {km_limite_90}"),
+          # 5. Preavviso Chiusura Corsia 250m -> salendo (es. 0.625)
           (int(width_16 * 0.49), int(height_16 * 0.625), f"KM {km_preavviso_250}"),
-          # 6. Limite 90 km/h
-          (int(width_16 * 0.49), int(height_16 * 0.525), f"KM {km_limite_90}"),
-          # 7. Limite 110 km/h
-          (int(width_16 * 0.49), int(height_16 * 0.425), f"KM {km_limite_110}"),
-          # 8. Preavviso 700m (In basso)
-          (int(width_16 * 0.49), int(height_16 * 0.325), f"KM {km_preavviso_700}"),
+          # 6. Limite 60 km/h -> salendo (es. 0.525)
+          (int(width_16 * 0.49), int(height_16 * 0.525), f"KM {km_limite_60}"),
+          # 7. Preavviso Chiusura Corsia 100m -> salendo (es. 0.425)
+          (int(width_16 * 0.49), int(height_16 * 0.425), f"KM {km_preavviso_100}"),
+          # 8. Inizio Testata (Freccia blu / inizio cantiere) -> quota y più in alto (es. 0.325)
+          (int(width_16 * 0.49), int(height_16 * 0.325), f"KM {km_inizio_testata}"),
       ]
 
       for x, y, testo in etichette_16:
