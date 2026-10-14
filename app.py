@@ -119,7 +119,6 @@ if "39" in tavola_selezionata:
   # ==================================================
   if st.button("Genera Abaco Segnaletica (Excel)"):
 
-    # Dati da inserire nell'Excel
     dati_abaco = {
         "SEGNALE": [
             "Preavviso Cantiere Mobile",
@@ -160,52 +159,62 @@ if "39" in tavola_selezionata:
 
     df_risultato = pd.DataFrame(dati_abaco)
 
-    # Creazione del file Excel in memoria con openpyxl
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
       df_risultato.to_excel(writer, index=False, sheet_name="Abaco Tavola 39")
 
     output.seek(0)
     
-    # Riapriamo il file con openpyxl per inserire le immagini nelle celle della colonna "FIGURA" (Colonna B -> indice 2)
     wb = openpyxl.load_workbook(output)
     ws = wb["Abaco Tavola 39"]
 
-    # Mappa dei file immagine corrispondenti alle figure
     cartella_app = os.path.dirname(os.path.abspath(__file__))
-    mappa_immagini = {
-        "FIG. II 399": os.path.join(cartella_app, "immagini_segnali", "fig_399.png"),
-        "FIG. II 383": os.path.join(cartella_app, "immagini_segnali", "fig_383.png"),
-        "FIG. II 070": os.path.join(cartella_app, "immagini_segnali", "fig_070.png"),
-        "FIG. II 400": os.path.join(cartella_app, "immagini_segnali", "fig_400.png"),
-        "FIG. II 401": os.path.join(cartella_app, "immagini_segnali", "fig_401.png"),
+    dir_immagini = os.path.join(cartella_app, "immagini_segnali")
+
+    # Mappa dei codici alle chiavi dei file immagine
+    mappa_nomi = {
+        "FIG. II 399": ["fig_399.png", "fig_399.jpg", "399.png", "399.jpg"],
+        "FIG. II 383": ["fig_383.png", "fig_383.jpg", "383.png", "383.jpg"],
+        "FIG. II 070": ["fig_070.png", "fig_070.jpg", "070.png", "070.jpg", "70.png"],
+        "FIG. II 400": ["fig_400.png", "fig_400.jpg", "400.png", "400.jpg"],
+        "FIG. II 401": ["fig_401.png", "fig_401.jpg", "401.png", "401.jpg"],
     }
 
-    # Regoliamo l'altezza delle righe e la larghezza della colonna B per fare spazio alle immagini
     ws.column_dimensions['B'].width = 18
 
     for riga_idx in range(2, len(df_risultato) + 2):
-      ws.row_dimensions[riga_idx].height = 50  # Altezza riga generosa per l'immagine
-      figura_val = ws.cell(row=riga_idx, column=2).value # Colonna B è la seconda colonna
+      ws.row_dimensions[riga_idx].height = 50
+      figura_val = ws.cell(row=riga_idx, column=2).value
 
-      if figura_val in mappa_immagini:
-        img_file = mappa_immagini[figura_val]
-        if os.path.exists(img_file):
-          # Carichiamo e ridimensioniamo l'immagine per farla entrare nella cella
-          img_obj = OpenpyxlImage(img_file)
-          img_obj.width = 45
-          img_obj.height = 45
-          
-          # Posizioniamo l'immagine esattamente nella cella della colonna B
-          cell_coord = f"B{riga_idx}"
-          ws.add_image(img_obj, cell_coord)
+      if figura_val in mappa_nomi:
+        # Cerca quale dei file possibili esiste nella cartella
+        file_trovato = None
+        for nome_file in mappa_nomi[figura_val]:
+          percorso_tentativo = os.path.join(dir_immagini, nome_file)
+          if os.path.exists(percorso_tentativo):
+            file_trovato = percorso_tentativo
+            break
+        
+        if file_trovato:
+          try:
+            # Salviamo una versione temporanea standardizzata per openpyxl
+            img_pil = Image.open(file_trovato).convert("RGB")
+            temp_img_path = os.path.join("/tmp", f"temp_sig_{riga_idx}.jpg")
+            img_pil.save(temp_img_path, "JPEG")
 
-    # Salvataggio finale del workbook con le immagini
+            img_obj = OpenpyxlImage(temp_img_path)
+            img_obj.width = 40
+            img_obj.height = 40
+            
+            ws.add_image(img_obj, f"B{riga_idx}")
+          except Exception as e:
+            print(f"Errore caricamento immagine riga {riga_idx}: {e}")
+
     final_output = io.BytesIO()
     wb.save(final_output)
     excel_data = final_output.getvalue()
 
-    st.success("Abaco Excel generato con successo e arricchito con le immagini dei segnali!")
+    st.success("Abaco Excel generato con successo con tutte le immagini dei segnali!")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica con Immagini",
