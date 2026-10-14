@@ -17,7 +17,7 @@ st.set_page_config(
 st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
-    "Inserisci le progressive chilometriche: il programma "
+    "Inserisci le progressive chilometriche e l'ubicazione: il programma "
     "genererà l'Abaco Excel e la Tavola JPG personalizzata."
 )
 
@@ -88,9 +88,10 @@ if "39" in tavola_selezionata:
 
   st.subheader("📍 Dati e Progressive Chilometriche - Tavola 39")
 
-  st.markdown(
-      "*Direzione Sud, Viadotto Torre Guaceto 1 - "
-      "Chiusura corsia di destra*"
+  # Campo di input per l'ubicazione personalizzabile
+  ubicazione_testo = st.text_input(
+      "Ubicazione / Direzione (sotto il riquadro)",
+      value="DIREZIONE SUD\nVIADOTTO TORRE GUACETO 1",
   )
 
   col1, col2 = st.columns(2)
@@ -208,10 +209,13 @@ if "39" in tavola_selezionata:
       draw = ImageDraw.Draw(base_img)
 
       # ------------------------------------------
-      # DIMENSIONE FONT: 60 PIXEL PER TUTTE LE KM
+      # DIMENSIONE FONT
       # ------------------------------------------
-      DIMENSIONE_FONT = 60
-      font_km = load_custom_font(DIMENSIONE_FONT)
+      DIMENSIONE_FONT_KM = 60
+      DIMENSIONE_FONT_UBICAZIONE = 50  # Font ben visibile per l'ubicazione
+
+      font_km = load_custom_font(DIMENSIONE_FONT_KM)
+      font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
 
       # Contorno bianco sottile per la leggibilità
       BORDO = 2
@@ -222,9 +226,7 @@ if "39" in tavola_selezionata:
       etichette = [
           (
               int(width * 0.45),
-              int(
-                  height * 0.015
-              ),  # KM Fine spostato leggermente più in basso
+              int(height * 0.015),
               f"KM {km_fine}",
           ),
           (
@@ -245,10 +247,9 @@ if "39" in tavola_selezionata:
       ]
 
       # ------------------------------------------
-      # DISEGNO DELLE SCRITTE
+      # DISEGNO DELLE SCRITTE KM
       # ------------------------------------------
       for x, y, testo in etichette:
-
         draw.text(
             (x, y),
             testo,
@@ -257,6 +258,25 @@ if "39" in tavola_selezionata:
             stroke_width=BORDO,
             stroke_fill=(255, 255, 255),
         )
+
+      # ------------------------------------------
+      # DISEGNO DELL'UBICAZIONE SOTTO IL RIQUADRO
+      # ------------------------------------------
+      # Posizionato nell'area a destra (allineato attorno al 60% della larghezza e sotto il riquadro giallo)
+      x_ubicazione = int(width * 0.62)
+      y_ubicazione = int(
+          height * 0.23
+      )  # Appena sotto il box riassuntivo della Tavola 39
+
+      draw.multiline_text(
+          (x_ubicazione, y_ubicazione),
+          ubicazione_testo,
+          fill=(255, 0, 0),
+          font=font_ubicazione,
+          spacing=10,  # Spaziatura tra le righe se si usa il ritorno a capo
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
 
       # ------------------------------------------
       # SALVATAGGIO JPG IN MEMORIA
@@ -277,7 +297,7 @@ if "39" in tavola_selezionata:
       # ------------------------------------------
       st.image(
           base_img,
-          caption="Tavola 39 - Progressive chilometriche ottimizzate",
+          caption="Tavola 39 - Con progressive e ubicazione personalizzata",
           use_container_width=True,
       )
 
@@ -291,10 +311,7 @@ if "39" in tavola_selezionata:
           mime="image/jpeg",
       )
 
-      st.success(
-          f"Tavola generata correttamente. Dimensione font:"
-          f" {DIMENSIONE_FONT} pixel."
-      )
+      st.success("Tavola generata correttamente con ubicazione e progressive.")
 
     except Exception as errore:
 
@@ -305,6 +322,6 @@ if "39" in tavola_selezionata:
   else:
 
     st.error(
-        "Immagine 'TAVOLA 39.jpg' not trovata. "
+        "Immagine 'TAVOLA 39.jpg' non trovata. "
         "Carica il file nella stessa cartella di app.py."
     )
