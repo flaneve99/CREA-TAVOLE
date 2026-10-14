@@ -216,13 +216,12 @@ if "39" in tavola_selezionata:
             draw = ImageDraw.Draw(base_img)
 
             # ------------------------------------------
-            # DIMENSIONE FONT: 70 PIXEL PER TUTTE LE KM
+            # DIMENSIONE FONT: 60 PIXEL PER TUTTE LE KM
             # ------------------------------------------
-            DIMENSIONE_FONT = 70
-
+            DIMENSIONE_FONT = 60
             font_km = load_custom_font(DIMENSIONE_FONT)
 
-            # Contorno bianco per migliorare la leggibilità
+            # Contorno bianco sottile per la leggibilità
             BORDO = 2
 
             # ------------------------------------------
@@ -286,7 +285,7 @@ if "39" in tavola_selezionata:
                 base_img,
                 caption=(
                     "Tavola 39 - Progressive chilometriche "
-                    "con caratteri da 70 pixel"
+                    "con caratteri da 60 pixel"
                 ),
                 use_container_width=True,
             )
