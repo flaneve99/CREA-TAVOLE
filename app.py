@@ -563,13 +563,13 @@ elif "16" in tavola_selezionata:
       draw_16 = ImageDraw.Draw(base_img_16)
 
       # Font ottimizzati per la Tavola 16
-      font_km_alto_16 = load_custom_font(42)  # Dimensioni compatte per il KM in alto
-      font_km_16 = load_custom_font(60)
-      font_ub_16 = load_custom_font(50)
+      font_km_alto_16 = load_custom_font(30)  # Dimensioni compatte per il KM in alto
+      font_km_16 = load_custom_font(30)
+      font_ub_16 = load_custom_font(30)
       BORDO = 2
 
       # 1. KM Fine in alto (posizionato nello spazio tra verde e riquadro tavola)
-      x_km_fine = int(width_16 * 0.78)
+      x_km_fine = int(width_16 * 0.50)
       y_km_fine = int(height_16 * 0.02)
       draw_16.text(
           (x_km_fine, y_km_fine),
