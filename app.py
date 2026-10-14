@@ -1,5 +1,6 @@
 import io
 import os
+import urllib.request
 import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
@@ -13,6 +14,23 @@ st.write(
     "Inserisci i dati chilometrici: il sito aggiornerà l'Abaco Excel e"
     " genererà la Tavola in JPG personalizzata!"
 )
+
+# Funzione per scaricare un font sicuro se non presente
+@st.cache_resource
+def get_font(size):
+  font_filename = "DejaVuSans-Bold.ttf"
+  if not os.path.exists(font_filename):
+    try:
+      url = "https://github.com/dejavu-fonts/dejavu-fonts/raw/master/ttf/DejaVuSans-Bold.ttf"
+      urllib.request.urlretrieve(url, font_filename)
+    except:
+      pass
+
+  if os.path.exists(font_filename):
+    return ImageFont.truetype(font_filename, size)
+  else:
+    return ImageFont.load_default()
+
 
 # Selezione della Tavola
 tavola_selezionata = st.selectbox(
@@ -88,21 +106,9 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Carichiamo un font TrueType garantito presente nei server Linux di Streamlit
-    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-    try:
-      font_grande = ImageFont.truetype(
-          font_path, 70
-      )  # Molto grande ed evidente
-      font_medio = ImageFont.truetype(font_path, 55)  # Grande per gli altri
-    except:
-      try:
-        # Fallback alternativo
-        font_grande = ImageFont.truetype("arial.ttf", 70)
-        font_medio = ImageFont.truetype("arial.ttf", 55)
-      except:
-        font_grande = ImageFont.load_default()
-        font_medio = font_grande
+    # Carichiamo font grandi garantiti (es. 70 e 55 pixel)
+    font_grande = get_font(70)
+    font_medio = get_font(55)
 
     # 1. KM Fine (in alto)
     draw.text(
@@ -144,9 +150,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption=(
-            "Tavola 39 - Progressive con caratteri grandi e font di sistema"
-        ),
+        caption="Tavola 39 - Testi grandi e visibili",
         use_container_width=True,
     )
 
