@@ -564,7 +564,7 @@ elif "16" in tavola_selezionata:
 
       # Font ottimizzati per la Tavola 16
       font_km_alto_16 = load_custom_font(25)  # Dimensioni compatte per il KM in alto
-      font_km_16 = load_custom_font(30)
+      font_km_16 = load_custom_font(32)
       font_ub_16 = load_custom_font(25)
       BORDO = 2
 
@@ -593,8 +593,8 @@ elif "16" in tavola_selezionata:
       )
 
       # 3. Testo Ubicazione
-      x_ub = int(width_16 * 0.64)
-      y_ub = int(height_16 * 0.26)
+      x_ub = int(width_16 * 0.67)
+      y_ub = int(height_16 * 0.27)
       draw_16.multiline_text(
           (x_ub, y_ub),
           ubicazione_testo_16,
