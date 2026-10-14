@@ -11,7 +11,7 @@ st.set_page_config(
 st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 st.write(
     "Inserisci i dati chilometrici: il sito aggiornerà l'Abaco Excel e"
-    " genererà la Tavola in JPG personalizzata in tempo reale!"
+    " genererà la Tavola in JPG personalizzata!"
 )
 
 # Selezione della Tavola
@@ -36,7 +36,7 @@ if "39" in tavola_selezionata:
     km_fine = st.text_input("KM Fine / Rientro", "36+600")
     distanza_coni = st.text_input("Interasse Coni / Dettagli", "12 m")
 
-  # --- 1. GENERAZIONE FILE EXCEL (ABACO) ---
+  # --- GENERAZIONE FILE EXCEL (ABACO) ---
   if st.button("Genera Abaco Segnaletica (Excel)"):
     dati_abaco = {
         "SEGNALE": [
@@ -79,52 +79,43 @@ if "39" in tavola_selezionata:
 
   img_path = "TORRE GUACETO 1 DIR SUD.jpg"
   if os.path.exists(img_path):
-    # Apriamo l'immagine originale
     base_img = Image.open(img_path).convert("RGB")
     draw = ImageDraw.Draw(base_img)
 
-    # Proviamo a caricare un font di sistema, altrimenti usiamo quello di default
+    # Carichiamo un font standard o di fallback ingrandito
     try:
-      # Prova a usare un font standard grande abbastanza
-      font = ImageFont.truetype("arial.ttf", 32)
-      font_small = ImageFont.truetype("arial.ttf", 24)
+      font_grande = ImageFont.truetype("arial.ttf", 45)
+      font_medio = ImageFont.truetype("arial.ttf", 36)
     except:
-      font = ImageFont.load_default()
-      font_small = font
+      font_grande = ImageFont.load_default()
+      font_medio = font_grande
 
-    # NOTA: Qui applichiamo rettangoli bianchi per coprire le vecchie scritte
-    # e disegniamo sopra le nuove progressive inserite nei campi!
-    # (Coordinate indicative basate sulla posizione delle scritte rosse nell'immagine)
+    # 1. Copriamo la scritta in alto ("KM 36+600") con un rettangolo bianco e mettiamo la nuova
+    # (Coordinate tarate sulle dimensioni reali della tavola)
+    draw.rectangle([(420, 10), (750, 90)], fill="white")
+    draw.text((430, 20), f"KM {km_fine}", fill="red", font=font_grande)
 
-    # 1. Copriamo e scriviamo il KM Fine in alto (es. KM 36+600)
-    draw.rectangle(
-        [(420, 20), (680, 80)], fill="white"
-    )  # Riquadro di pulizia
+    # 2. Copriamo e aggiorniamo i KM intermedi e di inizio se necessario
+    draw.rectangle([(640, 535), (820, 595)], fill="white")
     draw.text(
-        (430, 30), f"KM {km_fine}", fill="red", font=font
-    )  # Testo nuovo
+        (645, 542), f"KM {km_preavviso}", fill="red", font=font_medio
+    )  # KM 36+060
 
-    # 2. Copriamo e scriviamo i KM intermedi e di inizio
-    # (Esempio di posizionamento dinamico per le progressive inferiori)
-    draw.rectangle([(550, 530), (710, 580)], fill="white")
-    draw.text((560, 540), f"KM {km_preavviso}", fill="red", font=font_small)
+    draw.rectangle([(640, 905), (820, 965)], fill="white")
+    draw.text((645, 912), f"KM {km_inizio}", fill="red", font=font_medio)  # KM 35+560
 
-    draw.rectangle([(550, 910), (710, 960)], fill="white")
-    draw.text((560, 920), f"KM {km_inizio}", fill="red", font=font_small)
-
-    # Salviamo l'immagine modificata in memoria
+    # Salviamo in memoria
     img_io = io.BytesIO()
     base_img.save(img_io, "JPEG")
     img_io.seek(0)
 
-    # Mostriamo l'anteprima della tavola aggiornata sul sito
+    # Mostriamo l'anteprima corretta
     st.image(
         base_img,
-        caption="Tavola 39 - Aggiornata con le progressive inserite",
+        caption="Tavola 39 - Con progressive aggiornate e pulite",
         use_container_width=True,
     )
 
-    # Pulsante per scaricare la JPG compilata
     st.download_button(
         label="📥 Scarica Tavola in formato JPG",
         data=img_io,
