@@ -5,7 +5,7 @@ import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from openpyxl.drawing.image import Image as OpenpyxlImage
-from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor, AnchorMarker
+from openpyxl.drawing.spreadsheet_drawing import TwoCellAnchor, AnchorMarker
 from openpyxl.drawing.xdr import XDRPositiveSize2D
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 import openpyxl
@@ -22,7 +22,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel strutturato (con dettagli vuoti e immagini bloccate) e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel strutturato (con dettagli vuoti e immagini bloccate tramite TwoCellAnchor) e la Tavola JPG personalizzata."
 )
 
 
@@ -152,7 +152,7 @@ if "39" in tavola_selezionata:
     for col in range(1, 6):
       ws.cell(row=1, column=col).border = bordo_sottile
 
-    # 2. Riga delle colonne (DETTAGLI lasciato vuoto da compilare manualmente)
+    # 2. Riga delle colonne (DETTAGLI vuoto)
     headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
     for col_idx, header in enumerate(headers, 1):
       cell = ws.cell(row=2, column=col_idx)
@@ -162,7 +162,7 @@ if "39" in tavola_selezionata:
       cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
       cell.border = bordo_sottile
 
-    # 3. Dati delle righe (senza inserire km in dettagli)
+    # 3. Dati delle righe
     dati_righe = [
         ("fig_399.png", "FIG. II 399", "PREAVVISO DI CANTIERE MOBILE", "", "SEGNALI TEMPORANEI"),
         ("fig_383.png", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
@@ -193,7 +193,7 @@ if "39" in tavola_selezionata:
 
       c_fig = ws.cell(row=i, column=2, value=figura)
       c_desc = ws.cell(row=i, column=3, value=descrizione)
-      c_det = ws.cell(row=i, column=4, value=dettagli)  # Cella vuota
+      c_det = ws.cell(row=i, column=4, value=dettagli)
       c_seg = ws.cell(row=i, column=5, value=segnaletica)
 
       for cell in [c_fig, c_desc, c_det, c_seg]:
@@ -220,16 +220,18 @@ if "39" in tavola_selezionata:
           img_pil.save(temp_path, "JPEG")
 
           img_obj = OpenpyxlImage(temp_path)
-          img_obj.width = 45
-          img_obj.height = 40
           
-          # Ancoraggio rigido alla cella con blocco editAs="oneCell"
-          marker = AnchorMarker(col=0, colOff=20000, row=i - 1, rowOff=10000)
-          img_obj.anchor = OneCellAnchor(
-              _from=marker,
-              ext=XDRPositiveSize2D(42 * 9525, 38 * 9525)
+          # ==========================================================
+          # ANCORAGGIO A DUE CELLE (TwoCellAnchor) PER BLOCCARE L'IMMAGINE
+          # ==========================================================
+          marker_from = AnchorMarker(col=0, colOff=15000, row=i - 1, rowOff=10000)
+          marker_to = AnchorMarker(col=1, colOff=-15000, row=i, rowOff=-10000)
+          
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell",
+              _from=marker_from,
+              to=marker_to
           )
-          img_obj.anchor.editAs = "oneCell"
           
           ws.add_image(img_obj)
           immagini_inserite += 1
@@ -244,7 +246,7 @@ if "39" in tavola_selezionata:
     wb.save(output)
     excel_data = output.getvalue()
 
-    st.success(f"Abaco Excel generato con successo! (Immagini bloccate: {immagini_inserite}/5)")
+    st.success(f"Abaco Excel generato con successo! (Immagini bloccate con TwoCellAnchor: {immagini_inserite}/5)")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica Formattato",
@@ -363,4 +365,3 @@ if "39" in tavola_selezionata:
         "Immagine 'TAVOLA 39.jpg' non trovata. "
         "Carica il file nella stessa cartella di app.py."
     )
-      
