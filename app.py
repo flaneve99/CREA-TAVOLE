@@ -5,6 +5,8 @@ import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from openpyxl.drawing.image import Image as OpenpyxlImage
+from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor, AnchorMarker
+from openpyxl.drawing.xdr import XDRPositiveSize2D
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 import openpyxl
 
@@ -20,7 +22,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel strutturato con le immagini dei segnali e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel strutturato con le immagini bloccate nelle celle e la Tavola JPG personalizzata."
 )
 
 
@@ -116,7 +118,7 @@ if "39" in tavola_selezionata:
     )
 
   # ==================================================
-  # GENERAZIONE FILE EXCEL (ABACO STRUTTURATO CON IMMAGINI)
+  # GENERAZIONE FILE EXCEL (ABACO STRUTTURATO CON IMMAGINI BLOCCATE)
   # ==================================================
   if st.button("Genera Abaco Segnaletica (Excel)"):
 
@@ -202,7 +204,6 @@ if "39" in tavola_selezionata:
       c_segnale = ws.cell(row=i, column=1)
       c_segnale.border = bordo_sottile
 
-      # Tentativo di ricerca dell'immagine con estensioni multiple (.png / .jpg)
       nomi_da_cercare = [img_nome, img_nome.replace(".png", ".jpg"), img_nome.replace(".jpg", ".png")]
       percorso_trovato = None
       
@@ -222,13 +223,18 @@ if "39" in tavola_selezionata:
           img_obj.width = 45
           img_obj.height = 40
           
-          cell_coord = f"A{i}"
-          ws.add_image(img_obj, cell_coord)
+          # Ancoraggio rigido alla cella A(i)
+          marker = AnchorMarker(col=0, colOff=20000, row=i - 1, rowOff=10000)
+          img_obj.anchor = OneCellAnchor(
+              _from=marker,
+              ext=XDRPositiveSize2D(42 * 9525, 38 * 9525)
+          )
+          
+          ws.add_image(img_obj)
           immagini_inserite += 1
         except Exception as e:
           st.warning(f"Errore nel caricamento dell'immagine per {figura}: {e}")
       else:
-        # Se l'immagine non viene trovata, mettiamo una scritta di avviso nella cella
         c_segnale.value = "[Img non trovata]"
         c_segnale.font = Font(name="Arial", size=8, color="FF0000")
         c_segnale.alignment = Alignment(horizontal="center", vertical="center")
@@ -237,7 +243,7 @@ if "39" in tavola_selezionata:
     wb.save(output)
     excel_data = output.getvalue()
 
-    st.success(f"Abaco Excel generato con successo! (Immagini inserite: {immagini_inserite}/5)")
+    st.success(f"Abaco Excel generato con successo! (Immagini bloccate nelle celle: {immagini_inserite}/5)")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica Formattato",
