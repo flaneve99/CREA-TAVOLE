@@ -5,6 +5,8 @@ import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from openpyxl.drawing.image import Image as OpenpyxlImage
+from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor, AnchorMarker
+from openpyxl.drawing.xdr import XDRPoint2D, XDRPositiveSize2D
 import openpyxl
 
 # ==================================================
@@ -19,7 +21,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel con le immagini dei segnali e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel con le immagini bloccate nelle celle e la Tavola JPG personalizzata."
 )
 
 
@@ -115,7 +117,7 @@ if "39" in tavola_selezionata:
     )
 
   # ==================================================
-  # GENERAZIONE FILE EXCEL (ABACO CON IMMAGINI NELLE CELLE)
+  # GENERAZIONE FILE EXCEL (ABACO CON IMMAGINI BLOCCATE NELLE CELLE)
   # ==================================================
   if st.button("Genera Abaco Segnaletica (Excel)"):
 
@@ -171,7 +173,6 @@ if "39" in tavola_selezionata:
     cartella_app = os.path.dirname(os.path.abspath(__file__))
     dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
-    # Mappa dei codici alle chiavi dei file immagine
     mappa_nomi = {
         "FIG. II 399": ["fig_399.png", "fig_399.jpg", "399.png", "399.jpg"],
         "FIG. II 383": ["fig_383.png", "fig_383.jpg", "383.png", "383.jpg"],
@@ -180,14 +181,14 @@ if "39" in tavola_selezionata:
         "FIG. II 401": ["fig_401.png", "fig_401.jpg", "401.png", "401.jpg"],
     }
 
-    ws.column_dimensions['B'].width = 18
+    # Impostiamo una larghezza e un'altezza comode per contenere l'icona bloccata nella cella
+    ws.column_dimensions['B'].width = 16
 
     for riga_idx in range(2, len(df_risultato) + 2):
-      ws.row_dimensions[riga_idx].height = 50
+      ws.row_dimensions[riga_idx].height = 45
       figura_val = ws.cell(row=riga_idx, column=2).value
 
       if figura_val in mappa_nomi:
-        # Cerca quale dei file possibili esiste nella cartella
         file_trovato = None
         for nome_file in mappa_nomi[figura_val]:
           percorso_tentativo = os.path.join(dir_immagini, nome_file)
@@ -197,16 +198,22 @@ if "39" in tavola_selezionata:
         
         if file_trovato:
           try:
-            # Salviamo una versione temporanea standardizzata per openpyxl
             img_pil = Image.open(file_trovato).convert("RGB")
             temp_img_path = os.path.join("/tmp", f"temp_sig_{riga_idx}.jpg")
             img_pil.save(temp_img_path, "JPEG")
 
             img_obj = OpenpyxlImage(temp_img_path)
-            img_obj.width = 40
-            img_obj.height = 40
+            img_obj.width = 35
+            img_obj.height = 35
             
-            ws.add_image(img_obj, f"B{riga_idx}")
+            # Ancoraggio rigido alla cella B(riga_idx) con margine interno per centrarla
+            col_idx = 1 # Indice 0-based per la colonna B (A=0, B=1)
+            row_idx = riga_idx - 1 # Indice 0-based per la riga
+            
+            marker = AnchorMarker(col=col_idx, colOff=50000, row=row_idx, rowOff=50000)
+            img_obj.anchor = OneCellAnchor(_from=marker, ext=XDRPositiveSize2D(35 * 9525, 35 * 9525))
+            
+            ws.add_image(img_obj)
           except Exception as e:
             print(f"Errore caricamento immagine riga {riga_idx}: {e}")
 
@@ -214,7 +221,7 @@ if "39" in tavola_selezionata:
     wb.save(final_output)
     excel_data = final_output.getvalue()
 
-    st.success("Abaco Excel generato con successo con tutte le immagini dei segnali!")
+    st.success("Abaco Excel generato con successo e immagini bloccate nelle celle!")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica con Immagini",
