@@ -149,8 +149,8 @@ if "39" in tavola_selezionata:
         ("fig_399.jpg", "FIG. II 399", "PREAVVISO DI CANTIERE MOBILE", "", "SEGNALI TEMPORANEI"),
         ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
         ("fig_070.jpg", "FIG. II 070", "FINE CANTIERE", "", "SEGNALI DI PRESCRIZIONE"),
-        ("fig_400.jpg", "FIG. II 400", "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA", "", "SEGNALI COMPLEMENTARI"),
-        ("fig_401.jpg", "FIG. II 401", "VEICOLO DI PROTEZIONE CON PANNELLO", "", "SEGNALI COMPLEMENTARI"),
+        ("fig_400.jpg", "FIG. II 400", "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA", "", "SEGNALI TEMPORANEI"),
+        ("fig_401.jpg", "FIG. II 401", "VEICOLO DI PROTEZIONE CON PANNELLO", "", "SEGNALI TEMPORANEI"),
     ]
 
     ws.column_dimensions['A'].width = 18
@@ -337,10 +337,11 @@ elif "16" in tavola_selezionata:
       cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
       cell.border = bordo_sottile
 
+    # Configurazione aggiornata con le descrizioni e categorie esatte richieste per la Tavola 16
     dati_righe_16 = [
-        ("fig_082a.jpg", "FIG. II 082/a", "PREAVVISO DI RESTRINGIMENTO", km_preavviso_16, "SEGNALI TEMPORANEI"),
-        ("fig_048.jpg", "FIG. II 048", "LAVORI IN CORSO", km_inizio_16, "SEGNALI TEMPORANEI"),
-        ("fig_411a.jpg", "FIG. II 411/a", "FRECCIA DI CORSIFICAZIONE / DEVIAZIONE", km_inizio_16, "SEGNALI COMPLEMENTARI"),
+        ("fig_082a.jpg", "FIG. II 082/a", "PASSAGGIO OBBLIGATORIO A SINISTRA", km_preavviso_16, "SEGNALI DI OBBLIGO"),
+        ("fig_048.jpg", "FIG. II 048", "DIVIETO DI SORPASSO", km_inizio_16, "SEGNALI DI DIVIETO"),
+        ("fig_411a.jpg", "FIG. II 411/a", "SEGNALE DI CORSIA CHIUSA (CHIUSURA CORSIA DI DESTRA)", km_inizio_16, "SEGNALI TEMPORANEI"),
         ("fig050_lim110.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 110 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
         ("fig050_lim90.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 90 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
         ("fig_050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
@@ -348,7 +349,7 @@ elif "16" in tavola_selezionata:
 
     ws.column_dimensions['A'].width = 18
     ws.column_dimensions['B'].width = 16
-    ws.column_dimensions['C'].width = 40
+    ws.column_dimensions['C'].width = 45
     ws.column_dimensions['D'].width = 20
     ws.column_dimensions['E'].width = 25
 
