@@ -88,21 +88,25 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Aumentiamo la scala dei font per renderli molto grandi e visibili
+    # Usiamo dimensioni fisse in pixel molto grandi per garantire la massima visibilità
     try:
-      font_grande = ImageFont.truetype(
-          "arial.ttf", int(width * 0.055)
-      )  # Molto grande per l'alto
-      font_medio = ImageFont.truetype(
-          "arial.ttf", int(width * 0.045)
-      )  # Grande per gli altri tre
+      font_grande = ImageFont.truetype("arial.ttf", 65)
+      font_medio = ImageFont.truetype("arial.ttf", 50)
     except:
-      font_grande = ImageFont.load_default()
-      font_medio = font_grande
+      try:
+        font_grande = ImageFont.truetype(
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 65
+        )
+        font_medio = ImageFont.truetype(
+            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 50
+        )
+      except:
+        font_grande = ImageFont.load_default()
+        font_medio = font_grande
 
     # 1. KM Fine (in alto)
     draw.text(
-        (int(width * 0.61), int(height * 0.002)),
+        (int(width * 0.60), int(height * 0.002)),
         f"KM {km_fine}",
         fill="red",
         font=font_grande,
@@ -110,7 +114,7 @@ if "39" in tavola_selezionata:
 
     # 2. KM Testata / Intermedio (es. 36+110)
     draw.text(
-        (int(width * 0.60), int(height * 0.530)),
+        (int(width * 0.59), int(height * 0.525)),
         f"KM {km_testata}",
         fill="red",
         font=font_medio,
@@ -118,7 +122,7 @@ if "39" in tavola_selezionata:
 
     # 3. KM Preavviso (al centro)
     draw.text(
-        (int(width * 0.60), int(height * 0.650)),
+        (int(width * 0.59), int(height * 0.645)),
         f"KM {km_preavviso}",
         fill="red",
         font=font_medio,
@@ -126,7 +130,7 @@ if "39" in tavola_selezionata:
 
     # 4. KM Inizio (in basso)
     draw.text(
-        (int(width * 0.60), int(height * 0.910)),
+        (int(width * 0.59), int(height * 0.905)),
         f"KM {km_inizio}",
         fill="red",
         font=font_medio,
@@ -140,7 +144,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Testi grandi e ben visibili",
+        caption="Tavola 39 - Testi grandi forzati",
         use_container_width=True,
     )
 
