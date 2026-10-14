@@ -333,7 +333,7 @@ if "39" in tavola_selezionata:
       st.error("Errore generazione Tavola 39.")
       st.exception(errore)
   else:
-    st.error("Immagine 'TAVOLA 39.jpg' non trovata nella cartella.")
+    st.error("Immagine 'TAVOLA 39.jpg' not trovata nella cartella.")
 
 
 # ====================================================================
@@ -348,15 +348,28 @@ elif "16" in tavola_selezionata:
       value="DIREZIONE SUD\nVIADOTTO TORRE\nGUACETO 1",
   )
 
+  # Campi di input suddivisi in due colonne per una gestione pulita e ordinata
   col1, col2 = st.columns(2)
 
   with col1:
-    km_inizio_16 = st.text_input("KM Inizio Cantiere / Lavori", value="35+560")
-    km_preavviso_16 = st.text_input("KM Preavviso 700m", value="34+860")
+    km_fine_16 = st.text_input("KM Fine / Rientro (In alto)", value="36+600")
+    km_preavviso_700 = st.text_input(
+        "KM Preavviso 700m (In basso)", value="34+860"
+    )
+    km_limite_110 = st.text_input("KM Limite 110 km/h", value="35+100")
+    km_limite_90 = st.text_input("KM Limite 90 km/h", value="35+220")
+    km_preavviso_250 = st.text_input(
+        "KM Preavviso Chiusura Corsia 250m", value="35+310"
+    )
 
   with col2:
-    km_fine_16 = st.text_input("KM Fine / Rientro", value="36+600")
-    km_limite_1 = st.text_input("KM Limitazioni di Velocità", value="35+260")
+    km_limite_60 = st.text_input("KM Limite 60 km/h", value="35+430")
+    km_preavviso_100 = st.text_input(
+        "KM Preavviso Chiusura Corsia 100m", value="35+490"
+    )
+    km_inizio_testata = st.text_input(
+        "KM Inizio Testata (Freccia blu)", value="35+560"
+    )
 
   if st.button("Genera Abaco Segnaletica (Excel) - Tavola 16"):
 
@@ -413,49 +426,49 @@ elif "16" in tavola_selezionata:
             "fig_383.jpg",
             "FIG. II 383",
             "LAVORI IN CORSO",
-            km_inizio_16,
+            km_inizio_testata,
             "SEGNALI TEMPORANEI",
         ),
         (
             "fig_082a.jpg",
             "FIG. II 082/a",
             "PASSAGGIO OBBLIGATORIO A SINISTRA",
-            km_preavviso_16,
+            km_preavviso_700,
             "SEGNALI DI OBBLIGO",
         ),
         (
             "fig_048.jpg",
             "FIG. II 048",
             "DIVIETO DI SORPASSO",
-            km_inizio_16,
+            km_limite_60,
             "SEGNALI DI DIVIETO",
         ),
         (
             "fig_411a.jpg",
             "FIG. II 411/a",
             "SEGNALE DI CORSIA CHIUSA (CHIUSURA CORSIA DI DESTRA)",
-            km_inizio_16,
+            km_preavviso_250,
             "SEGNALI TEMPORANEI",
         ),
         (
             "fig050_lim110.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 110 KM/H",
-            km_limite_1,
+            km_limite_110,
             "SEGNALI DI PRESCRIZIONE",
         ),
         (
             "fig050_lim90.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 90 KM/H",
-            km_limite_1,
+            km_limite_90,
             "SEGNALI DI PRESCRIZIONE",
         ),
         (
             "fig_050_lim60.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 60 KM/H",
-            km_limite_1,
+            km_limite_60,
             "SEGNALI DI PRESCRIZIONE",
         ),
         (
@@ -484,7 +497,7 @@ elif "16" in tavola_selezionata:
 
       c_fig = ws.cell(row=i, column=2, value=figura)
       c_desc = ws.cell(row=i, column=3, value=descrizione)
-      c_det = ws.cell(row=i, column=4, value="")
+      c_det = ws.cell(row=i, column=4, value=dettagli)
       c_seg = ws.cell(row=i, column=5, value=segnaletica)
 
       for cell in [c_fig, c_desc, c_det, c_seg]:
@@ -563,36 +576,42 @@ elif "16" in tavola_selezionata:
       draw_16 = ImageDraw.Draw(base_img_16)
 
       # Font ottimizzati per la Tavola 16
-      font_km_alto_16 = load_custom_font(25)  # Dimensioni compatte per il KM in alto
-      font_km_16 = load_custom_font(25)
+      font_km = load_custom_font(25)
       font_ub_16 = load_custom_font(25)
       BORDO = 2
 
-      # 1. KM Fine in alto (posizionato nello spazio tra verde e riquadro tavola)
-      x_km_fine = int(width_16 * 0.34)
-      y_km_fine = int(height_16 * 0.07)
-      draw_16.text(
-          (x_km_fine, y_km_fine),
-          f"KM {km_fine_16}",
-          fill=(255, 0, 0),
-          font=font_km_alto_16,
-          stroke_width=BORDO,
-          stroke_fill=(255, 255, 255),
-      )
+      # Mappatura delle coordinate verticali e orizzontali precise per ciascun KM sulla Tavola 16
+      # (Colonna dei KM a destra, allineata ai vari livelli dei segnali dall'alto verso il basso)
+      etichette_16 = [
+          # 1. KM Fine / Rientro (In alto)
+          (int(width_16 * 0.34), int(height_16 * 0.07), f"KM {km_fine_16}"),
+          # 2. Inizio Testata (Freccia blu / inizio cantiere)
+          (int(width_16 * 0.49), int(height_16 * 0.925), f"KM {km_inizio_testata}"),
+          # 3. Preavviso Chiusura Corsia 100m
+          (int(width_16 * 0.49), int(height_16 * 0.825), f"KM {km_preavviso_100}"),
+          # 4. Limite 60 km/h
+          (int(width_16 * 0.49), int(height_16 * 0.725), f"KM {km_limite_60}"),
+          # 5. Preavviso Chiusura Corsia 250m
+          (int(width_16 * 0.49), int(height_16 * 0.625), f"KM {km_preavviso_250}"),
+          # 6. Limite 90 km/h
+          (int(width_16 * 0.49), int(height_16 * 0.525), f"KM {km_limite_90}"),
+          # 7. Limite 110 km/h
+          (int(width_16 * 0.49), int(height_16 * 0.425), f"KM {km_limite_110}"),
+          # 8. Preavviso 700m (In basso)
+          (int(width_16 * 0.49), int(height_16 * 0.325), f"KM {km_preavviso_700}"),
+      ]
 
-      # 2. KM Inizio in basso
-      x_km_inizio = int(width_16 * 0.49)
-      y_km_inizio = int(height_16 * 0.925)
-      draw_16.text(
-          (x_km_inizio, y_km_inizio),
-          f"KM {km_inizio_16}",
-          fill=(255, 0, 0),
-          font=font_km_16,
-          stroke_width=BORDO,
-          stroke_fill=(255, 255, 255),
-      )
+      for x, y, testo in etichette_16:
+        draw_16.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
 
-      # 3. Testo Ubicazione
+      # Testo Ubicazione
       x_ub = int(width_16 * 0.73)
       y_ub = int(height_16 * 0.27)
       draw_16.multiline_text(
