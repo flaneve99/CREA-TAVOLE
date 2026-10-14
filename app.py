@@ -6,7 +6,6 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from openpyxl.drawing.image import Image as OpenpyxlImage
 from openpyxl.drawing.spreadsheet_drawing import TwoCellAnchor, AnchorMarker
-from openpyxl.drawing.xdr import XDRPositiveSize2D
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 import openpyxl
 
@@ -22,7 +21,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel strutturato (con dettagli vuoti e immagini bloccate tramite TwoCellAnchor) e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel strutturato con margini ottimizzati per le immagini e la Tavola JPG personalizzata."
 )
 
 
@@ -221,11 +220,9 @@ if "39" in tavola_selezionata:
 
           img_obj = OpenpyxlImage(temp_path)
           
-          # ==========================================================
-          # ANCORAGGIO A DUE CELLE (TwoCellAnchor) PER BLOCCARE L'IMMAGINE
-          # ==========================================================
-          marker_from = AnchorMarker(col=0, colOff=15000, row=i - 1, rowOff=10000)
-          marker_to = AnchorMarker(col=1, colOff=-15000, row=i, rowOff=-10000)
+          # Margini interni visibili (offset più ampi per distanziare l'immagine dai bordi della cella)
+          marker_from = AnchorMarker(col=0, colOff=150000, row=i - 1, rowOff=40000)
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
           
           img_obj.anchor = TwoCellAnchor(
               editAs="twoCell",
@@ -246,7 +243,7 @@ if "39" in tavola_selezionata:
     wb.save(output)
     excel_data = output.getvalue()
 
-    st.success(f"Abaco Excel generato con successo! (Immagini bloccate con TwoCellAnchor: {immagini_inserite}/5)")
+    st.success(f"Abaco Excel generato con successo! (Immagini con margini: {immagini_inserite}/5)")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica Formattato",
