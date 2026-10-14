@@ -263,7 +263,7 @@ if "39" in tavola_selezionata:
       # ------------------------------------------
       # DISEGNO DELL'UBICAZIONE (BILANCIATA E CENTRATA)
       # ------------------------------------------
-      x_ubicazione = int(width * 0.70)  # Posizione centrata sotto il box giallo
+      x_ubicazione = int(width * 0.67)  # Posizione centrata sotto il box giallo
       y_ubicazione = int(height * 0.225)  # Sotto il riquadro superiore
 
       draw.multiline_text(
