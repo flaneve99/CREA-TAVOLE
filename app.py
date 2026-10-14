@@ -111,37 +111,45 @@ if "39" in tavola_selezionata:
     font_grande = load_custom_font(140)
     font_medio = load_custom_font(110)
 
-    # 1. KM Fine (in alto)
-    draw.text(
-        (int(width * 0.60), int(height * 0.002)),
-        f"KM {km_fine}",
-        fill="red",
-        font=font_grande,
-    )
+   # 1. KM Fine (in alto)
+draw.text(
+    (int(width * 0.60), int(height * 0.002)),
+    f"KM {km_fine}",
+    fill="red",
+    font=font_grande,
+    stroke_width=3,
+    stroke_fill="white",
+)
 
-    # 2. KM Testata / Intermedio (es. 36+110)
-    draw.text(
-        (int(width * 0.59), int(height * 0.525)),
-        f"KM {km_testata}",
-        fill="red",
-        font=font_medio,
-    )
+# 2. KM Testata / Intermedio
+draw.text(
+    (int(width * 0.59), int(height * 0.525)),
+    f"KM {km_testata}",
+    fill="red",
+    font=font_medio,
+    stroke_width=3,
+    stroke_fill="white",
+)
 
-    # 3. KM Preavviso (al centro)
-    draw.text(
-        (int(width * 0.59), int(height * 0.645)),
-        f"KM {km_preavviso}",
-        fill="red",
-        font=font_medio,
-    )
+# 3. KM Preavviso (al centro)
+draw.text(
+    (int(width * 0.59), int(height * 0.645)),
+    f"KM {km_preavviso}",
+    fill="red",
+    font=font_medio,
+    stroke_width=3,
+    stroke_fill="white",
+)
 
-    # 4. KM Inizio (in basso)
-    draw.text(
-        (int(width * 0.59), int(height * 0.905)),
-        f"KM {km_inizio}",
-        fill="red",
-        font=font_medio,
-    )
+# 4. KM Inizio (in basso)
+draw.text(
+    (int(width * 0.59), int(height * 0.905)),
+    f"KM {km_inizio}",
+    fill="red",
+    font=font_medio,
+    stroke_width=3,
+    stroke_fill="white",
+)
 
     # Salviamo in memoria
     img_io = io.BytesIO()
