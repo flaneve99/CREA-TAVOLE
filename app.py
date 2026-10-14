@@ -570,7 +570,7 @@ elif "16" in tavola_selezionata:
 
       # 1. KM Fine in alto (posizionato nello spazio tra verde e riquadro tavola)
       x_km_fine = int(width_16 * 0.47)
-      y_km_fine = int(height_16 * 0.05)
+      y_km_fine = int(height_16 * 0.07)
       draw_16.text(
           (x_km_fine, y_km_fine),
           f"KM {km_fine_16}",
