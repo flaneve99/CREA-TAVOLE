@@ -132,28 +132,38 @@ if "39" in tavola_selezionata:
     dati_abaco = {
         "SEGNALE": [
             "Preavviso Cantiere Mobile",
-            "Segnale Mobile di Protezione",
-            "Via Libera / Fine Cantiere",
+            "Lavori in corso (Fig. II 383)",
+            "Fine Cantiere / Via Libera",
+            "Segnale Mobile di Preavviso su Veicolo",
+            "Segnale Mobile di Protezione su Veicolo",
         ],
         "FIGURA": [
-            "FIG. 400",
-            "FIG. 401",
-            "FIG. 070",
+            "FIG. II 399",
+            "FIG. II 383",
+            "FIG. II 070",
+            "FIG. II 400",
+            "FIG. II 401",
         ],
         "DESCRIZIONE": [
-            "SEGNALE MOBILE DI PREAVVISO",
-            "SEGNALE MOBILE DI PROTEZIONE",
-            "VIA LIBERA",
+            "PREAVVISO DI CANTIERE MOBILE",
+            "LAVORI IN CORSO",
+            "FINE CANTIERE",
+            "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA",
+            "VEICOLO DI PROTEZIONE CON PANNELLO A MESSAGGI VARIABILI",
         ],
         "PROGRESSIVA CHILOMETRICA": [
             km_preavviso,
             km_inizio,
             km_fine,
+            km_preavviso,
+            km_inizio,
         ],
         "SEGNALETICA": [
             "SEGNALI TEMPORANEI",
             "SEGNALI TEMPORANEI",
             "SEGNALI DI PRESCRIZIONE",
+            "SEGNALI COMPLEMENTARI / TEMPORANEI",
+            "SEGNALI COMPLEMENTARI / TEMPORANEI",
         ],
     }
 
@@ -174,7 +184,7 @@ if "39" in tavola_selezionata:
 
     excel_data = output.getvalue()
 
-    st.success("Abaco Excel generato con successo!")
+    st.success("Abaco Excel generato con successo e completo di tutti i segnali!")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica",
