@@ -213,7 +213,7 @@ if "39" in tavola_selezionata:
       # DIMENSIONE FONT
       # ------------------------------------------
       DIMENSIONE_FONT_KM = 60
-      DIMENSIONE_FONT_UBICAZIONE = 70  # Ottimizzato per stare perfettamente nel box
+      DIMENSIONE_FONT_UBICAZIONE = 69  # Ottimizzato per stare perfettamente nel box
 
       font_km = load_custom_font(DIMENSIONE_FONT_KM)
       font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
@@ -263,7 +263,7 @@ if "39" in tavola_selezionata:
       # ------------------------------------------
       # DISEGNO DELL'UBICAZIONE (BILANCIATA E CENTRATA)
       # ------------------------------------------
-      x_ubicazione = int(width * 0.67)  # Posizione centrata sotto il box giallo
+      x_ubicazione = int(width * 0.65)  # Posizione centrata sotto il box giallo
       y_ubicazione = int(height * 0.225)  # Sotto il riquadro superiore
 
       draw.multiline_text(
