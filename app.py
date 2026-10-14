@@ -1,5 +1,6 @@
 import io
 import os
+import urllib.request
 import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
@@ -13,6 +14,24 @@ st.write(
     "Inserisci i dati chilometrici: il sito aggiornerà l'Abaco Excel e"
     " genererà la Tavola in JPG personalizzata!"
 )
+
+
+# Funzione sicura per scaricare e caricare un font TrueType grande
+@st.cache_resource
+def load_custom_font(size):
+  font_path = "DejaVuSans-Bold.ttf"
+  if not os.path.exists(font_path):
+    try:
+      url = "https://github.com/dejavu-fonts/dejavu-fonts/raw/master/ttf/DejaVuSans-Bold.ttf"
+      urllib.request.urlretrieve(url, font_path)
+    except:
+      pass
+
+  if os.path.exists(font_path):
+    return ImageFont.truetype(font_path, size)
+  else:
+    return ImageFont.load_default()
+
 
 # Selezione della Tavola
 tavola_selezionata = st.selectbox(
@@ -83,30 +102,15 @@ if "39" in tavola_selezionata:
   img_path = "TAVOLA 39.jpg"
 
   if os.path.exists(img_path):
-    # Apriamo l'immagine
-    orig_img = Image.open(img_path).convert("RGB")
-    w_orig, h_orig = orig_img.size
-
-    # TRUCCO INSIEME: ingrandiamo l'immagine temporaneamente del 200% (2x) prima di disegnare i testi,
-    # così qualsiasi testo disegnato apparirà enorme e perfettamente definito quando viene riscalato!
-    scale_factor = 2
-    base_img = orig_img.resize(
-        (w_orig * scale_factor, h_orig * scale_factor), Image.Resampling.LANCZOS
-    )
+    base_img = Image.open(img_path).convert("RGB")
     draw = ImageDraw.Draw(base_img)
 
     width, height = base_img.size
 
-    # Usiamo il font di default moltiplicato per la scala ingrandita (apparirà grande)
-    # Oppure proviamo a caricare un font con grandezza raddoppiata
-    try:
-      font_grande = ImageFont.truetype("arial.ttf", 110)
-      font_medio = ImageFont.truetype("arial.ttf", 85)
-    except:
-      font_grande = ImageFont.load_default()
-      font_medio = font_grande
+    # Usiamo dimensioni grandi in pixel calibrate sull'altezza/larghezza reale dell'immagine (1653x2339)
+    font_grande = load_custom_font(65)
+    font_medio = load_custom_font(50)
 
-    # Coordinate moltiplicate per il fattore di scala (scale_factor = 2)
     # 1. KM Fine (in alto)
     draw.text(
         (int(width * 0.60), int(height * 0.002)),
@@ -139,18 +143,15 @@ if "39" in tavola_selezionata:
         font=font_medio,
     )
 
-    # Riportiamo l'immagine alla dimensione originale pulita e definita
-    final_img = base_img.resize((w_orig, h_orig), Image.Resampling.LANCZOS)
-
     # Salviamo in memoria
     img_io = io.BytesIO()
-    final_img.save(img_io, "JPEG", quality=95)
+    base_img.save(img_io, "JPEG", quality=95)
     img_io.seek(0)
 
     # Mostriamo l'anteprima sul sito
     st.image(
-        final_img,
-        caption="Tavola 39 - Testi ingranditi con fattore di scala",
+        base_img,
+        caption="Tavola 39 - Testi grandi e definitivi",
         use_container_width=True,
     )
 
