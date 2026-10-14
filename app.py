@@ -82,37 +82,44 @@ if "39" in tavola_selezionata:
     base_img = Image.open(img_path).convert("RGB")
     draw = ImageDraw.Draw(base_img)
 
-    # Carichiamo un font standard o di fallback ingrandito
+    width, height = base_img.size
+
+    # Carichiamo un font scalato o di default
     try:
-      font_grande = ImageFont.truetype("arial.ttf", 45)
-      font_medio = ImageFont.truetype("arial.ttf", 36)
+      font_grande = ImageFont.truetype(
+          "arial.ttf", int(width * 0.04)
+      )  # Proporzionale alla larghezza
+      font_medio = ImageFont.truetype("arial.ttf", int(width * 0.03))
     except:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. Copriamo la scritta in alto ("KM 36+600") con un rettangolo bianco e mettiamo la nuova
-    # (Coordinate tarate sulle dimensioni reali della tavola)
-    draw.rectangle([(420, 10), (750, 90)], fill="white")
-    draw.text((430, 20), f"KM {km_fine}", fill="red", font=font_grande)
+    # Coordinate percentuali o basate sulle dimensioni reali per coprire esattamente la scritta in alto "KM 36+600"
+    # Sulla tua tavola, la scritta in alto si trova orientativamente nella parte superiore destra
+    box_x1, box_y1, box_x2, box_y2 = (
+        int(width * 0.40),
+        int(height * 0.01),
+        int(width * 0.75),
+        int(height * 0.08),
+    )
 
-    # 2. Copriamo e aggiorniamo i KM intermedi e di inizio se necessario
-    draw.rectangle([(640, 535), (820, 595)], fill="white")
+    # 1. Copriamo la vecchia scritta in alto con un rettangolo bianco pulito
+    draw.rectangle([box_x1, box_y1, box_x2, box_y2], fill="white")
+
+    # 2. Scriviamo il nuovo KM Fine
     draw.text(
-        (645, 542), f"KM {km_preavviso}", fill="red", font=font_medio
-    )  # KM 36+060
+        (box_x1 + 10, box_y1 + 5), f"KM {km_fine}", fill="red", font=font_grande
+    )
 
-    draw.rectangle([(640, 905), (820, 965)], fill="white")
-    draw.text((645, 912), f"KM {km_inizio}", fill="red", font=font_medio)  # KM 35+560
-
-    # Salviamo in memoria
+    # Salviamo l'immagine modificata in memoria
     img_io = io.BytesIO()
     base_img.save(img_io, "JPEG")
     img_io.seek(0)
 
-    # Mostriamo l'anteprima corretta
+    # Mostriamo l'anteprima
     st.image(
         base_img,
-        caption="Tavola 39 - Con progressive aggiornate e pulite",
+        caption="Tavola 39 - Aggiornata con le progressive",
         use_container_width=True,
     )
 
