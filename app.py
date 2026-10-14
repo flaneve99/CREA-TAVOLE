@@ -10,12 +10,15 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 import openpyxl
 
 # ==================================================
-# CONFIGURAZIONE STREAMLIT
+# CONFIGURAZIONE STREAMLIT E PERCORSI
 # ==================================================
 st.set_page_config(
     page_title="Gestione Cantieri Stradali - Abaco & Tavole",
     layout="wide",
 )
+
+cartella_app = os.path.dirname(os.path.abspath(__file__))
+dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
 st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
@@ -30,8 +33,6 @@ st.write(
 # ==================================================
 @st.cache_resource
 def load_custom_font(size):
-  cartella_app = os.path.dirname(os.path.abspath(__file__))
-
   possibili_font = [
       os.path.join(cartella_app, "DejaVuSans-Bold.ttf"),
       "DejaVuSans-Bold.ttf",
@@ -151,9 +152,6 @@ if "39" in tavola_selezionata:
         ("fig_400.jpg", "FIG. II 400", "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA", "", "SEGNALI COMPLEMENTARI"),
         ("fig_401.jpg", "FIG. II 401", "VEICOLO DI PROTEZIONE CON PANNELLO", "", "SEGNALI COMPLEMENTARI"),
     ]
-
-    cartella_app = os.path.dirname(os.path.abspath(__file__))
-    dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
     ws.column_dimensions['A'].width = 18
     ws.column_dimensions['B'].width = 15
@@ -339,7 +337,6 @@ elif "16" in tavola_selezionata:
       cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
       cell.border = bordo_sottile
 
-    # Nomi esatti dei file caricati per la Tavola 16 (con fig_050_lim60.jpg corretto)
     dati_righe_16 = [
         ("fig_082a.jpg", "FIG. II 082/a", "PREAVVISO DI RESTRINGIMENTO", km_preavviso_16, "SEGNALI TEMPORANEI"),
         ("fig_048.jpg", "FIG. II 048", "LAVORI IN CORSO", km_inizio_16, "SEGNALI TEMPORANEI"),
@@ -348,9 +345,6 @@ elif "16" in tavola_selezionata:
         ("fig050_lim90.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 90 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
         ("fig_050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
     ]
-
-    cartella_app = os.path.dirname(os.path.abspath(__file__))
-    dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
     ws.column_dimensions['A'].width = 18
     ws.column_dimensions['B'].width = 16
