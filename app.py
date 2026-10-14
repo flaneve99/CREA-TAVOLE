@@ -586,7 +586,7 @@ elif "16" in tavola_selezionata:
           # 1. KM Fine / Rientro (In alto)
           (int(width_16 * 0.34), int(height_16 * 0.07), f"KM {km_fine_16}"),
           # 2. Inizio Testata (Freccia blu / inizio cantiere)
-          (int(width_16 * 0.49), int(height_16 * 0.925), f"KM {km_inizio_testata}"),
+          (int(width_16 * 0.49), int(height_16 * 0.10), f"KM {km_inizio_testata}"),
           # 3. Preavviso Chiusura Corsia 100m
           (int(width_16 * 0.49), int(height_16 * 0.825), f"KM {km_preavviso_100}"),
           # 4. Limite 60 km/h
