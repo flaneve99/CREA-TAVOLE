@@ -34,12 +34,11 @@ def load_custom_font(size):
     Come ultima alternativa usa il font incluso in Pillow.
     """
 
+    cartella_app = os.path.dirname(os.path.abspath(__file__))
+
     possibili_font = [
+        os.path.join(cartella_app, "DejaVuSans-Bold.ttf"),
         "DejaVuSans-Bold.ttf",
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "DejaVuSans-Bold.ttf",
-        ),
         "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
         "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
         "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
@@ -71,14 +70,11 @@ def load_custom_font(size):
     except Exception:
         pass
 
-    # 3. Ultima alternativa: font Pillow
-    # Compatibilità con versioni differenti di Pillow
+    # 3. Ultima alternativa: font incluso in Pillow
     try:
-        font = ImageFont.load_default(size=size)
+        return ImageFont.load_default(size=size)
     except TypeError:
-        font = ImageFont.load_default()
-
-    return font
+        return ImageFont.load_default()
 
 
 # ==================================================
@@ -201,7 +197,6 @@ if "39" in tavola_selezionata:
 
     st.subheader("🖼️ Anteprima Tavola 39 Personalizzata")
 
-    # Cerca l'immagine nella cartella del programma
     cartella_app = os.path.dirname(os.path.abspath(__file__))
     img_path = os.path.join(cartella_app, "TAVOLA 39.jpg")
 
@@ -221,16 +216,17 @@ if "39" in tavola_selezionata:
             draw = ImageDraw.Draw(base_img)
 
             # ------------------------------------------
-            # DIMENSIONE FONT: 200 PIXEL
+            # DIMENSIONE FONT: 110 PIXEL
             # ------------------------------------------
-            DIMENSIONE_FONT = 200
+            DIMENSIONE_FONT = 110
+
             font_km = load_custom_font(DIMENSIONE_FONT)
 
-            # Contorno bianco per leggibilità
-            BORDO = 4
+            # Contorno bianco per migliorare la leggibilità
+            BORDO = 3
 
             # ------------------------------------------
-            # PROGRESSIVE CHILOMETRICHE
+            # POSIZIONI DELLE PROGRESSIVE CHILOMETRICHE
             # ------------------------------------------
             etichette = [
                 (
@@ -290,7 +286,7 @@ if "39" in tavola_selezionata:
                 base_img,
                 caption=(
                     "Tavola 39 - Progressive chilometriche "
-                    "ingrandite"
+                    "con caratteri da 110 pixel"
                 ),
                 use_container_width=True,
             )
@@ -306,14 +302,16 @@ if "39" in tavola_selezionata:
             )
 
             st.success(
-                "Tavola generata correttamente."
+                f"Tavola generata correttamente. "
+                f"Dimensione font: {DIMENSIONE_FONT} pixel."
             )
 
         except Exception as errore:
+
             st.error(
-                "Errore durante la generazione della tavola. "
-                "Controlla il file immagine e il font."
+                "Errore durante la generazione della tavola."
             )
+
             st.exception(errore)
 
     else:
