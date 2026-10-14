@@ -95,16 +95,16 @@ if "39" in tavola_selezionata:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. KM Fine (in alto) - Rettangolo di pulizia ben largo per cancellare ogni residuo vecchio
+    # 1. KM Fine (in alto) - Spostato più a destra per non toccare la strada
     box_fine = (
-        int(width * 0.30),
+        int(width * 0.40),
         int(height * 0.00),
         int(width * 0.70),
-        int(height * 0.07),
+        int(height * 0.06),
     )
     draw.rectangle(box_fine, fill="white")
     draw.text(
-        (box_fine[0] + 10, box_fine[1] + 5),
+        (box_fine[0] + 5, box_fine[1] + 2),
         f"KM {km_fine}",
         fill="red",
         font=font_grande,
@@ -145,35 +145,4 @@ if "39" in tavola_selezionata:
         int(width * 0.58),
         int(height * 0.90),
         int(width * 0.98),
-        int(height * 0.99),
-    )
-    draw.rectangle(box_inizio, fill="white")
-    draw.text(
-        (box_inizio[0] + 10, box_inizio[1] + 5),
-        f"KM {km_inizio}",
-        fill="red",
-        font=font_medio,
-    )
-
-    # Salviamo in memoria
-    img_io = io.BytesIO()
-    base_img.save(img_io, "JPEG")
-    img_io.seek(0)
-
-    # Mostriamo l'anteprima sul sito
-    st.image(
-        base_img,
-        caption="Tavola 39 - Pulita e aggiornata",
-        use_container_width=True,
-    )
-
-    # Pulsante per scaricare la JPG compilata
-    st.download_button(
-        label="📥 Scarica Tavola in formato JPG",
-        data=img_io,
-        file_name="Tavola_39_Compilata.jpg",
-        mime="image/jpeg",
-    )
-
-  else:
-    st.warning(f"⚠️ L'immagine '{img_path}' non è stata trovata su GitHub.")
+        int(height * 0
