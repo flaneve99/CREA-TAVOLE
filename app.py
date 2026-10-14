@@ -20,8 +20,8 @@ st.set_page_config(
 st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
-    "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel strutturato con margini ottimizzati per le immagini e la Tavola JPG personalizzata."
+    "Seleziona la Tavola di cantiere, inserisci i dati e le progressive: "
+    "il programma genererà l'Abaco Excel strutturato e la Tavola JPG personalizzata."
 )
 
 
@@ -74,10 +74,16 @@ def load_custom_font(size):
 # ==================================================
 tavola_selezionata = st.selectbox(
     "Seleziona la Tavola di Cantiere",
-    ["Tavola 39 - Cantiere mobile carreggiata a due corsie"],
+    [
+        "Tavola 39 - Cantiere mobile carreggiata a due corsie",
+        "Tavola 16 - Chiusura corsia di marcia su carreggiata a due corsie",
+    ],
 )
 
 
+# ====================================================================
+# LOGICA TAVOLA 39
+# ====================================================================
 if "39" in tavola_selezionata:
 
   st.subheader("📍 Dati e Progressive Chilometriche - Tavola 39")
@@ -90,42 +96,20 @@ if "39" in tavola_selezionata:
   col1, col2 = st.columns(2)
 
   with col1:
-    km_inizio = st.text_input(
-        "KM Inizio Cantiere (Basso)",
-        value="35+560",
-    )
-
-    km_preavviso = st.text_input(
-        "KM Segnale Mobile Preavviso (Centro)",
-        value="36+060",
-    )
+    km_inizio = st.text_input("KM Inizio Cantiere (Basso)", value="35+560")
+    km_preavviso = st.text_input("KM Segnale Mobile Preavviso (Centro)", value="36+060")
 
   with col2:
-    km_fine = st.text_input(
-        "KM Fine / Rientro (Alto)",
-        value="36+600",
-    )
+    km_fine = st.text_input("KM Fine / Rientro (Alto)", value="36+600")
+    km_testata = st.text_input("KM Inizio Testata / Intermedio", value="36+110")
+    distanza_coni = st.text_input("Interasse Coni / Dettagli", value="12 m")
 
-    km_testata = st.text_input(
-        "KM Inizio Testata / Intermedio",
-        value="36+110",
-    )
-
-    distanza_coni = st.text_input(
-        "Interasse Coni / Dettagli",
-        value="12 m",
-    )
-
-  # ==================================================
-  # GENERAZIONE FILE EXCEL (ABACO STRUTTURATO)
-  # ==================================================
-  if st.button("Genera Abaco Segnaletica (Excel)"):
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 39"):
 
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Abaco Tavola 39"
 
-    # 1. Riga di intestazione principale unificata
     ws.merge_cells("A1:E1")
     titolo_principale = ws["A1"]
     titolo_principale.value = "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE"
@@ -151,7 +135,6 @@ if "39" in tavola_selezionata:
     for col in range(1, 6):
       ws.cell(row=1, column=col).border = bordo_sottile
 
-    # 2. Riga delle colonne (DETTAGLI vuoto)
     headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
     for col_idx, header in enumerate(headers, 1):
       cell = ws.cell(row=2, column=col_idx)
@@ -161,7 +144,6 @@ if "39" in tavola_selezionata:
       cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
       cell.border = bordo_sottile
 
-    # 3. Dati delle righe
     dati_righe = [
         ("fig_399.png", "FIG. II 399", "PREAVVISO DI CANTIERE MOBILE", "", "SEGNALI TEMPORANEI"),
         ("fig_383.png", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
@@ -173,7 +155,6 @@ if "39" in tavola_selezionata:
     cartella_app = os.path.dirname(os.path.abspath(__file__))
     dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
-    # Dimensioni colonne e righe
     ws.column_dimensions['A'].width = 18
     ws.column_dimensions['B'].width = 15
     ws.column_dimensions['C'].width = 40
@@ -187,7 +168,6 @@ if "39" in tavola_selezionata:
 
     for i, row_data in enumerate(dati_righe, start=3):
       img_nome, figura, descrizione, dettagli, segnaletica = row_data
-      
       ws.row_dimensions[i].height = 55
 
       c_fig = ws.cell(row=i, column=2, value=figura)
@@ -205,7 +185,6 @@ if "39" in tavola_selezionata:
 
       nomi_da_cercare = [img_nome, img_nome.replace(".png", ".jpg"), img_nome.replace(".jpg", ".png")]
       percorso_trovato = None
-      
       for nome in nomi_da_cercare:
         tentativo = os.path.join(dir_immagini, nome)
         if os.path.exists(tentativo):
@@ -219,21 +198,14 @@ if "39" in tavola_selezionata:
           img_pil.save(temp_path, "JPEG")
 
           img_obj = OpenpyxlImage(temp_path)
-          
-          # Margini interni visibili (offset più ampi per distanziare l'immagine dai bordi della cella)
           marker_from = AnchorMarker(col=0, colOff=150000, row=i - 1, rowOff=40000)
           marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
-          
-          img_obj.anchor = TwoCellAnchor(
-              editAs="twoCell",
-              _from=marker_from,
-              to=marker_to
-          )
+          img_obj.anchor = TwoCellAnchor(editAs="twoCell", _from=marker_from, to=marker_to)
           
           ws.add_image(img_obj)
           immagini_inserite += 1
         except Exception as e:
-          st.warning(f"Errore nel caricamento dell'immagine per {figura}: {e}")
+          st.warning(f"Errore nel caricamento immagine per {figura}: {e}")
       else:
         c_segnale.value = "[Img non trovata]"
         c_segnale.font = Font(name="Arial", size=8, color="FF0000")
@@ -243,83 +215,41 @@ if "39" in tavola_selezionata:
     wb.save(output)
     excel_data = output.getvalue()
 
-    st.success(f"Abaco Excel generato con successo! (Immagini con margini: {immagini_inserite}/5)")
-
+    st.success(f"Abaco Excel Tavola 39 generato! (Immagini: {immagini_inserite}/5)")
     st.download_button(
-        label="📥 Scarica Excel Abaco Segnaletica Formattato",
+        label="📥 Scarica Excel Abaco Tavola 39",
         data=excel_data,
         file_name="Abaco_Segnaletica_Tavola_39.xlsx",
-        mime=(
-            "application/vnd.openxmlformats-officedocument."
-            "spreadsheetml.sheet"
-        ),
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
-  # ==================================================
-  # GENERAZIONE TAVOLA JPG
-  # ==================================================
   st.divider()
-
   st.subheader("🖼️ Anteprima Tavola 39 Personalizzata")
 
-  cartella_app = os.path.dirname(os.path.abspath(__file__))
   img_path = os.path.join(cartella_app, "TAVOLA 39.jpg")
-
   if os.path.exists(img_path):
-
     try:
       with Image.open(img_path) as immagine_originale:
         base_img = immagine_originale.convert("RGB")
 
       width, height = base_img.size
       draw = ImageDraw.Draw(base_img)
-
-      DIMENSIONE_FONT_KM = 60
-      DIMENSIONE_FONT_UBICAZIONE = 69
-
-      font_km = load_custom_font(DIMENSIONE_FONT_KM)
-      font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
-
+      font_km = load_custom_font(60)
+      font_ubicazione = load_custom_font(69)
       BORDO = 2
 
       etichette = [
-          (
-              int(width * 0.45),
-              int(height * 0.015),
-              f"KM {km_fine}",
-          ),
-          (
-              int(width * 0.62),
-              int(height * 0.525),
-              f"KM {km_testata}",
-          ),
-          (
-              int(width * 0.62),
-              int(height * 0.645),
-              f"KM {km_preavviso}",
-          ),
-          (
-              int(width * 0.62),
-              int(height * 0.905),
-              f"KM {km_inizio}",
-          ),
+          (int(width * 0.45), int(height * 0.015), f"KM {km_fine}"),
+          (int(width * 0.62), int(height * 0.525), f"KM {km_testata}"),
+          (int(width * 0.62), int(height * 0.645), f"KM {km_preavviso}"),
+          (int(width * 0.62), int(height * 0.905), f"KM {km_inizio}"),
       ]
 
       for x, y, testo in etichette:
-        draw.text(
-            (x, y),
-            testo,
-            fill=(255, 0, 0),
-            font=font_km,
-            stroke_width=BORDO,
-            stroke_fill=(255, 255, 255),
-        )
-
-      x_ubicazione = int(width * 0.65)
-      y_ubicazione = int(height * 0.225)
+        draw.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
 
       draw.multiline_text(
-          (x_ubicazione, y_ubicazione),
+          (int(width * 0.65), int(height * 0.225)),
           ubicazione_testo,
           fill=(255, 0, 0),
           font=font_ubicazione,
@@ -330,35 +260,214 @@ if "39" in tavola_selezionata:
       )
 
       img_io = io.BytesIO()
-      base_img.save(
-          img_io,
-          format="JPEG",
-          quality=100,
-          subsampling=0,
-      )
+      base_img.save(img_io, format="JPEG", quality=100, subsampling=0)
       jpg_data = img_io.getvalue()
 
-      st.image(
-          base_img,
-          caption="Tavola 39 - Configurazione finale completata",
-          use_container_width=True,
-      )
-
+      st.image(base_img, caption="Tavola 39 - Configurazione completata", use_container_width=True)
       st.download_button(
-          label="📥 Scarica Tavola in formato JPG",
+          label="📥 Scarica Tavola 39 in formato JPG",
           data=jpg_data,
           file_name="Tavola_39_Compilata.jpg",
           mime="image/jpeg",
       )
-
-      st.success("Tavola generata correttamente con ubicazione ottimizzata.")
-
     except Exception as errore:
-      st.error("Errore durante la generazione della tavola.")
+      st.error("Errore generazione Tavola 39.")
       st.exception(errore)
-
   else:
-    st.error(
-        "Immagine 'TAVOLA 39.jpg' non trovata. "
-        "Carica il file nella stessa cartella di app.py."
+    st.error("Immagine 'TAVOLA 39.jpg' non trovata nella cartella.")
+
+
+# ====================================================================
+# LOGICA TAVOLA 16
+# ====================================================================
+elif "16" in tavola_selezionata:
+
+  st.subheader("📍 Dati e Progressive Chilometriche - Tavola 16")
+
+  ubicazione_testo_16 = st.text_area(
+      "Ubicazione / Direzione (Tavola 16)",
+      value="DIREZIONE SUD\nCHIUSURA CORSIA DI MARCIA",
+  )
+
+  col1, col2 = st.columns(2)
+
+  with col1:
+    km_inizio_16 = st.text_input("KM Inizio Cantiere / Lavori", value="35+560")
+    km_preavviso_16 = st.text_input("KM Preavviso 700m", value="34+860")
+
+  with col2:
+    km_fine_16 = st.text_input("KM Fine / Rientro", value="36+600")
+    km_limite_1 = st.text_input("KM Limitazione 110/90/60", value="35+260")
+
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 16"):
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Tavola 16"
+
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 16"
+    
+    fill_verde_chiaro = PatternFill(start_color="92D050", end_color="92D050", fill_type="solid")
+    fill_verde_scuro = PatternFill(start_color="70AD47", end_color="70AD47", fill_type="solid")
+    
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+
+    bordo_sottile = Border(
+        left=Side(style='thin', color='000000'),
+        right=Side(style='thin', color='000000'),
+        top=Side(style='thin', color='000000'),
+        bottom=Side(style='thin', color='000000')
     )
+
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(horizontal="center", vertical="center")
+
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+      cell.border = bordo_sottile
+
+    # Lista segnali specifici della Tavola 16 basata sui file che hai caricato
+    dati_righe_16 = [
+        ("fig_082a.jpg", "FIG. II 082/a", "PREAVVISO DI RESTRINGIMENTO", km_preavviso_16, "SEGNALI TEMPORANEI"),
+        ("fig_048.jpg", "FIG. II 048", "LAVORI IN CORSO", km_inizio_16, "SEGNALI TEMPORANEI"),
+        ("fig_411a.jpg", "FIG. II 411/a", "FRECCIA DI CORSIFICAZIONE / DEVIAZIONE", km_inizio_16, "SEGNALI COMPLEMENTARI"),
+        ("fig050_lim110.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 110 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
+        ("fig050_lim90.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 90 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
+        ("fig050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", km_limite_1, "SEGNALI DI PRESCRIZIONE"),
+    ]
+
+    cartella_app = os.path.dirname(os.path.abspath(__file__))
+    dir_immagini = os.path.join(cartella_app, "immagini_segnali")
+
+    ws.column_dimensions['A'].width = 18
+    ws.column_dimensions['B'].width = 16
+    ws.column_dimensions['C'].width = 40
+    ws.column_dimensions['D'].width = 20
+    ws.column_dimensions['E'].width = 25
+
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+
+    immagini_inserite = 0
+
+    for i, row_data in enumerate(dati_righe_16, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value="")  # Dettagli vuoti come richiesto
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        cell.border = bordo_sottile
+
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+
+      nomi_da_cercare = [img_nome, img_nome.replace(".jpg", ".png"), img_nome.replace(".png", ".jpg")]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_16_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(col=0, colOff=150000, row=i - 1, rowOff=40000)
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(editAs="twoCell", _from=marker_from, to=marker_to)
+          
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+
+    st.success(f"Abaco Excel Tavola 16 generato! (Immagini inserite: {immagini_inserite}/{len(dati_righe_16)})")
+    st.download_button(
+        label="📥 Scarica Excel Abaco Tavola 16",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_16.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+
+  st.divider()
+  st.subheader("🖼️ Anteprima Tavola 16 Personalizzata")
+
+  img_path_16 = os.path.join(cartella_app, "TAVOLA 16.jpg")
+  if os.path.exists(img_path_16):
+    try:
+      with Image.open(img_path_16) as immagine_originale:
+        base_img_16 = immagine_originale.convert("RGB")
+
+      width_16, height_16 = base_img_16.size
+      draw_16 = ImageDraw.Draw(base_img_16)
+      font_km_16 = load_custom_font(60)
+      font_ub_16 = load_custom_font(69)
+      BORDO = 2
+
+      # Esempio di etichette coordinate per la Tavola 16 (puoi aggiustare i valori percentuali se necessario)
+      etichette_16 = [
+          (int(width_16 * 0.45), int(height_16 * 0.015), f"KM {km_fine_16}"),
+          (int(width_16 * 0.62), int(height_16 * 0.905), f"KM {km_inizio_16}"),
+      ]
+
+      for x, y, testo in etichette_16:
+        draw_16.text((x, y), testo, fill=(255, 0, 0), font=font_km_16, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+
+      draw_16.multiline_text(
+          (int(width_16 * 0.65), int(height_16 * 0.225)),
+          ubicazione_testo_16,
+          fill=(255, 0, 0),
+          font=font_ub_16,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_16 = io.BytesIO()
+      base_img_16.save(img_io_16, format="JPEG", quality=100, subsampling=0)
+      jpg_data_16 = img_io_16.getvalue()
+
+      st.image(base_img_16, caption="Tavola 16 - Configurazione completata", use_container_width=True)
+      st.download_button(
+          label="📥 Scarica Tavola 16 in formato JPG",
+          data=jpg_data_16,
+          file_name="Tavola_16_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 16.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 16.jpg' non trovata nella cartella.")
