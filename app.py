@@ -6,7 +6,6 @@ import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 
-
 # ==================================================
 # CONFIGURAZIONE STREAMLIT
 # ==================================================
@@ -28,53 +27,52 @@ st.write(
 # ==================================================
 @st.cache_resource
 def load_custom_font(size):
-    """
-    Cerca un font TrueType in grassetto.
-    Se non lo trova, prova a scaricarlo.
-    Come ultima alternativa usa il font incluso in Pillow.
-    """
+  """Cerca un font TrueType in grassetto.
 
-    cartella_app = os.path.dirname(os.path.abspath(__file__))
+  Se non lo trova, prova a scaricarlo. Come ultima alternativa usa il font
+  incluso in Pillow.
+  """
+  cartella_app = os.path.dirname(os.path.abspath(__file__))
 
-    possibili_font = [
-        os.path.join(cartella_app, "DejaVuSans-Bold.ttf"),
-        "DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
-        "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-        "C:/Windows/Fonts/arialbd.ttf",
-        "/Library/Fonts/Arial Bold.ttf",
-    ]
+  possibili_font = [
+      os.path.join(cartella_app, "DejaVuSans-Bold.ttf"),
+      "DejaVuSans-Bold.ttf",
+      "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+      "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
+      "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf",
+      "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+      "C:/Windows/Fonts/arialbd.ttf",
+      "/Library/Fonts/Arial Bold.ttf",
+  ]
 
-    # 1. Cerca un font già presente
-    for percorso in possibili_font:
-        if os.path.isfile(percorso):
-            try:
-                return ImageFont.truetype(percorso, size)
-            except (OSError, ValueError):
-                continue
+  # 1. Cerca un font già presente
+  for percorso in possibili_font:
+    if os.path.isfile(percorso):
+      try:
+        return ImageFont.truetype(percorso, size)
+      except (OSError, ValueError):
+        continue
 
-    # 2. Prova a scaricare il font in una cartella temporanea
-    url = (
-        "https://raw.githubusercontent.com/"
-        "dejavu-fonts/dejavu-fonts/master/"
-        "src/DejaVuSans-Bold.ttf"
-    )
+  # 2. Prova a scaricare il font in una cartella temporanea
+  url = (
+      "https://raw.githubusercontent.com/"
+      "dejavu-fonts/dejavu-fonts/master/"
+      "src/DejaVuSans-Bold.ttf"
+  )
 
-    percorso_locale = "/tmp/DejaVuSans-Bold.ttf"
+  percorso_locale = "/tmp/DejaVuSans-Bold.ttf"
 
-    try:
-        urllib.request.urlretrieve(url, percorso_locale)
-        return ImageFont.truetype(percorso_locale, size)
-    except Exception:
-        pass
+  try:
+    urllib.request.urlretrieve(url, percorso_locale)
+    return ImageFont.truetype(percorso_locale, size)
+  except Exception:
+    pass
 
-    # 3. Ultima alternativa: font incluso in Pillow
-    try:
-        return ImageFont.load_default(size=size)
-    except TypeError:
-        return ImageFont.load_default()
+  # 3. Ultima alternativa: font incluso in Pillow
+  try:
+    return ImageFont.load_default(size=size)
+  except TypeError:
+    return ImageFont.load_default()
 
 
 # ==================================================
@@ -82,240 +80,231 @@ def load_custom_font(size):
 # ==================================================
 tavola_selezionata = st.selectbox(
     "Seleziona la Tavola di Cantiere",
-    [
-        "Tavola 39 - Cantiere mobile carreggiata a due corsie"
-    ],
+    ["Tavola 39 - Cantiere mobile carreggiata a due corsie"],
 )
 
 
 if "39" in tavola_selezionata:
 
-    st.subheader(
-        "📍 Dati e Progressive Chilometriche - Tavola 39"
+  st.subheader("📍 Dati e Progressive Chilometriche - Tavola 39")
+
+  st.markdown(
+      "*Direzione Sud, Viadotto Torre Guaceto 1 - "
+      "Chiusura corsia di destra*"
+  )
+
+  col1, col2 = st.columns(2)
+
+  with col1:
+    km_inizio = st.text_input(
+        "KM Inizio Cantiere (Basso)",
+        value="35+560",
     )
 
-    st.markdown(
-        "*Direzione Sud, Viadotto Torre Guaceto 1 - "
-        "Chiusura corsia di destra*"
+    km_preavviso = st.text_input(
+        "KM Segnale Mobile Preavviso (Centro)",
+        value="36+060",
     )
 
-    col1, col2 = st.columns(2)
+  with col2:
+    km_fine = st.text_input(
+        "KM Fine / Rientro (Alto)",
+        value="36+600",
+    )
 
-    with col1:
-        km_inizio = st.text_input(
-            "KM Inizio Cantiere (Basso)",
-            value="35+560",
+    km_testata = st.text_input(
+        "KM Inizio Testata / Intermedio",
+        value="36+110",
+    )
+
+    distanza_coni = st.text_input(
+        "Interasse Coni / Dettagli",
+        value="12 m",
+    )
+
+  # ==================================================
+  # GENERAZIONE FILE EXCEL (ABACO)
+  # ==================================================
+  if st.button("Genera Abaco Segnaletica (Excel)"):
+
+    dati_abaco = {
+        "SEGNALE": [
+            "Preavviso Cantiere Mobile",
+            "Segnale Mobile di Protezione",
+            "Via Libera / Fine Cantiere",
+        ],
+        "FIGURA": [
+            "FIG. 400",
+            "FIG. 401",
+            "FIG. 070",
+        ],
+        "DESCRIZIONE": [
+            "SEGNALE MOBILE DI PREAVVISO",
+            "SEGNALE MOBILE DI PROTEZIONE",
+            "VIA LIBERA",
+        ],
+        "PROGRESSIVA CHILOMETRICA": [
+            km_preavviso,
+            km_inizio,
+            km_fine,
+        ],
+        "SEGNALETICA": [
+            "SEGNALI TEMPORANEI",
+            "SEGNALI TEMPORANEI",
+            "SEGNALI DI PRESCRIZIONE",
+        ],
+    }
+
+    df_risultato = pd.DataFrame(dati_abaco)
+
+    output = io.BytesIO()
+
+    with pd.ExcelWriter(
+        output,
+        engine="openpyxl",
+    ) as writer:
+
+      df_risultato.to_excel(
+          writer,
+          index=False,
+          sheet_name="Abaco Tavola 39",
+      )
+
+    excel_data = output.getvalue()
+
+    st.success("Abaco Excel generato con successo!")
+
+    st.download_button(
+        label="📥 Scarica Excel Abaco Segnaletica",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_39.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument."
+            "spreadsheetml.sheet"
+        ),
+    )
+
+  # ==================================================
+  # GENERAZIONE TAVOLA JPG
+  # ==================================================
+  st.divider()
+
+  st.subheader("🖼️ Anteprima Tavola 39 Personalizzata")
+
+  cartella_app = os.path.dirname(os.path.abspath(__file__))
+  img_path = os.path.join(cartella_app, "TAVOLA 39.jpg")
+
+  if os.path.exists(img_path):
+
+    try:
+      # Carica l'immagine originale
+      with Image.open(img_path) as immagine_originale:
+        base_img = immagine_originale.convert("RGB")
+
+      width, height = base_img.size
+
+      st.caption(f"Immagine originale: {width} × {height} pixel")
+
+      draw = ImageDraw.Draw(base_img)
+
+      # ------------------------------------------
+      # DIMENSIONE FONT: 60 PIXEL PER TUTTE LE KM
+      # ------------------------------------------
+      DIMENSIONE_FONT = 60
+      font_km = load_custom_font(DIMENSIONE_FONT)
+
+      # Contorno bianco sottile per la leggibilità
+      BORDO = 2
+
+      # ------------------------------------------
+      # POSIZIONI DELLE PROGRESSIVE CHILOMETRICHE
+      # ------------------------------------------
+      etichette = [
+          (
+              int(width * 0.45),
+              int(height * 0.002),
+              f"KM {km_fine}",
+          ),  # KM Fine spostato a sinistra sopra via libera
+          (
+              int(width * 0.62),
+              int(height * 0.525),
+              f"KM {km_testata}",
+          ),  # Spostato a destra delle linee nere
+          (
+              int(width * 0.62),
+              int(height * 0.645),
+              f"KM {km_preavviso}",
+          ),  # Spostato a destra delle linee nere
+          (
+              int(width * 0.62),
+              int(height * 0.905),
+              f"KM {km_inizio}",
+          ),  # Spostato a destra delle linee nere
+      ]
+
+      # ------------------------------------------
+      # DISEGNO DELLE SCRITTE
+      # ------------------------------------------
+      for x, y, testo in etichette:
+
+        draw.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
         )
 
-        km_preavviso = st.text_input(
-            "KM Segnale Mobile Preavviso (Centro)",
-            value="36+060",
-        )
+      # ------------------------------------------
+      # SALVATAGGIO JPG IN MEMORIA
+      # ------------------------------------------
+      img_io = io.BytesIO()
 
-    with col2:
-        km_fine = st.text_input(
-            "KM Fine / Rientro (Alto)",
-            value="36+600",
-        )
+      base_img.save(
+          img_io,
+          format="JPEG",
+          quality=100,
+          subsampling=0,
+      )
 
-        km_testata = st.text_input(
-            "KM Inizio Testata / Intermedio",
-            value="36+110",
-        )
+      jpg_data = img_io.getvalue()
 
-        distanza_coni = st.text_input(
-            "Interasse Coni / Dettagli",
-            value="12 m",
-        )
+      # ------------------------------------------
+      # ANTEPRIMA
+      # ------------------------------------------
+      st.image(
+          base_img,
+          caption=(
+              "Tavola 39 - Progressive chilometriche con posizioni ottimizzate"
+          ),
+          use_container_width=True,
+      )
 
-    # ==================================================
-    # GENERAZIONE FILE EXCEL (ABACO)
-    # ==================================================
-    if st.button("Genera Abaco Segnaletica (Excel)"):
+      # ------------------------------------------
+      # DOWNLOAD JPG
+      # ------------------------------------------
+      st.download_button(
+          label="📥 Scarica Tavola in formato JPG",
+          data=jpg_data,
+          file_name="Tavola_39_Compilata.jpg",
+          mime="image/jpeg",
+      )
 
-        dati_abaco = {
-            "SEGNALE": [
-                "Preavviso Cantiere Mobile",
-                "Segnale Mobile di Protezione",
-                "Via Libera / Fine Cantiere",
-            ],
-            "FIGURA": [
-                "FIG. 400",
-                "FIG. 401",
-                "FIG. 070",
-            ],
-            "DESCRIZIONE": [
-                "SEGNALE MOBILE DI PREAVVISO",
-                "SEGNALE MOBILE DI PROTEZIONE",
-                "VIA LIBERA",
-            ],
-            "PROGRESSIVA CHILOMETRICA": [
-                km_preavviso,
-                km_inizio,
-                km_fine,
-            ],
-            "SEGNALETICA": [
-                "SEGNALI TEMPORANEI",
-                "SEGNALI TEMPORANEI",
-                "SEGNALI DI PRESCRIZIONE",
-            ],
-        }
+      st.success(
+          f"Tavola generata correttamente. Dimensione font:"
+          f" {DIMENSIONE_FONT} pixel."
+      )
 
-        df_risultato = pd.DataFrame(dati_abaco)
+    except Exception as errore:
 
-        output = io.BytesIO()
+      st.error("Errore durante la generazione della tavola.")
 
-        with pd.ExcelWriter(
-            output,
-            engine="openpyxl",
-        ) as writer:
+      st.exception(errore)
 
-            df_risultato.to_excel(
-                writer,
-                index=False,
-                sheet_name="Abaco Tavola 39",
-            )
+  else:
 
-        excel_data = output.getvalue()
-
-        st.success("Abaco Excel generato con successo!")
-
-        st.download_button(
-            label="📥 Scarica Excel Abaco Segnaletica",
-            data=excel_data,
-            file_name="Abaco_Segnaletica_Tavola_39.xlsx",
-            mime=(
-                "application/vnd.openxmlformats-officedocument."
-                "spreadsheetml.sheet"
-            ),
-        )
-
-    # ==================================================
-    # GENERAZIONE TAVOLA JPG
-    # ==================================================
-    st.divider()
-
-    st.subheader("🖼️ Anteprima Tavola 39 Personalizzata")
-
-    cartella_app = os.path.dirname(os.path.abspath(__file__))
-    img_path = os.path.join(cartella_app, "TAVOLA 39.jpg")
-
-    if os.path.exists(img_path):
-
-        try:
-            # Carica l'immagine originale
-            with Image.open(img_path) as immagine_originale:
-                base_img = immagine_originale.convert("RGB")
-
-            width, height = base_img.size
-
-            st.caption(
-                f"Immagine originale: {width} × {height} pixel"
-            )
-
-            draw = ImageDraw.Draw(base_img)
-
-            # ------------------------------------------
-            # DIMENSIONE FONT: 60 PIXEL PER TUTTE LE KM
-            # ------------------------------------------
-            DIMENSIONE_FONT = 60
-            font_km = load_custom_font(DIMENSIONE_FONT)
-
-            # Contorno bianco sottile per la leggibilità
-            BORDO = 2
-
-            # ------------------------------------------
-            # POSIZIONI DELLE PROGRESSIVE CHILOMETRICHE
-            # ------------------------------------------
-            etichette = [
-                (
-                    int(width * 0.60),
-                    int(height * 0.002),
-                    f"KM {km_fine}",
-                ),
-                (
-                    int(width * 0.59),
-                    int(height * 0.525),
-                    f"KM {km_testata}",
-                ),
-                (
-                    int(width * 0.59),
-                    int(height * 0.645),
-                    f"KM {km_preavviso}",
-                ),
-                (
-                    int(width * 0.59),
-                    int(height * 0.905),
-                    f"KM {km_inizio}",
-                ),
-            ]
-
-            # ------------------------------------------
-            # DISEGNO DELLE SCRITTE
-            # ------------------------------------------
-            for x, y, testo in etichette:
-
-                draw.text(
-                    (x, y),
-                    testo,
-                    fill=(255, 0, 0),
-                    font=font_km,
-                    stroke_width=BORDO,
-                    stroke_fill=(255, 255, 255),
-                )
-
-            # ------------------------------------------
-            # SALVATAGGIO JPG IN MEMORIA
-            # ------------------------------------------
-            img_io = io.BytesIO()
-
-            base_img.save(
-                img_io,
-                format="JPEG",
-                quality=100,
-                subsampling=0,
-            )
-
-            jpg_data = img_io.getvalue()
-
-            # ------------------------------------------
-            # ANTEPRIMA
-            # ------------------------------------------
-            st.image(
-                base_img,
-                caption=(
-                    "Tavola 39 - Progressive chilometriche "
-                    "con caratteri da 60 pixel"
-                ),
-                use_container_width=True,
-            )
-
-            # ------------------------------------------
-            # DOWNLOAD JPG
-            # ------------------------------------------
-            st.download_button(
-                label="📥 Scarica Tavola in formato JPG",
-                data=jpg_data,
-                file_name="Tavola_39_Compilata.jpg",
-                mime="image/jpeg",
-            )
-
-            st.success(
-                f"Tavola generata correttamente. "
-                f"Dimensione font: {DIMENSIONE_FONT} pixel."
-            )
-
-        except Exception as errore:
-
-            st.error(
-                "Errore durante la generazione della tavola."
-            )
-
-            st.exception(errore)
-
-    else:
-
-        st.error(
-            "Immagine 'TAVOLA 39.jpg' non trovata. "
-            "Carica il file nella stessa cartella di app.py."
-        )
+    st.error(
+        "Immagine 'TAVOLA 39.jpg' non trovata. "
+        "Carica il file nella stessa cartella di app.py."
+    )
