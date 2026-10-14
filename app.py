@@ -6,7 +6,6 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 from openpyxl.drawing.image import Image as OpenpyxlImage
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
-from openpyxl.utils import get_column_letter
 import openpyxl
 
 # ==================================================
@@ -21,7 +20,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel professionale e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel strutturato con le immagini dei segnali e la Tavola JPG personalizzata."
 )
 
 
@@ -117,16 +116,15 @@ if "39" in tavola_selezionata:
     )
 
   # ==================================================
-  # GENERAZIONE FILE EXCEL (ABACO STRUTTURATO E STILIZZATO)
+  # GENERAZIONE FILE EXCEL (ABACO STRUTTURATO CON IMMAGINI)
   # ==================================================
   if st.button("Genera Abaco Segnaletica (Excel)"):
 
-    # Creazione del workbook con openpyxl direttamente
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Abaco Tavola 39"
 
-    # 1. Riga di intestazione principale unificata (Verde chiaro)
+    # 1. Riga di intestazione principale unificata
     ws.merge_cells("A1:E1")
     titolo_principale = ws["A1"]
     titolo_principale.value = "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE"
@@ -149,11 +147,10 @@ if "39" in tavola_selezionata:
     titolo_principale.font = font_titolo
     titolo_principale.alignment = Alignment(horizontal="center", vertical="center")
 
-    # Applica i bordi a tutta la riga unita 1
     for col in range(1, 6):
       ws.cell(row=1, column=col).border = bordo_sottile
 
-    # 2. Riga delle colonne (SEGNALE, FIGURA, DESCRIZIONE, DETTAGLI, SEGNALETICA)
+    # 2. Riga delle colonne
     headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
     for col_idx, header in enumerate(headers, 1):
       cell = ws.cell(row=2, column=col_idx)
@@ -163,7 +160,7 @@ if "39" in tavola_selezionata:
       cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
       cell.border = bordo_sottile
 
-    # 3. Dati della tabella
+    # 3. Dati delle righe con i nomi dei file associati
     dati_righe = [
         ("fig_399.png", "FIG. II 399", "PREAVVISO DI CANTIERE MOBILE", km_preavviso, "SEGNALI TEMPORANEI"),
         ("fig_383.png", "FIG. II 383", "LAVORI IN CORSO", km_inizio, "SEGNALI TEMPORANEI"),
@@ -175,22 +172,23 @@ if "39" in tavola_selezionata:
     cartella_app = os.path.dirname(os.path.abspath(__file__))
     dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
-    # Impostazione dimensioni colonne e righe per una griglia ordinata
-    ws.column_dimensions['A'].width = 18  # Colonna SEGNALE (per l'immagine)
-    ws.column_dimensions['B'].width = 15  # FIGURA
-    ws.column_dimensions['C'].width = 40  # DESCRIZIONE
-    ws.column_dimensions['D'].width = 20  # DETTAGLI (Progressiva)
-    ws.column_dimensions['E'].width = 25  # SEGNALETICA
+    # Dimensioni colonne e righe
+    ws.column_dimensions['A'].width = 18
+    ws.column_dimensions['B'].width = 15
+    ws.column_dimensions['C'].width = 40
+    ws.column_dimensions['D'].width = 20
+    ws.column_dimensions['E'].width = 25
 
     ws.row_dimensions[1].height = 30
     ws.row_dimensions[2].height = 25
 
+    immagini_inserite = 0
+
     for i, row_data in enumerate(dati_righe, start=3):
       img_nome, figura, descrizione, dettagli, segnaletica = row_data
       
-      ws.row_dimensions[i].height = 55  # Altezza generosa per contenere l'immagine
+      ws.row_dimensions[i].height = 55
 
-      # Celle di testo
       c_fig = ws.cell(row=i, column=2, value=figura)
       c_desc = ws.cell(row=i, column=3, value=descrizione)
       c_det = ws.cell(row=i, column=4, value=dettagli)
@@ -201,34 +199,45 @@ if "39" in tavola_selezionata:
         cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         cell.border = bordo_sottile
 
-      # Cella A (SEGNALE) con bordo e immagine inserita
       c_segnale = ws.cell(row=i, column=1)
       c_segnale.border = bordo_sottile
 
-      # Inserimento immagine nella colonna A
-      percorso_img = os.path.join(dir_immagini, img_nome)
-      if os.path.exists(percorso_img):
+      # Tentativo di ricerca dell'immagine con estensioni multiple (.png / .jpg)
+      nomi_da_cercare = [img_nome, img_nome.replace(".png", ".jpg"), img_nome.replace(".jpg", ".png")]
+      percorso_trovato = None
+      
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+
+      if percorso_trovato:
         try:
-          img_pil = Image.open(percorso_img).convert("RGB")
+          img_pil = Image.open(percorso_trovato).convert("RGB")
           temp_path = os.path.join("/tmp", f"abaco_img_{i}.jpg")
           img_pil.save(temp_path, "JPEG")
 
           img_obj = OpenpyxlImage(temp_path)
-          img_obj.width = 50
-          img_obj.height = 45
+          img_obj.width = 45
+          img_obj.height = 40
           
-          # Ancoraggio alla cella A della riga
           cell_coord = f"A{i}"
           ws.add_image(img_obj, cell_coord)
+          immagini_inserite += 1
         except Exception as e:
-          print(f"Errore immagine riga {i}: {e}")
+          st.warning(f"Errore nel caricamento dell'immagine per {figura}: {e}")
+      else:
+        # Se l'immagine non viene trovata, mettiamo una scritta di avviso nella cella
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
 
-    # Salvataggio in memoria
     output = io.BytesIO()
     wb.save(output)
     excel_data = output.getvalue()
 
-    st.success("Abaco Excel strutturato e formattato generato con successo!")
+    st.success(f"Abaco Excel generato con successo! (Immagini inserite: {immagini_inserite}/5)")
 
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica Formattato",
