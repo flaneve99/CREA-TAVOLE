@@ -95,9 +95,9 @@ if "39" in tavola_selezionata:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. KM Fine (in alto) - Spostato ancora più a destra (partenza al 44%) per non toccare la strada
+    # 1. KM Fine (in alto) - Partenza al 38% per coprire la 'K' ma senza toccare la carreggiata
     box_fine = (
-        int(width * 0.44),
+        int(width * 0.38),
         int(height * 0.00),
         int(width * 0.72),
         int(height * 0.06),
@@ -163,7 +163,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Perfetta senza tagli sulla carreggiata",
+        caption="Tavola 39 - Perfetta e senza residui",
         use_container_width=True,
     )
 
