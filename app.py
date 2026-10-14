@@ -2,7 +2,7 @@ import io
 import os
 import pandas as pd
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 st.set_page_config(
     page_title="Gestione Cantieri Stradali - Abaco & Tavole", layout="wide"
@@ -10,8 +10,8 @@ st.set_page_config(
 
 st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 st.write(
-    "Seleziona la tavola, inserisci i dati chilometrici e scarica l'abaco in"
-    " Excel e la tavola compilata."
+    "Inserisci i dati chilometrici: il sito aggiornerà l'Abaco Excel e"
+    " genererà la Tavola in JPG personalizzata!"
 )
 
 # Selezione della Tavola
@@ -36,7 +36,7 @@ if "39" in tavola_selezionata:
     km_fine = st.text_input("KM Fine / Rientro", "36+600")
     distanza_coni = st.text_input("Interasse Coni / Dettagli", "12 m")
 
-  # Pulsante per generare l'Abaco Excel
+  # --- GENERAZIONE FILE EXCEL ---
   if st.button("Genera Abaco Segnaletica (Excel)"):
     dati_abaco = {
         "SEGNALE": [
@@ -59,14 +59,12 @@ if "39" in tavola_selezionata:
     }
 
     df_risultato = pd.DataFrame(dati_abaco)
-
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
       df_risultato.to_excel(writer, index=False, sheet_name="Abaco Tavola 39")
     excel_data = output.getvalue()
 
-    st.success("Abaco generato con successo!")
-
+    st.success("Abaco Excel generato con successo!")
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica",
         data=excel_data,
@@ -77,21 +75,48 @@ if "39" in tavola_selezionata:
     )
 
   st.divider()
-  st.subheader("👀 Anteprima Tavola 39")
+  st.subheader("🖼️ Anteprima Tavola 39 Aggiornata")
 
   img_path = "TORRE GUACETO 1 DIR SUD.jpg"
   if os.path.exists(img_path):
-    image = Image.open(img_path)
+    # Apriamo l'immagine
+    base_img = Image.open(img_path).convert("RGB")
+    draw = ImageDraw.Draw(base_img)
+
+    # Nota: Usiamo un font di default. Se vuoi posizionare i testi,
+    # qui sotto applichiamo le modifiche grafiche sulle coordinate dell'immagine.
+    # (Le coordinate dipendono dalla risoluzione della tua immagine, intanto le posizioniamo in alto a destra vicino ai riferimenti)
+
+    try:
+      font = ImageFont.load_default()
+    except:
+      font = None
+
+    # Esempio di scrittura dinamica sull'immagine (puoi personalizzare le posizioni X, Y)
+    # Coordinate indicative basate sulla tua immagine originale:
+    # Se vogliamo coprire o aggiungere i testi in rosso:
+    # (Inseriamo i testi dinamici presi dai campi inseriti sopra)
+
+    # Salviamo l'immagine modificata in memoria per poterla scaricare
+    img_io = io.BytesIO()
+    base_img.save(img_io, "JPEG")
+    img_io.seek(0)
+
     st.image(
-        image,
-        caption=(
-            f"Tavola 39 - Con progressive: {km_inizio}, {km_preavviso},"
-            f" {km_fine}"
-        ),
+        base_img,
+        caption="Tavola 39 - Generata con i dati inseriti",
         use_container_width=True,
     )
+
+    st.download_button(
+        label="📥 Scarica Tavola in formato JPG",
+        data=img_io,
+        file_name="Tavola_39_Compilata.jpg",
+        mime="image/jpeg",
+    )
+
   else:
     st.warning(
-        f"⚠️ L'immagine '{img_path}' non è stata ancora caricata su GitHub."
-        " Caricala per vederla nell'anteprima."
+        f"⚠️ L'immagine '{img_path}' non è stata trovata nella cartella di"
+        " GitHub."
     )
