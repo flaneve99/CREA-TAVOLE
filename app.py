@@ -585,7 +585,7 @@ elif "16" in tavola_selezionata:
           # 2. Preavviso 700m (In basso) -> quota y più bassa (es. 0.925)
           (int(width_16 * 0.49), int(height_16 * 0.925), f"KM {km_preavviso_700}"),
           # 3. Limite 110 km/h -> salendo (es. 0.825)
-          (int(width_16 * 0.49), int(height_16 * 0.825), f"KM {km_limite_110}"),
+          (int(width_16 * 0.49), int(height_16 * 0.865), f"KM {km_limite_110}"),
           # 4. Limite 90 km/h -> salendo (es. 0.725)
           (int(width_16 * 0.49), int(height_16 * 0.725), f"KM {km_limite_90}"),
           # 5. Preavviso Chiusura Corsia 250m -> salendo (es. 0.625)
