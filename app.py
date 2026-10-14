@@ -80,7 +80,6 @@ if "39" in tavola_selezionata:
   st.divider()
   st.subheader("🖼️ Anteprima Tavola 39 Personalizzata")
 
-  # Nome del file dell'immagine pulita caricata
   img_path = "TAVOLA 39.jpg"
 
   if os.path.exists(img_path):
@@ -89,17 +88,21 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Carichiamo font grandi e ben leggibili
+    # Aumentiamo la scala dei font per renderli molto grandi e visibili
     try:
-      font_grande = ImageFont.truetype("arial.ttf", int(width * 0.045))
-      font_medio = ImageFont.truetype("arial.ttf", int(width * 0.035))
+      font_grande = ImageFont.truetype(
+          "arial.ttf", int(width * 0.055)
+      )  # Molto grande per l'alto
+      font_medio = ImageFont.truetype(
+          "arial.ttf", int(width * 0.045)
+      )  # Grande per gli altri tre
     except:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. KM Fine (in alto, nello spazio vuoto a destra dell'asse)
+    # 1. KM Fine (in alto)
     draw.text(
-        (int(width * 0.62), int(height * 0.005)),
+        (int(width * 0.61), int(height * 0.002)),
         f"KM {km_fine}",
         fill="red",
         font=font_grande,
@@ -107,7 +110,7 @@ if "39" in tavola_selezionata:
 
     # 2. KM Testata / Intermedio (es. 36+110)
     draw.text(
-        (int(width * 0.61), int(height * 0.535)),
+        (int(width * 0.60), int(height * 0.530)),
         f"KM {km_testata}",
         fill="red",
         font=font_medio,
@@ -115,7 +118,7 @@ if "39" in tavola_selezionata:
 
     # 3. KM Preavviso (al centro)
     draw.text(
-        (int(width * 0.61), int(height * 0.655)),
+        (int(width * 0.60), int(height * 0.650)),
         f"KM {km_preavviso}",
         fill="red",
         font=font_medio,
@@ -123,7 +126,7 @@ if "39" in tavola_selezionata:
 
     # 4. KM Inizio (in basso)
     draw.text(
-        (int(width * 0.61), int(height * 0.915)),
+        (int(width * 0.60), int(height * 0.910)),
         f"KM {km_inizio}",
         fill="red",
         font=font_medio,
@@ -137,7 +140,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Generata da immagine pulita",
+        caption="Tavola 39 - Testi grandi e ben visibili",
         use_container_width=True,
     )
 
