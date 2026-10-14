@@ -95,16 +95,16 @@ if "39" in tavola_selezionata:
       font_grande = ImageFont.load_default()
       font_medio = font_grande
 
-    # 1. KM Fine (in alto) - Partenza leggermente più a sinistra (36%) per coprire la "K" ma senza toccare la carreggiata
+    # 1. KM Fine (in alto) - Allarghiamo a sinistra (da 0.34) per coprire la "K" e a destra
     box_fine = (
-        int(width * 0.36),
+        int(width * 0.34),
         int(height * 0.00),
-        int(width * 0.72),
-        int(height * 0.06),
+        int(width * 0.75),
+        int(height * 0.065),
     )
     draw.rectangle(box_fine, fill="white")
     draw.text(
-        (box_fine[0] + 5, box_fine[1] + 2),
+        (box_fine[0] + 10, box_fine[1] + 2),
         f"KM {km_fine}",
         fill="red",
         font=font_grande,
@@ -112,29 +112,29 @@ if "39" in tavola_selezionata:
 
     # 2. KM Testata / Intermedio (es. 36+110)
     box_testata = (
-        int(width * 0.61),
+        int(width * 0.58),
         int(height * 0.535),
-        int(width * 0.95),
+        int(width * 0.98),
         int(height * 0.605),
     )
     draw.rectangle(box_testata, fill="white")
     draw.text(
-        (box_testata[0] + 5, box_testata[1]),
+        (box_testata[0] + 10, box_testata[1]),
         f"KM {km_testata}",
         fill="red",
         font=font_medio,
     )
 
-    # 3. KM Preavviso (al centro) - Allargato a sinistra (da 0.55) per coprire interamente la vecchia scritta tagliata
+    # 3. KM Preavviso (al centro) - Allargato ancora di più a sinistra (da 0.50) per cancellare del tutto i residui vecchi
     box_preavviso = (
-        int(width * 0.55),
+        int(width * 0.50),
         int(height * 0.655),
-        int(width * 0.95),
+        int(width * 0.98),
         int(height * 0.725),
     )
     draw.rectangle(box_preavviso, fill="white")
     draw.text(
-        (box_preavviso[0] + 65, box_preavviso[1]),
+        (box_preavviso[0] + 115, box_preavviso[1]),
         f"KM {km_preavviso}",
         fill="red",
         font=font_medio,
@@ -142,14 +142,14 @@ if "39" in tavola_selezionata:
 
     # 4. KM Inizio (in basso)
     box_inizio = (
-        int(width * 0.61),
+        int(width * 0.58),
         int(height * 0.915),
-        int(width * 0.95),
+        int(width * 0.98),
         int(height * 0.985),
     )
     draw.rectangle(box_inizio, fill="white")
     draw.text(
-        (box_inizio[0] + 5, box_inizio[1]),
+        (box_inizio[0] + 10, box_inizio[1]),
         f"KM {km_inizio}",
         fill="red",
         font=font_medio,
@@ -163,7 +163,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Perfetta, pulita e senza residui",
+        caption="Tavola 39 - Pulita senza residui",
         use_container_width=True,
     )
 
