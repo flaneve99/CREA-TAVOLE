@@ -108,8 +108,8 @@ if "39" in tavola_selezionata:
     width, height = base_img.size
 
     # Usiamo dimensioni grandi in pixel calibrate sull'altezza/larghezza reale dell'immagine (1653x2339)
-    font_grande = load_custom_font(65)
-    font_medio = load_custom_font(50)
+    font_grande = load_custom_font(140)
+    font_medio = load_custom_font(110)
 
     # 1. KM Fine (in alto)
     draw.text(
