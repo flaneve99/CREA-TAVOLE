@@ -36,6 +36,7 @@ if "39" in tavola_selezionata:
 
   with col2:
     km_fine = st.text_input("KM Fine / Rientro (Alto)", "36+600")
+    km_testata = st.text_input("KM Inizio Testata / Intermedio", "36+110")
     distanza_coni = st.text_input("Interasse Coni / Dettagli", "12 m")
 
   # --- 1. GENERAZIONE FILE EXCEL (ABACO) ---
@@ -86,57 +87,72 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Usiamo dimensioni di font ben grandi e proporzionate per l'alta definizione
+    # Usiamo font molto grandi e ben visibili
     try:
-      font_alto = ImageFont.truetype("arial.ttf", int(width * 0.038))
-      font_medio_basso = ImageFont.truetype("arial.ttf", int(width * 0.028))
+      font_grande = ImageFont.truetype("arial.ttf", int(width * 0.045))
+      font_medio = ImageFont.truetype("arial.ttf", int(width * 0.035))
     except:
-      font_alto = ImageFont.load_default()
-      font_medio_basso = font_alto
+      font_grande = ImageFont.load_default()
+      font_medio = font_grande
 
-    # 1. KM Fine (in alto)
+    # 1. KM Fine (in alto, posizionato a sinistra del segnale per non tagliarlo)
     box_fine = (
-        int(width * 0.40),
-        int(height * 0.02),
-        int(width * 0.72),
-        int(height * 0.09),
+        int(width * 0.25),
+        int(height * 0.015),
+        int(width * 0.55),
+        int(height * 0.08),
     )
     draw.rectangle(box_fine, fill="white")
     draw.text(
-        (box_fine[0] + 5, box_fine[1] + 5),
+        (box_fine[0] + 10, box_fine[1] + 2),
         f"KM {km_fine}",
         fill="red",
-        font=font_alto,
+        font=font_grande,
     )
 
-    # 2. KM Preavviso (al centro)
+    # 2. KM Testata / Intermedio (es. 36+110)
+    box_testata = (
+        int(width * 0.60),
+        int(height * 0.52),
+        int(width * 0.92),
+        int(height * 0.59),
+    )
+    draw.rectangle(box_testata, fill="white")
+    draw.text(
+        (box_testata[0] + 10, box_testata[1] + 2),
+        f"KM {km_testata}",
+        fill="red",
+        font=font_medio,
+    )
+
+    # 3. KM Preavviso (al centro)
     box_preavviso = (
-        int(width * 0.62),
-        int(height * 0.61),
-        int(width * 0.88),
-        int(height * 0.67),
+        int(width * 0.60),
+        int(height * 0.65),
+        int(width * 0.92),
+        int(height * 0.72),
     )
     draw.rectangle(box_preavviso, fill="white")
     draw.text(
-        (box_preavviso[0] + 5, box_preavviso[1] + 2),
+        (box_preavviso[0] + 10, box_preavviso[1] + 2),
         f"KM {km_preavviso}",
         fill="red",
-        font=font_medio_basso,
+        font=font_medio,
     )
 
-    # 3. KM Inizio (in basso)
+    # 4. KM Inizio (in basso)
     box_inizio = (
-        int(width * 0.62),
+        int(width * 0.60),
         int(height * 0.91),
-        int(width * 0.88),
-        int(height * 0.97),
+        int(width * 0.92),
+        int(height * 0.98),
     )
     draw.rectangle(box_inizio, fill="white")
     draw.text(
-        (box_inizio[0] + 5, box_inizio[1] + 2),
+        (box_inizio[0] + 10, box_inizio[1] + 2),
         f"KM {km_inizio}",
         fill="red",
-        font=font_medio_basso,
+        font=font_medio,
     )
 
     # Salviamo in memoria
@@ -147,7 +163,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Aggiornata con le progressive",
+        caption="Tavola 39 - Aggiornata con testi grandi e km testata",
         use_container_width=True,
     )
 
