@@ -88,18 +88,18 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Usiamo dimensioni fisse in pixel molto grandi per garantire la massima visibilità
+    # Carichiamo un font TrueType garantito presente nei server Linux di Streamlit
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
     try:
-      font_grande = ImageFont.truetype("arial.ttf", 65)
-      font_medio = ImageFont.truetype("arial.ttf", 50)
+      font_grande = ImageFont.truetype(
+          font_path, 70
+      )  # Molto grande ed evidente
+      font_medio = ImageFont.truetype(font_path, 55)  # Grande per gli altri
     except:
       try:
-        font_grande = ImageFont.truetype(
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 65
-        )
-        font_medio = ImageFont.truetype(
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 50
-        )
+        # Fallback alternativo
+        font_grande = ImageFont.truetype("arial.ttf", 70)
+        font_medio = ImageFont.truetype("arial.ttf", 55)
       except:
         font_grande = ImageFont.load_default()
         font_medio = font_grande
@@ -144,7 +144,9 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Testi grandi forzati",
+        caption=(
+            "Tavola 39 - Progressive con caratteri grandi e font di sistema"
+        ),
         use_container_width=True,
     )
 
