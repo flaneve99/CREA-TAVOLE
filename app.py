@@ -587,9 +587,9 @@ elif "16" in tavola_selezionata:
           # 3. Limite 110 km/h -> salendo (es. 0.825)
           (int(width_16 * 0.49), int(height_16 * 0.865), f"KM {km_limite_110}"),
           # 4. Limite 90 km/h -> salendo (es. 0.725)
-          (int(width_16 * 0.49), int(height_16 * 0.805), f"KM {km_limite_90}"),
+          (int(width_16 * 0.49), int(height_16 * 0.800), f"KM {km_limite_90}"),
           # 5. Preavviso Chiusura Corsia 250m -> salendo (es. 0.625)
-          (int(width_16 * 0.49), int(height_16 * 0.745), f"KM {km_preavviso_250}"),
+          (int(width_16 * 0.49), int(height_16 * 0.750), f"KM {km_preavviso_250}"),
           # 6. Limite 60 km/h -> salendo (es. 0.525)
           (int(width_16 * 0.49), int(height_16 * 0.685), f"KM {km_limite_60}"),
           # 7. Preavviso Chiusura Corsia 100m -> salendo (es. 0.425)
