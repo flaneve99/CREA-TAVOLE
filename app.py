@@ -24,7 +24,7 @@ st.write(
 
 
 # ==================================================
-# CARICAMENTO FONT: COMPATIBILE CON STREAMLIT CLOUD
+# CARICAMENTO FONT COMPATIBILE CON STREAMLIT CLOUD
 # ==================================================
 @st.cache_resource
 def load_custom_font(size):
@@ -216,14 +216,14 @@ if "39" in tavola_selezionata:
             draw = ImageDraw.Draw(base_img)
 
             # ------------------------------------------
-            # DIMENSIONE FONT: 110 PIXEL
+            # DIMENSIONE FONT: 70 PIXEL PER TUTTE LE KM
             # ------------------------------------------
-            DIMENSIONE_FONT = 110
+            DIMENSIONE_FONT = 70
 
             font_km = load_custom_font(DIMENSIONE_FONT)
 
             # Contorno bianco per migliorare la leggibilità
-            BORDO = 3
+            BORDO = 2
 
             # ------------------------------------------
             # POSIZIONI DELLE PROGRESSIVE CHILOMETRICHE
@@ -286,7 +286,7 @@ if "39" in tavola_selezionata:
                 base_img,
                 caption=(
                     "Tavola 39 - Progressive chilometriche "
-                    "con caratteri da 110 pixel"
+                    "con caratteri da 70 pixel"
                 ),
                 use_container_width=True,
             )
