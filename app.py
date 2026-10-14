@@ -222,24 +222,26 @@ if "39" in tavola_selezionata:
       etichette = [
           (
               int(width * 0.45),
-              int(height * 0.002),
+              int(
+                  height * 0.015
+              ),  # KM Fine spostato leggermente più in basso
               f"KM {km_fine}",
-          ),  # KM Fine spostato a sinistra sopra via libera
+          ),
           (
               int(width * 0.62),
               int(height * 0.525),
               f"KM {km_testata}",
-          ),  # Spostato a destra delle linee nere
+          ),
           (
               int(width * 0.62),
               int(height * 0.645),
               f"KM {km_preavviso}",
-          ),  # Spostato a destra delle linee nere
+          ),
           (
               int(width * 0.62),
               int(height * 0.905),
               f"KM {km_inizio}",
-          ),  # Spostato a destra delle linee nere
+          ),
       ]
 
       # ------------------------------------------
@@ -275,9 +277,7 @@ if "39" in tavola_selezionata:
       # ------------------------------------------
       st.image(
           base_img,
-          caption=(
-              "Tavola 39 - Progressive chilometriche con posizioni ottimizzate"
-          ),
+          caption="Tavola 39 - Progressive chilometriche ottimizzate",
           use_container_width=True,
       )
 
@@ -305,6 +305,6 @@ if "39" in tavola_selezionata:
   else:
 
     st.error(
-        "Immagine 'TAVOLA 39.jpg' non trovata. "
+        "Immagine 'TAVOLA 39.jpg' not trovata. "
         "Carica il file nella stessa cartella di app.py."
     )
