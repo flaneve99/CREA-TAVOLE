@@ -1,11 +1,11 @@
 import io
 import os
-import textwrap
 import urllib.request
-
 import pandas as pd
 import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
+from openpyxl.drawing.image import Image as OpenpyxlImage
+import openpyxl
 
 # ==================================================
 # CONFIGURAZIONE STREAMLIT
@@ -19,7 +19,7 @@ st.title("🚧 Gestione Cantieri Stradali e Segnaletica")
 
 st.write(
     "Inserisci le progressive chilometriche e l'ubicazione: il programma "
-    "genererà l'Abaco Excel e la Tavola JPG personalizzata."
+    "genererà l'Abaco Excel con le immagini dei segnali e la Tavola JPG personalizzata."
 )
 
 
@@ -28,11 +28,6 @@ st.write(
 # ==================================================
 @st.cache_resource
 def load_custom_font(size):
-  """Cerca un font TrueType in grassetto.
-
-  Se non lo trova, prova a scaricarlo. Come ultima alternativa usa il font
-  incluso in Pillow.
-  """
   cartella_app = os.path.dirname(os.path.abspath(__file__))
 
   possibili_font = [
@@ -46,7 +41,6 @@ def load_custom_font(size):
       "/Library/Fonts/Arial Bold.ttf",
   ]
 
-  # 1. Cerca un font già presente
   for percorso in possibili_font:
     if os.path.isfile(percorso):
       try:
@@ -54,13 +48,11 @@ def load_custom_font(size):
       except (OSError, ValueError):
         continue
 
-  # 2. Prova a scaricare il font in una cartella temporanea
   url = (
       "https://raw.githubusercontent.com/"
       "dejavu-fonts/dejavu-fonts/master/"
       "src/DejaVuSans-Bold.ttf"
   )
-
   percorso_locale = "/tmp/DejaVuSans-Bold.ttf"
 
   try:
@@ -69,7 +61,6 @@ def load_custom_font(size):
   except Exception:
     pass
 
-  # 3. Ultima alternativa: font incluso in Pillow
   try:
     return ImageFont.load_default(size=size)
   except TypeError:
@@ -89,7 +80,6 @@ if "39" in tavola_selezionata:
 
   st.subheader("📍 Dati e Progressive Chilometriche - Tavola 39")
 
-  # Campo di input per l'ubicazione personalizzabile
   ubicazione_testo = st.text_area(
       "Ubicazione / Direzione (può essere divisa su più righe)",
       value="DIREZIONE SUD\nVIADOTTO TORRE\nGUACETO 1",
@@ -125,14 +115,15 @@ if "39" in tavola_selezionata:
     )
 
   # ==================================================
-  # GENERAZIONE FILE EXCEL (ABACO)
+  # GENERAZIONE FILE EXCEL (ABACO CON IMMAGINI NELLE CELLE)
   # ==================================================
   if st.button("Genera Abaco Segnaletica (Excel)"):
 
+    # Dati da inserire nell'Excel
     dati_abaco = {
         "SEGNALE": [
             "Preavviso Cantiere Mobile",
-            "Lavori in corso (Fig. II 383)",
+            "Lavori in corso",
             "Fine Cantiere / Via Libera",
             "Segnale Mobile di Preavviso su Veicolo",
             "Segnale Mobile di Protezione su Veicolo",
@@ -169,25 +160,55 @@ if "39" in tavola_selezionata:
 
     df_risultato = pd.DataFrame(dati_abaco)
 
+    # Creazione del file Excel in memoria con openpyxl
     output = io.BytesIO()
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+      df_risultato.to_excel(writer, index=False, sheet_name="Abaco Tavola 39")
 
-    with pd.ExcelWriter(
-        output,
-        engine="openpyxl",
-    ) as writer:
+    output.seek(0)
+    
+    # Riapriamo il file con openpyxl per inserire le immagini nelle celle della colonna "FIGURA" (Colonna B -> indice 2)
+    wb = openpyxl.load_workbook(output)
+    ws = wb["Abaco Tavola 39"]
 
-      df_risultato.to_excel(
-          writer,
-          index=False,
-          sheet_name="Abaco Tavola 39",
-      )
+    # Mappa dei file immagine corrispondenti alle figure
+    cartella_app = os.path.dirname(os.path.abspath(__file__))
+    mappa_immagini = {
+        "FIG. II 399": os.path.join(cartella_app, "immagini_segnali", "fig_399.png"),
+        "FIG. II 383": os.path.join(cartella_app, "immagini_segnali", "fig_383.png"),
+        "FIG. II 070": os.path.join(cartella_app, "immagini_segnali", "fig_070.png"),
+        "FIG. II 400": os.path.join(cartella_app, "immagini_segnali", "fig_400.png"),
+        "FIG. II 401": os.path.join(cartella_app, "immagini_segnali", "fig_401.png"),
+    }
 
-    excel_data = output.getvalue()
+    # Regoliamo l'altezza delle righe e la larghezza della colonna B per fare spazio alle immagini
+    ws.column_dimensions['B'].width = 18
 
-    st.success("Abaco Excel generato con successo e completo di tutti i segnali!")
+    for riga_idx in range(2, len(df_risultato) + 2):
+      ws.row_dimensions[riga_idx].height = 50  # Altezza riga generosa per l'immagine
+      figura_val = ws.cell(row=riga_idx, column=2).value # Colonna B è la seconda colonna
+
+      if figura_val in mappa_immagini:
+        img_file = mappa_immagini[figura_val]
+        if os.path.exists(img_file):
+          # Carichiamo e ridimensioniamo l'immagine per farla entrare nella cella
+          img_obj = OpenpyxlImage(img_file)
+          img_obj.width = 45
+          img_obj.height = 45
+          
+          # Posizioniamo l'immagine esattamente nella cella della colonna B
+          cell_coord = f"B{riga_idx}"
+          ws.add_image(img_obj, cell_coord)
+
+    # Salvataggio finale del workbook con le immagini
+    final_output = io.BytesIO()
+    wb.save(final_output)
+    excel_data = final_output.getvalue()
+
+    st.success("Abaco Excel generato con successo e arricchito con le immagini dei segnali!")
 
     st.download_button(
-        label="📥 Scarica Excel Abaco Segnaletica",
+        label="📥 Scarica Excel Abaco Segnaletica con Immagini",
         data=excel_data,
         file_name="Abaco_Segnaletica_Tavola_39.xlsx",
         mime=(
@@ -209,31 +230,20 @@ if "39" in tavola_selezionata:
   if os.path.exists(img_path):
 
     try:
-      # Carica l'immagine originale
       with Image.open(img_path) as immagine_originale:
         base_img = immagine_originale.convert("RGB")
 
       width, height = base_img.size
-
-      st.caption(f"Immagine originale: {width} × {height} pixel")
-
       draw = ImageDraw.Draw(base_img)
 
-      # ------------------------------------------
-      # DIMENSIONE FONT
-      # ------------------------------------------
       DIMENSIONE_FONT_KM = 60
-      DIMENSIONE_FONT_UBICAZIONE = 69  # Ottimizzato per stare perfettamente nel box
+      DIMENSIONE_FONT_UBICAZIONE = 69
 
       font_km = load_custom_font(DIMENSIONE_FONT_KM)
       font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
 
-      # Contorno bianco sottile per la leggibilità
       BORDO = 2
 
-      # ------------------------------------------
-      # POSIZIONI DELLE PROGRESSIVE CHILOMETRICHE
-      # ------------------------------------------
       etichette = [
           (
               int(width * 0.45),
@@ -257,9 +267,6 @@ if "39" in tavola_selezionata:
           ),
       ]
 
-      # ------------------------------------------
-      # DISEGNO DELLE SCRITTE KM
-      # ------------------------------------------
       for x, y, testo in etichette:
         draw.text(
             (x, y),
@@ -270,49 +277,35 @@ if "39" in tavola_selezionata:
             stroke_fill=(255, 255, 255),
         )
 
-      # ------------------------------------------
-      # DISEGNO DELL'UBICAZIONE (BILANCIATA E CENTRATA)
-      # ------------------------------------------
-      x_ubicazione = int(width * 0.65)  # Posizione centrata sotto il box giallo
-      y_ubicazione = int(height * 0.225)  # Sotto il riquadro superiore
+      x_ubicazione = int(width * 0.65)
+      y_ubicazione = int(height * 0.225)
 
       draw.multiline_text(
           (x_ubicazione, y_ubicazione),
           ubicazione_testo,
           fill=(255, 0, 0),
           font=font_ubicazione,
-          align="center",  # Testo perfettamente centrato
+          align="center",
           spacing=6,
           stroke_width=BORDO,
           stroke_fill=(255, 255, 255),
       )
 
-      # ------------------------------------------
-      # SALVATAGGIO JPG IN MEMORIA
-      # ------------------------------------------
       img_io = io.BytesIO()
-
       base_img.save(
           img_io,
           format="JPEG",
           quality=100,
           subsampling=0,
       )
-
       jpg_data = img_io.getvalue()
 
-      # ------------------------------------------
-      # ANTEPRIMA
-      # ------------------------------------------
       st.image(
           base_img,
-          caption="Tavola 39 - Ubicazione corretta e centrata",
+          caption="Tavola 39 - Configurazione finale completata",
           use_container_width=True,
       )
 
-      # ------------------------------------------
-      # DOWNLOAD JPG
-      # ------------------------------------------
       st.download_button(
           label="📥 Scarica Tavola in formato JPG",
           data=jpg_data,
@@ -323,13 +316,10 @@ if "39" in tavola_selezionata:
       st.success("Tavola generata correttamente con ubicazione ottimizzata.")
 
     except Exception as errore:
-
       st.error("Errore durante la generazione della tavola.")
-
       st.exception(errore)
 
   else:
-
     st.error(
         "Immagine 'TAVOLA 39.jpg' non trovata. "
         "Carica il file nella stessa cartella di app.py."
