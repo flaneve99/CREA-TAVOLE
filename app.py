@@ -86,31 +86,30 @@ if "39" in tavola_selezionata:
 
     width, height = base_img.size
 
-    # Carichiamo un font proporzionato all'alta risoluzione dell'immagine
+    # Usiamo dimensioni di font ben grandi e proporzionate per l'alta definizione
     try:
-      font_testo = ImageFont.truetype(
-          "arial.ttf", int(width * 0.025)
-      )  # Circa 40-45px
+      font_alto = ImageFont.truetype("arial.ttf", int(width * 0.038))
+      font_medio_basso = ImageFont.truetype("arial.ttf", int(width * 0.028))
     except:
-      font_testo = ImageFont.load_default()
+      font_alto = ImageFont.load_default()
+      font_medio_basso = font_alto
 
-    # Coordinate precise tarate sull'immagine ad alta risoluzione (1653 x 2339)
-    # 1. KM Fine (in alto, sotto il segnale tondo)
+    # 1. KM Fine (in alto)
     box_fine = (
-        int(width * 0.42),
-        int(height * 0.04),
-        int(width * 0.68),
+        int(width * 0.40),
+        int(height * 0.02),
+        int(width * 0.72),
         int(height * 0.09),
     )
     draw.rectangle(box_fine, fill="white")
     draw.text(
-        (box_fine[0] + 10, box_fine[1] + 5),
+        (box_fine[0] + 5, box_fine[1] + 5),
         f"KM {km_fine}",
         fill="red",
-        font=font_testo,
+        font=font_alto,
     )
 
-    # 2. KM Preavviso (al centro, corrispondente a KM 36+060)
+    # 2. KM Preavviso (al centro)
     box_preavviso = (
         int(width * 0.62),
         int(height * 0.61),
@@ -119,13 +118,13 @@ if "39" in tavola_selezionata:
     )
     draw.rectangle(box_preavviso, fill="white")
     draw.text(
-        (box_preavviso[0] + 10, box_preavviso[1] + 5),
+        (box_preavviso[0] + 5, box_preavviso[1] + 2),
         f"KM {km_preavviso}",
         fill="red",
-        font=font_testo,
+        font=font_medio_basso,
     )
 
-    # 3. KM Inizio (in basso, corrispondente a KM 35+560)
+    # 3. KM Inizio (in basso)
     box_inizio = (
         int(width * 0.62),
         int(height * 0.91),
@@ -134,13 +133,13 @@ if "39" in tavola_selezionata:
     )
     draw.rectangle(box_inizio, fill="white")
     draw.text(
-        (box_inizio[0] + 10, box_inizio[1] + 5),
+        (box_inizio[0] + 5, box_inizio[1] + 2),
         f"KM {km_inizio}",
         fill="red",
-        font=font_testo,
+        font=font_medio_basso,
     )
 
-    # Salviamo l'immagine modificata in memoria
+    # Salviamo in memoria
     img_io = io.BytesIO()
     base_img.save(img_io, "JPEG")
     img_io.seek(0)
@@ -148,7 +147,7 @@ if "39" in tavola_selezionata:
     # Mostriamo l'anteprima sul sito
     st.image(
         base_img,
-        caption="Tavola 39 - Aggiornata con tutte le progressive",
+        caption="Tavola 39 - Aggiornata con le progressive",
         use_container_width=True,
     )
 
