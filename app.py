@@ -408,7 +408,6 @@ elif "16" in tavola_selezionata:
       )
       cell.border = bordo_sottile
 
-    # Elenco completo e aggiornato dei segnali per la Tavola 16 (incluso Fig. 383 e Fig. 70)
     dati_righe_16 = [
         (
             "fig_383.jpg",
@@ -562,27 +561,42 @@ elif "16" in tavola_selezionata:
 
       width_16, height_16 = base_img_16.size
       draw_16 = ImageDraw.Draw(base_img_16)
+
+      # Font ottimizzati per la Tavola 16
+      font_km_alto_16 = load_custom_font(42)  # Dimensioni compatte per il KM in alto
       font_km_16 = load_custom_font(60)
-      font_ub_16 = load_custom_font(69)
+      font_ub_16 = load_custom_font(50)
       BORDO = 2
 
-      etichette_16 = [
-          (int(width_16 * 0.45), int(height_16 * 0.015), f"KM {km_fine_16}"),
-          (int(width_16 * 0.62), int(height_16 * 0.905), f"KM {km_inizio_16}"),
-      ]
+      # 1. KM Fine in alto (posizionato nello spazio tra verde e riquadro tavola)
+      x_km_fine = int(width_16 * 0.78)
+      y_km_fine = int(height_16 * 0.02)
+      draw_16.text(
+          (x_km_fine, y_km_fine),
+          f"KM {km_fine_16}",
+          fill=(255, 0, 0),
+          font=font_km_alto_16,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
 
-      for x, y, testo in etichette_16:
-        draw_16.text(
-            (x, y),
-            testo,
-            fill=(255, 0, 0),
-            font=font_km_16,
-            stroke_width=BORDO,
-            stroke_fill=(255, 255, 255),
-        )
+      # 2. KM Inizio in basso
+      x_km_inizio = int(width_16 * 0.62)
+      y_km_inizio = int(height_16 * 0.905)
+      draw_16.text(
+          (x_km_inizio, y_km_inizio),
+          f"KM {km_inizio_16}",
+          fill=(255, 0, 0),
+          font=font_km_16,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
 
+      # 3. Testo Ubicazione
+      x_ub = int(width_16 * 0.65)
+      y_ub = int(height_16 * 0.225)
       draw_16.multiline_text(
-          (int(width_16 * 0.65), int(height_16 * 0.225)),
+          (x_ub, y_ub),
           ubicazione_testo_16,
           fill=(255, 0, 0),
           font=font_ub_16,
