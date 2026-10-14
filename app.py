@@ -1,5 +1,6 @@
 import io
 import os
+import textwrap
 import urllib.request
 
 import pandas as pd
@@ -90,8 +91,8 @@ if "39" in tavola_selezionata:
 
   # Campo di input per l'ubicazione personalizzabile
   ubicazione_testo = st.text_area(
-      "Ubicazione / Direzione (può svilupparsi su più righe)",
-      value="DIREZIONE SUD\nVIADOTTO TORRE GUACETO 1",
+      "Ubicazione / Direzione (può essere divisa su più righe)",
+      value="DIREZIONE SUD\nVIADOTTO TORRE\nGUACETO 1",
   )
 
   col1, col2 = st.columns(2)
@@ -212,9 +213,7 @@ if "39" in tavola_selezionata:
       # DIMENSIONE FONT
       # ------------------------------------------
       DIMENSIONE_FONT_KM = 60
-      DIMENSIONE_FONT_UBICAZIONE = (
-          45  # Leggermente più compatto per stare nei riquadri stretti
-      )
+      DIMENSIONE_FONT_UBICAZIONE = 40  # Ottimizzato per stare perfettamente nel box
 
       font_km = load_custom_font(DIMENSIONE_FONT_KM)
       font_ubicazione = load_custom_font(DIMENSIONE_FONT_UBICAZIONE)
@@ -262,20 +261,18 @@ if "39" in tavola_selezionata:
         )
 
       # ------------------------------------------
-      # DISEGNO DELL'UBICAZIONE (SPOSTATA A DESTRA, PIÙ STRETTA E CENTRATA)
+      # DISEGNO DELL'UBICAZIONE (BILANCIATA E CENTRATA)
       # ------------------------------------------
-      x_ubicazione = int(width * 0.73)  # Spostata più a destra
-      y_ubicazione = int(
-          height * 0.225
-      )  # Sotto il riquadro giallo superiore
+      x_ubicazione = int(width * 0.70)  # Posizione centrata sotto il box giallo
+      y_ubicazione = int(height * 0.225)  # Sotto il riquadro superiore
 
       draw.multiline_text(
           (x_ubicazione, y_ubicazione),
           ubicazione_testo,
           fill=(255, 0, 0),
           font=font_ubicazione,
-          align="center",  # Testo centrato nel blocco
-          spacing=8,
+          align="center",  # Testo perfettamente centrato
+          spacing=6,
           stroke_width=BORDO,
           stroke_fill=(255, 255, 255),
       )
@@ -299,7 +296,7 @@ if "39" in tavola_selezionata:
       # ------------------------------------------
       st.image(
           base_img,
-          caption="Tavola 39 - Ubicazione centrata e riposizionata",
+          caption="Tavola 39 - Ubicazione corretta e centrata",
           use_container_width=True,
       )
 
