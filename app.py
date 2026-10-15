@@ -861,51 +861,51 @@ elif "17" in tavola_selezionata:
       width_17, height_17 = base_img_17.size
       draw_17 = ImageDraw.Draw(base_img_17)
 
-      font_km = load_custom_font(16)
+      font_km = load_custom_font(17)
       font_ub_17 = load_custom_font(25)
       BORDO = 2
 
       # Mappatura coordinate progressive Tavola 17 (dal basso verso l'alto)
       etichette_17 = [
           (
-              int(width_17 * 0.465),
-              int(height_17 * 0.01),
+              int(width_17 * 0.466),
+              int(height_17 * 0.009),
               f"KM {km_17_via_libera}",
           ),
-          (int(width_17 * 0.58), int(height_17 * 0.265), f"KM {km_17_stop}"),
+          (int(width_17 * 0.61), int(height_17 * 0.265), f"KM {km_17_stop}"),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.340),
               f"KM {km_17_fine_testata}",
           ),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.485),
               f"KM {km_17_inizio_testata}",
           ),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.600),
               f"KM {km_17_preavviso_100}",
           ),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.670),
               f"KM {km_17_limite_50_alta}",
           ),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.730),
               f"KM {km_17_preavviso_250}",
           ),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.800),
               f"KM {km_17_limite_50_bassa}",
           ),
-          (int(width_17 * 0.58), int(height_17 * 0.865), f"KM {km_17_limite_70}"),
+          (int(width_17 * 0.61), int(height_17 * 0.865), f"KM {km_17_limite_70}"),
           (
-              int(width_17 * 0.58),
+              int(width_17 * 0.61),
               int(height_17 * 0.927),
               f"KM {km_17_preavviso_700}",
           ),
@@ -922,7 +922,7 @@ elif "17" in tavola_selezionata:
         )
 
       x_ub_17 = int(width_17 * 0.67)
-      y_ub_17 = int(height_17 * 0.27)
+      y_ub_17 = int(height_17 * 0.34)
       draw_17.multiline_text(
           (x_ub_17, y_ub_17),
           ubicazione_testo_17,
