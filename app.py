@@ -2484,7 +2484,7 @@ elif "43" in tavola_selezionata:
         )
 
       draw_43.multiline_text(
-          (int(width_43 * 0.67), int(height_43 * 0.340)),
+          (int(width_43 * 0.67), int(height_43 * 0.320)),
           ubicazione_testo_43,
           fill=(255, 0, 0),
           font=font_ub_43,
