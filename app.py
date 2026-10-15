@@ -2699,7 +2699,7 @@ elif "44" in tavola_selezionata:
       width_44, height_44 = base_img_44.size
       draw_44 = ImageDraw.Draw(base_img_44)
       font_km = load_custom_font(45)
-      font_ub_44 = load_custom_font(60)
+      font_ub_44 = load_custom_font(65)
       BORDO = 2
 
       # Coordinate mappate sulla Tavola 44 (dal basso verso l'alto)
@@ -2714,8 +2714,8 @@ elif "44" in tavola_selezionata:
               int(height_44 * 0.735),
               f"KM {km_44_secondo_preavviso}",
           ),
-          (int(width_44 * 0.62), int(height_44 * 0.535), f"KM {km_44_passaggio}"),
-          (int(width_44 * 0.62), int(height_44 * 0.430), f"KM {km_44_inizio}"),
+          (int(width_44 * 0.62), int(height_44 * 0.540), f"KM {km_44_passaggio}"),
+          (int(width_44 * 0.608), int(height_44 * 0.430), f"KM {km_44_inizio}"),
           (int(width_44 * 0.435), int(height_44 * 0.040), f"KM {km_44_vialibera}"),
       ]
 
