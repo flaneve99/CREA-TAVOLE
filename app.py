@@ -609,7 +609,7 @@ elif "16" in tavola_selezionata:
         )
 
       # Testo Ubicazione
-      x_ub = int(width_16 * 0.69)
+      x_ub = int(width_16 * 0.67)
       y_ub = int(height_16 * 0.27)
       draw_16.multiline_text(
           (x_ub, y_ub),
