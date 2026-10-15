@@ -875,7 +875,7 @@ elif "17" in tavola_selezionata:
           (int(width_17 * 0.63), int(height_17 * 0.265), f"KM {km_17_stop}"),
           (
               int(width_17 * 0.63),
-              int(height_17 * 0.328),
+              int(height_17 * 0.326),
               f"KM {km_17_fine_testata}",
           ),
           (
