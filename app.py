@@ -99,6 +99,10 @@ tavola_selezionata = st.selectbox(
             " della corsia di destra"
         ),
         (
+            "Tavola 44 - Cantiere mobile su carreggiata a tre corsie chiusura"
+            " della corsia di sorpasso"
+        ),
+        (
             "Tavola 66 - Lavori su carreggiata con senso unico alternato"
             " semaforico"
         ),
