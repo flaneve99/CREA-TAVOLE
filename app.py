@@ -2942,7 +2942,7 @@ elif "37" in tavola_selezionata:
           (int(width_37 * 0.62), int(height_37 * 0.7925), f"KM {km_37_strettoia}"),
           (int(width_37 * 0.62), int(height_37 * 0.705), f"KM {km_37_passaggio}"),
           (int(width_37 * 0.62), int(height_37 * 0.490), f"KM {km_37_chiusura}"),
-          (int(width_37 * 0.48), int(height_37 * 0.0750), f"KM {km_37_vialibera}"),
+          (int(width_37 * 0.48), int(height_37 * 0.0680), f"KM {km_37_vialibera}"),
       ]
 
       for x, y, testo in etichette_37:
