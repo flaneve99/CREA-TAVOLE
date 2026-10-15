@@ -1101,7 +1101,7 @@ elif "25" in tavola_selezionata:
       width_25, height_25 = base_img_25.size
       draw_25 = ImageDraw.Draw(base_img_25)
       font_km = load_custom_font(18)
-      font_ub_25 = load_custom_font(50)
+      font_ub_25 = load_custom_font(60)
       BORDO = 2
 
       etichette_25 = [
@@ -1191,7 +1191,7 @@ elif "25" in tavola_selezionata:
 
       # Ubicazione Sinistra
       draw_25.multiline_text(
-          (int(width_25 * 0.38), int(height_25 * 0.08)),
+          (int(width_25 * 0.35), int(height_25 * 0.08)),
           ubicazione_nord,
           fill=(255, 0, 0),
           font=font_ub_25,
