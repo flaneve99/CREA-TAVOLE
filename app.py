@@ -1865,13 +1865,6 @@ elif "18" in tavola_selezionata:
             "SEGNALI DI DIVIETO",
         ),
         (
-            "fig_411a.jpg",
-            "FIG. II 411/a",
-            "SEGNALE DI CORSIA CHIUSA (Chiusura corsia di destra)",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
             "fig_082a.jpg",
             "FIG. II 082/a",
             "PASSAGGIO OBBLIGATORIO A SINISTRA",
