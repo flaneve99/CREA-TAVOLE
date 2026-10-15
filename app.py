@@ -530,8 +530,8 @@ elif "40" in tavola_selezionata:
               int(height_40 * 0.608),
               f"KM {km_40_preavviso}",
           ),
-          (int(width_40 * 0.64), int(height_40 * 0.505), f"KM {km_40_testata}"),
-          (int(width_40 * 0.44), int(height_40 * 0.085), f"KM {km_40_vialibera}"),
+          (int(width_40 * 0.64), int(height_40 * 0.497), f"KM {km_40_testata}"),
+          (int(width_40 * 0.41), int(height_40 * 0.077), f"KM {km_40_vialibera}"),
       ]
 
       for x, y, testo in etichette_40:
