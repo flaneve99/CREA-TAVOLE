@@ -2705,17 +2705,17 @@ elif "44" in tavola_selezionata:
       # Coordinate mappate sulla Tavola 44 (dal basso verso l'alto)
       etichette_44 = [
           (
-              int(width_44 * 0.625),
-              int(height_44 * 0.905),
+              int(width_44 * 0.62),
+              int(height_44 * 0.895),
               f"KM {km_44_primo_preavviso}",
           ),
           (
-              int(width_44 * 0.625),
-              int(height_44 * 0.725),
+              int(width_44 * 0.62),
+              int(height_44 * 0.735),
               f"KM {km_44_secondo_preavviso}",
           ),
-          (int(width_44 * 0.625), int(height_44 * 0.520), f"KM {km_44_passaggio}"),
-          (int(width_44 * 0.625), int(height_44 * 0.430), f"KM {km_44_inizio}"),
+          (int(width_44 * 0.62), int(height_44 * 0.535), f"KM {km_44_passaggio}"),
+          (int(width_44 * 0.62), int(height_44 * 0.430), f"KM {km_44_inizio}"),
           (int(width_44 * 0.435), int(height_44 * 0.040), f"KM {km_44_vialibera}"),
       ]
 
@@ -2730,7 +2730,7 @@ elif "44" in tavola_selezionata:
         )
 
       draw_44.multiline_text(
-          (int(width_44 * 0.64), int(height_44 * 0.130)),
+          (int(width_44 * 0.65), int(height_44 * 0.250)),
           ubicazione_testo_44,
           fill=(255, 0, 0),
           font=font_ub_44,
