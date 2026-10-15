@@ -2219,11 +2219,11 @@ elif "CORSIA DI EMERGENZA NJ" in tavola_selezionata:
 
       # Coordinate provvisorie da calibrare in base alle posizioni sull'immagine pulita
       etichette_em = [
-          (int(width_em * 0.56), int(height_em * 0.887), f"KM {km_em_rallentare}"),
-          (int(width_em * 0.56), int(height_em * 0.773), f"KM {km_em_lavori}"),
-          (int(width_em * 0.56), int(height_em * 0.617), f"KM {km_em_passaggio}"),
-          (int(width_em * 0.56), int(height_em * 0.555), f"KM {km_em_barriera}"),
-          (int(width_em * 0.38), int(height_em * 0.030), f"KM {km_em_fine}"),
+          (int(width_em * 0.56), int(height_em * 0.885), f"KM {km_em_rallentare}"),
+          (int(width_em * 0.56), int(height_em * 0.7715), f"KM {km_em_lavori}"),
+          (int(width_em * 0.56), int(height_em * 0.615), f"KM {km_em_passaggio}"),
+          (int(width_em * 0.56), int(height_em * 0.553), f"KM {km_em_barriera}"),
+          (int(width_em * 0.38), int(height_em * 0.028), f"KM {km_em_fine}"),
       ]
 
       for x, y, testo in etichette_em:
@@ -2238,7 +2238,7 @@ elif "CORSIA DI EMERGENZA NJ" in tavola_selezionata:
 
       # Testo fisso "CHIUSURA DELLA CORSIA DI EMERGENZA" già presente o da aggiungere se necessario, più l'ubicazione
       draw_em.multiline_text(
-          (int(width_em * 0.59), int(height_em * 0.420)),
+          (int(width_em * 0.57), int(height_em * 0.420)),
           ubicazione_testo_em,
           fill=(255, 0, 0),
           font=font_ub_em,
