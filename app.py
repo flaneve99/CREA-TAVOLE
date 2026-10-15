@@ -595,7 +595,7 @@ elif "16" in tavola_selezionata:
           # 7. Preavviso Chiusura Corsia 100m -> salendo (es. 0.425)
           (int(width_16 * 0.49), int(height_16 * 0.610), f"KM {km_preavviso_100}"),
           # 8. Inizio Testata (Freccia blu / inizio cantiere) -> quota y più in alto (es. 0.325)
-          (int(width_16 * 0.49), int(height_16 * 0.555), f"KM {km_inizio_testata}"),
+          (int(width_16 * 0.49), int(height_16 * 0.515), f"KM {km_inizio_testata}"),
       ]
 
       for x, y, testo in etichette_16:
