@@ -2238,7 +2238,7 @@ elif "CORSIA DI EMERGENZA NJ" in tavola_selezionata:
 
       # Testo fisso "CHIUSURA DELLA CORSIA DI EMERGENZA" già presente o da aggiungere se necessario, più l'ubicazione
       draw_em.multiline_text(
-          (int(width_em * 0.57), int(height_em * 0.420)),
+          (int(width_em * 0.56), int(height_em * 0.420)),
           ubicazione_testo_em,
           fill=(255, 0, 0),
           font=font_ub_em,
