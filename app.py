@@ -879,12 +879,11 @@ elif "66" in tavola_selezionata:
           (int(width_66 * 0.65), int(height_66 * 0.600), f"KM {km_66_dx_chiusura}"),
           (int(width_66 * 0.65), int(height_66 * 0.370), f"KM {km_66_dx_fine}"),
           # --- LATO SINISTRO ---
-          (int(width_66 * 0.01), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
-          (int(width_66 * 0.01), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
-          (int(width_66 * 0.01), int(height_66 * 0.265), f"KM {km_66_sx_strettoia}"),
-          (int(width_66 * 0.01), int(height_66 * 0.325), f"KM {km_66_sx_semaforo}"),
-          (int(width_66 * 0.01), int(height_66 * 0.530), f"KM {km_66_sx_zona}"),
-      ]
+          (int(width_66 * 0.01), int(height_66 * 0.080), f"KM {km_66_sx_preavviso}"),
+          (int(width_66 * 0.01), int(height_66 * 0.152), f"KM {km_66_sx_limite60}"),
+          (int(width_66 * 0.01), int(height_66 * 0.210), f"KM {km_66_sx_strettoia}"),
+          (int(width_66 * 0.01), int(height_66 * 0.245), f"KM {km_66_sx_semaforo}"),
+          (int(width_66 * 0.01), int(height_66 * 0.370), f"KM {km_66_sx_zona}"),
 
       for x, y, testo in etichette_66:
         draw_66.text(
