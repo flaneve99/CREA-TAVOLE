@@ -900,13 +900,13 @@ elif "17" in tavola_selezionata:
           ),
           (
               int(width_17 * 0.63),
-              int(height_17 * 0.807),
+              int(height_17 * 0.805),
               f"KM {km_17_limite_50_bassa}",
           ),
           (int(width_17 * 0.63), int(height_17 * 0.867), f"KM {km_17_limite_70}"),
           (
-              int(width_17 * 0.61),
-              int(height_17 * 0.930),
+              int(width_17 * 0.63),
+              int(height_17 * 0.932),
               f"KM {km_17_preavviso_700}",
           ),
       ]
@@ -921,8 +921,8 @@ elif "17" in tavola_selezionata:
             stroke_fill=(255, 255, 255),
         )
 
-      x_ub_17 = int(width_17 * 0.67)
-      y_ub_17 = int(height_17 * 0.37)
+      x_ub_17 = int(width_17 * 0.645)
+      y_ub_17 = int(height_17 * 0.375)
       draw_17.multiline_text(
           (x_ub_17, y_ub_17),
           ubicazione_testo_17,
