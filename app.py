@@ -1959,23 +1959,23 @@ elif "18" in tavola_selezionata:
         base_img_18 = immagine_originale.convert("RGB")
       width_18, height_18 = base_img_18.size
       draw_18 = ImageDraw.Draw(base_img_18)
-      font_km = load_custom_font(20)
+      font_km = load_custom_font(17)
       font_ub_18 = load_custom_font(25)
       BORDO = 2
 
       etichette_18 = [
-          (int(width_18 * 0.65), int(height_18 * 0.935), f"KM {km_18_lavori}"),
-          (int(width_18 * 0.65), int(height_18 * 0.865), f"KM {km_18_limite70}"),
-          (int(width_18 * 0.65), int(height_18 * 0.795), f"KM {km_18_limite50}"),
+          (int(width_18 * 0.65), int(height_18 * 0.922), f"KM {km_18_lavori}"),
+          (int(width_18 * 0.65), int(height_18 * 0.850), f"KM {km_18_limite70}"),
+          (int(width_18 * 0.65), int(height_18 * 0.760), f"KM {km_18_limite50}"),
           (
               int(width_18 * 0.65),
-              int(height_18 * 0.725),
+              int(height_18 * 0.735),
               f"KM {km_18_corsia250}",
           ),
-          (int(width_18 * 0.65), int(height_18 * 0.655), f"KM {km_18_sorpasso}"),
+          (int(width_18 * 0.65), int(height_18 * 0.665), f"KM {km_18_sorpasso}"),
           (
               int(width_18 * 0.65),
-              int(height_18 * 0.585),
+              int(height_18 * 0.600),
               f"KM {km_18_corsia100}",
           ),
           (
