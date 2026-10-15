@@ -545,7 +545,7 @@ elif "40" in tavola_selezionata:
         )
 
       draw_40.multiline_text(
-          (int(width_40 * 0.73), int(height_40 * 0.220)),
+          (int(width_40 * 0.67), int(height_40 * 0.290)),
           ubicazione_testo_40,
           fill=(255, 0, 0),
           font=font_ubicazione_40,
