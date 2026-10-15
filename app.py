@@ -1761,3 +1761,280 @@ elif "66" in tavola_selezionata:
       st.exception(errore)
   else:
     st.error("Immagine 'TAVOLA 66.jpg' non trovata nella cartella.")
+
+# ====================================================================
+# TAVOLA 18
+# ====================================================================
+elif "18" in tavola_selezionata:
+  st.subheader("📍 Dati e Progressive Chilometriche - Tavola 18")
+  ubicazione_testo_18 = st.text_area(
+      "Ubicazione / Direzione (Tavola 18)", value="DIREZIONE SUD"
+  )
+  st.write("### Lato Destro dell'Immagine (dal basso verso l'alto)")
+  col1, col2 = st.columns(2)
+  with col1:
+    km_18_lavori = st.text_input("KM Lavori in corso", value="805+860")
+    km_18_limite70 = st.text_input("KM Limite 70 km/h", value="805+980")
+    km_18_limite50 = st.text_input("KM Limite 50 km/h", value="806+100")
+    km_18_corsia250 = st.text_input("KM Chiusura corsia a 250 m", value="806+220")
+    km_18_sorpasso = st.text_input("KM Divieto di sorpasso", value="806+340")
+  with col2:
+    km_18_corsia100 = st.text_input(
+        "KM Chiusura corsia 100 metri", value="806+460"
+    )
+    km_18_inizio_chiusura = st.text_input("KM Inizio chiusura", value="806+556")
+    km_18_ultima_chiusura = st.text_input("KM Ultima chiusura", value="806+700")
+    km_18_via_libera = st.text_input("KM Via libera", value="807+300")
+
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 18"):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Tavola 18"
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = (
+        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 18"
+    )
+    fill_verde_chiaro = PatternFill(
+        start_color="92D050", end_color="92D050", fill_type="solid"
+    )
+    fill_verde_scuro = PatternFill(
+        start_color="70AD47", end_color="70AD47", fill_type="solid"
+    )
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+    bordo_sottile = Border(
+        left=Side(style="thin", color="000000"),
+        right=Side(style="thin", color="000000"),
+        top=Side(style="thin", color="000000"),
+        bottom=Side(style="thin", color="000000"),
+    )
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(
+        horizontal="center", vertical="center"
+    )
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(
+          horizontal="center", vertical="center", wrap_text=True
+      )
+      cell.border = bordo_sottile
+
+    dati_righe_18 = [
+        (
+            "fig_383.jpg",
+            "FIG. II 383",
+            "LAVORI IN CORSO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig050_lim70.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 70 KM/H",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig050_lim50.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 50 KM/H",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_411a.jpg",
+            "FIG. II 411/a",
+            "SEGNALE DI CORSIA CHIUSA (Chiusura corsia di destra)",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_052.jpg",
+            "FIG. II 052",
+            "DIVIETO DI SORPASSO PER VEICOLI DI MASSA > 3,5t",
+            "",
+            "SEGNALI DI DIVIETO",
+        ),
+        (
+            "fig_411a.jpg",
+            "FIG. II 411/a",
+            "SEGNALE DI CORSIA CHIUSA (Chiusura corsia di destra)",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_082a.jpg",
+            "FIG. II 082/a",
+            "PASSAGGIO OBBLIGATORIO A SINISTRA",
+            "",
+            "SEGNALI DI OBBLIGO",
+        ),
+        (
+            "fig_070.jpg",
+            "FIG. II 070",
+            "VIA LIBERA / FINE CANTIERE",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+    ]
+
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 45
+    ws.column_dimensions["D"].width = 20
+    ws.column_dimensions["E"].width = 25
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+    immagini_inserite = 0
+    for i, row_data in enumerate(dati_righe_18, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value=dettagli)
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(
+            horizontal="center", vertical="center", wrap_text=True
+        )
+        cell.border = bordo_sottile
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+      nomi_da_cercare = [
+          img_nome,
+          img_nome.replace(".jpg", ".png"),
+          img_nome.replace(".png", ".jpg"),
+      ]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_18_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(
+              col=0, colOff=150000, row=i - 1, rowOff=40000
+          )
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell", _from=marker_from, to=marker_to
+          )
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+    st.success(
+        "Abaco Excel Tavola 18 generato! (Immagini inserite:"
+        f" {immagini_inserite}/{len(dati_righe_18)})"
+    )
+    st.download_button(
+        label="📥 Scarica Excel Abaco Tavola 18",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_18.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+  st.divider()
+  st.subheader("🖼️ Anteprima Tavola 18 Personalizzata")
+  img_path_18 = os.path.join(cartella_app, "TAVOLA 18.jpg")
+  if os.path.exists(img_path_18):
+    try:
+      with Image.open(img_path_18) as immagine_originale:
+        base_img_18 = immagine_originale.convert("RGB")
+      width_18, height_18 = base_img_18.size
+      draw_18 = ImageDraw.Draw(base_img_18)
+      font_km = load_custom_font(20)
+      font_ub_18 = load_custom_font(25)
+      BORDO = 2
+
+      etichette_18 = [
+          (int(width_18 * 0.65), int(height_18 * 0.935), f"KM {km_18_lavori}"),
+          (int(width_18 * 0.65), int(height_18 * 0.865), f"KM {km_18_limite70}"),
+          (int(width_18 * 0.65), int(height_18 * 0.795), f"KM {km_18_limite50}"),
+          (
+              int(width_18 * 0.65),
+              int(height_18 * 0.725),
+              f"KM {km_18_corsia250}",
+          ),
+          (int(width_18 * 0.65), int(height_18 * 0.655), f"KM {km_18_sorpasso}"),
+          (
+              int(width_18 * 0.65),
+              int(height_18 * 0.585),
+              f"KM {km_18_corsia100}",
+          ),
+          (
+              int(width_18 * 0.65),
+              int(height_18 * 0.510),
+              f"KM {km_18_inizio_chiusura}",
+          ),
+          (
+              int(width_18 * 0.65),
+              int(height_18 * 0.350),
+              f"KM {km_18_ultima_chiusura}",
+          ),
+          (int(width_18 * 0.65), int(height_18 * 0.080), f"KM {km_18_via_libera}"),
+      ]
+
+      for x, y, testo in etichette_18:
+        draw_18.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      draw_18.multiline_text(
+          (int(width_18 * 0.68), int(height_18 * 0.395)),
+          ubicazione_testo_18,
+          fill=(255, 0, 0),
+          font=font_ub_18,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_18 = io.BytesIO()
+      base_img_18.save(img_io_18, format="JPEG", quality=100, subsampling=0)
+      jpg_data_18 = img_io_18.getvalue()
+      st.image(
+          base_img_18,
+          caption="Tavola 18 - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola 18 in formato JPG",
+          data=jpg_data_18,
+          file_name="Tavola_18_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 18.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 18.jpg' non trovata nella cartella.")
