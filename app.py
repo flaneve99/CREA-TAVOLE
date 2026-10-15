@@ -1182,7 +1182,7 @@ elif "66" in tavola_selezionata:
       cell.border = bordo_sottile
     dati_righe_66 = [
         (
-            "fig050_lim60.jpg",
+            "fig_050_lim60.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 60 KM/H",
             "",
