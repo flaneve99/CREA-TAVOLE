@@ -89,6 +89,7 @@ tavola_selezionata = st.selectbox(
             "Tavola 25 - Deviazione con una sola corsia per senso di marcia su"
             " carreggiata a due corsie"
         ),
+        "Tavola 37 - Restringimento della carreggiata su rampa a senso unico",
         "Tavola 39 - Cantiere mobile carreggiata a due corsie",
         (
             "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura"
