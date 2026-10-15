@@ -575,7 +575,7 @@ elif "16" in tavola_selezionata:
       draw_16 = ImageDraw.Draw(base_img_16)
 
       font_km = load_custom_font(25)
-      font_ub_16 = load_custom_font(25)
+      font_ub_16 = load_custom_font(32)
       BORDO = 2
 
       # Mappatura corretta dal basso (0.925) verso l'alto (0.325) in ordine di sequenza dei cartelli:
