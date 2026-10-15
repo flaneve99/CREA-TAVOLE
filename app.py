@@ -879,29 +879,23 @@ elif "25" in tavola_selezionata:
         "KM Inizio immissione (Dx)", value="812+100"
     )
 
-  st.write("### Lato Sinistro dell'Immagine (dal basso verso l'alto)")
+  st.write("### Lato Sinistro dell'Immagine (dall'alto verso il basso)")
   col3, col4 = st.columns(2)
   with col3:
-    km_25_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="812+100")
-    km_25_sx_limite90 = st.text_input("KM Limite 90 (Sx)", value="812+142")
-    km_25_sx_corsia250 = st.text_input(
-        "KM Corsia chiusa 250m (Sx)", value="812+178"
+    km_25_sx_lavori = st.text_input(
+        "KM Lavori in corso (In alto)", value="812+862"
     )
-    km_25_sx_limite60 = st.text_input("KM Limite 60 (Sx)", value="812+286")
-    km_25_sx_corsia100 = st.text_input(
-        "KM Corsia chiusa 100m (Sx)", value="812+322"
-  )
+    km_25_sx_limite90 = st.text_input("KM Limite 90", value="812+742")
+    km_25_sx_corsia250 = st.text_input("KM Riferimento", value="812+622")
+    km_25_sx_limite60 = st.text_input("KM Riferimento", value="812+502")
+    km_25_sx_corsia100 = st.text_input("KM Riferimento", value="812+382")
   with col4:
-    km_25_sx_testata = st.text_input("KM Inizio testata (Sx)", value="812+382")
-    km_25_sx_obbligo = st.text_input(
-        "KM Segnale obbligo passaggio (Sx)", value="812+502"
-    )
-    km_25_sx_doppiosenso = st.text_input(
-        "KM Doppio senso di circolazione (Sx)", value="812+622"
-    )
-    km_25_sx_corsiaunica = st.text_input("KM Corsia unica (Sx)", value="812+742")
+    km_25_sx_testata = st.text_input("KM Riferimento", value="812+322")
+    km_25_sx_obbligo = st.text_input("KM Riferimento", value="812+286")
+    km_25_sx_doppiosenso = st.text_input("KM Riferimento", value="812+178")
+    km_25_sx_corsiaunica = st.text_input("KM Riferimento", value="812+142")
     km_25_sx_immissione_altro = st.text_input(
-        "KM Inizio immissione altro senso (Sx)", value="812+862"
+        "KM Inizio (In basso)", value="812+100"
     )
 
   if st.button("Genera Abaco Segnaletica (Excel) - Tavola 25"):
@@ -1118,35 +1112,55 @@ elif "25" in tavola_selezionata:
               int(height_25 * 0.730),
               f"KM {km_25_dx_immissione}",
           ),
-          # --- LATO SINISTRO (dal basso verso l'alto: da 812+100 a 812+862) ---
-          (int(width_25 * 0.17), int(height_25 * 0.715), f"KM {km_25_sx_lavori}"),
-          (int(width_25 * 0.17), int(height_25 * 0.650), f"KM {km_25_sx_limite90}"),
+          # --- LATO SINISTRO (dall'alto verso il basso: da 812+862 a 812+100) ---
           (
               int(width_25 * 0.17),
-              int(height_25 * 0.585),
-              f"KM {km_25_sx_corsia250}",
-          ),
-          (int(width_25 * 0.17), int(height_25 * 0.520), f"KM {km_25_sx_limite60}"),
-          (
-              int(width_25 * 0.17),
-              int(height_25 * 0.455),
-              f"KM {km_25_sx_corsia100}",
-          ),
-          (int(width_25 * 0.17), int(height_25 * 0.390), f"KM {km_25_sx_testata}"),
-          (int(width_25 * 0.17), int(height_25 * 0.325), f"KM {km_25_sx_obbligo}"),
-          (
-              int(width_25 * 0.17),
-              int(height_25 * 0.260),
-              f"KM {km_25_sx_doppiosenso}",
+              int(height_25 * 0.130),
+              f"KM {km_25_sx_lavori}",
           ),
           (
               int(width_25 * 0.17),
               int(height_25 * 0.195),
+              f"KM {km_25_sx_limite90}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.260),
+              f"KM {km_25_sx_corsia250}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.325),
+              f"KM {km_25_sx_limite60}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.390),
+              f"KM {km_25_sx_corsia100}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.455),
+              f"KM {km_25_sx_testata}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.520),
+              f"KM {km_25_sx_obbligo}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.585),
+              f"KM {km_25_sx_doppiosenso}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.650),
               f"KM {km_25_sx_corsiaunica}",
           ),
           (
               int(width_25 * 0.17),
-              int(height_25 * 0.130),
+              int(height_25 * 0.715),
               f"KM {km_25_sx_immissione_altro}",
           ),
       ]
