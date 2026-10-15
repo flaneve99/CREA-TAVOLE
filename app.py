@@ -2459,17 +2459,17 @@ elif "43" in tavola_selezionata:
       # Coordinate mappate sulla Tavola 43 (dal basso verso l'alto)
       etichette_43 = [
           (
-              int(width_43 * 0.63),
-              int(height_43 * 0.890),
+              int(width_43 * 0.64),
+              int(height_43 * 0.880),
               f"KM {km_43_primo_preavviso}",
           ),
           (
-              int(width_43 * 0.63),
-              int(height_43 * 0.636),
+              int(width_43 * 0.64),
+              int(height_43 * 0.610),
               f"KM {km_43_secondo_preavviso}",
           ),
-          (int(width_43 * 0.63), int(height_43 * 0.450), f"KM {km_43_passaggio}"),
-          (int(width_43 * 0.63), int(height_43 * 0.280), f"KM {km_43_inizio}"),
+          (int(width_43 * 0.64), int(height_43 * 0.420), f"KM {km_43_passaggio}"),
+          (int(width_43 * 0.64), int(height_43 * 0.280), f"KM {km_43_inizio}"),
           (int(width_43 * 0.46), int(height_43 * 0.037), f"KM {km_43_vialibera}"),
       ]
 
@@ -2484,7 +2484,7 @@ elif "43" in tavola_selezionata:
         )
 
       draw_43.multiline_text(
-          (int(width_43 * 0.64), int(height_43 * 0.130)),
+          (int(width_43 * 0.67), int(height_43 * 0.360)),
           ubicazione_testo_43,
           fill=(255, 0, 0),
           font=font_ub_43,
