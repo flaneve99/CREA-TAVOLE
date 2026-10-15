@@ -850,7 +850,6 @@ elif "17" in tavola_selezionata:
   else:
     st.error("Immagine 'TAVOLA 17.jpg' non trovata nella cartella.")
 
-
 # ====================================================================
 # TAVOLA 25
 # ====================================================================
@@ -873,23 +872,37 @@ elif "25" in tavola_selezionata:
     km_25_dx_limite60 = st.text_input("KM Limite 60 (Dx)", value="811+872")
     km_25_dx_limite40 = st.text_input("KM Limite 40 (Dx)", value="811+968")
   with col2:
-    km_25_dx_rientro = st.text_input("KM Rientro in carreggiata (Dx)", value="812+064")
-    km_25_dx_immissione = st.text_input("KM Inizio immissione (Dx)", value="812+100")
+    km_25_dx_rientro = st.text_input(
+        "KM Rientro in carreggiata (Dx)", value="812+064"
+    )
+    km_25_dx_immissione = st.text_input(
+        "KM Inizio immissione (Dx)", value="812+100"
+    )
 
   st.write("### Lato Sinistro dell'Immagine (dal basso verso l'alto)")
   col3, col4 = st.columns(2)
   with col3:
-    km_25_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="812+100")
-    km_25_sx_limite90 = st.text_input("KM Limite 90 (Sx)", value="812+142")
-    km_25_sx_corsia250 = st.text_input("KM Corsia chiusa 250m (Sx)", value="812+178")
-    km_25_sx_limite60 = st.text_input("KM Limite 60 (Sx)", value="812+286")
-    km_25_sx_corsia100 = st.text_input("KM Corsia chiusa 100m (Sx)", value="812+322")
-  with col4:
-    km_25_sx_testata = st.text_input("KM Inizio testata (Sx)", value="812+382")
-    km_25_sx_obbligo = st.text_input("KM Segnale obbligo passaggio (Sx)", value="812+502")
-    km_25_sx_doppiosenso = st.text_input("KM Doppio senso di circolazione (Sx)", value="812+622")
+    km_25_sx_immissione_altro = st.text_input(
+        "KM Inizio immissione altro senso (Sx)", value="812+862"
+    )
     km_25_sx_corsiaunica = st.text_input("KM Corsia unica (Sx)", value="812+742")
-    km_25_sx_immissione_altro = st.text_input("KM Inizio immissione altro senso (Sx)", value="812+862")
+    km_25_sx_doppiosenso = st.text_input(
+        "KM Doppio senso di circolazione (Sx)", value="812+622"
+    )
+    km_25_sx_obbligo = st.text_input(
+        "KM Segnale obbligo passaggio (Sx)", value="812+502"
+    )
+    km_25_sx_testata = st.text_input("KM Inizio testata (Sx)", value="812+382")
+  with col4:
+    km_25_sx_corsia100 = st.text_input(
+        "KM Corsia chiusa 100m (Sx)", value="812+322"
+    )
+    km_25_sx_limite60 = st.text_input("KM Limite 60 (Sx)", value="812+286")
+    km_25_sx_corsia250 = st.text_input(
+        "KM Corsia chiusa 250m (Sx)", value="812+178"
+    )
+    km_25_sx_limite90 = st.text_input("KM Limite 90 (Sx)", value="812+142")
+    km_25_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="812+100")
 
   if st.button("Genera Abaco Segnaletica (Excel) - Tavola 25"):
     wb = openpyxl.Workbook()
@@ -932,17 +945,71 @@ elif "25" in tavola_selezionata:
           horizontal="center", vertical="center", wrap_text=True
       )
       cell.border = bordo_sottile
-    
+
     dati_righe_25 = [
-        ("fig_050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
-        ("fig050_lim40.jpg", "FIG. II 050", "LIMITE MASSIMO DI VELOCITÀ 40 KM/H", "", "SEGNALI DI DIVIETO"),
-        ("fig_412b.jpg", "FIG. II 412/b", "SEGNALE DI RIENTRO IN CARREGGIATA", "", "SEGNALI TEMPORANEI"),
-        ("fig_070.jpg", "FIG. II 070", "VIA LIBERA / FINE CANTIERE", "", "SEGNALI DI PRESCRIZIONE"),
-        ("fig_387.jpg", "FIG. II 387", "DOPPIO SENSO DI CIRCOLAZIONE", "", "SEGNALI TEMPORANEI"),
-        ("fig_411a_sx.jpg", "FIG. II 411/a", "SEGNALE DI CORSIA CHIUSA (CORSIA DI SINISTRA)", "", "SEGNALI TEMPORANEI"),
-        ("fig_048.jpg", "FIG. II 048", "DIVIETO DI SORPASSO", "", "SEGNALI DI DIVIETO"),
-        ("fig050_lim90.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 90 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
-        ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
+        (
+            "fig_050_lim60.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 60 KM/H",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig050_lim40.jpg",
+            "FIG. II 050",
+            "LIMITE MASSIMO DI VELOCITÀ 40 KM/H",
+            "",
+            "SEGNALI DI DIVIETO",
+        ),
+        (
+            "fig_412b.jpg",
+            "FIG. II 412/b",
+            "SEGNALE DI RIENTRO IN CARREGGIATA",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_070.jpg",
+            "FIG. II 070",
+            "VIA LIBERA / FINE CANTIERE",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_387.jpg",
+            "FIG. II 387",
+            "DOPPIO SENSO DI CIRCOLAZIONE",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_411a_sx.jpg",
+            "FIG. II 411/a",
+            "SEGNALE DI CORSIA CHIUSA (CORSIA DI SINISTRA)",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_048.jpg",
+            "FIG. II 048",
+            "DIVIETO DI SORPASSO",
+            "",
+            "SEGNALI DI DIVIETO",
+        ),
+        (
+            "fig050_lim90.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 90 KM/H",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_383.jpg",
+            "FIG. II 383",
+            "LAVORI IN CORSO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
     ]
 
     ws.column_dimensions["A"].width = 18
@@ -1031,21 +1098,57 @@ elif "25" in tavola_selezionata:
 
       etichette_25 = [
           # --- LATO DESTRO (dal basso verso l'alto) ---
-          (int(width_25 * 0.77), int(height_25 * 0.925), f"KM {km_25_dx_limite60}"),
-          (int(width_25 * 0.77), int(height_25 * 0.860), f"KM {km_25_dx_limite40}"),
-          (int(width_25 * 0.77), int(height_25 * 0.795), f"KM {km_25_dx_rientro}"),
-          (int(width_25 * 0.77), int(height_25 * 0.730), f"KM {km_25_dx_immissione}"),
+          (
+              int(width_25 * 0.77),
+              int(height_25 * 0.925),
+              f"KM {km_25_dx_limite60}",
+          ),
+          (
+              int(width_25 * 0.77),
+              int(height_25 * 0.860),
+              f"KM {km_25_dx_limite40}",
+          ),
+          (
+              int(width_25 * 0.77),
+              int(height_25 * 0.795),
+              f"KM {km_25_dx_rientro}",
+          ),
+          (
+              int(width_25 * 0.77),
+              int(height_25 * 0.730),
+              f"KM {km_25_dx_immissione}",
+          ),
           # --- LATO SINISTRO (dal basso verso l'alto) ---
           (int(width_25 * 0.17), int(height_25 * 0.715), f"KM {km_25_sx_lavori}"),
           (int(width_25 * 0.17), int(height_25 * 0.650), f"KM {km_25_sx_limite90}"),
-          (int(width_25 * 0.17), int(height_25 * 0.585), f"KM {km_25_sx_corsia250}"),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.585),
+              f"KM {km_25_sx_corsia250}",
+          ),
           (int(width_25 * 0.17), int(height_25 * 0.520), f"KM {km_25_sx_limite60}"),
-          (int(width_25 * 0.17), int(height_25 * 0.455), f"KM {km_25_sx_corsia100}"),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.455),
+              f"KM {km_25_sx_corsia100}",
+          ),
           (int(width_25 * 0.17), int(height_25 * 0.390), f"KM {km_25_sx_testata}"),
           (int(width_25 * 0.17), int(height_25 * 0.325), f"KM {km_25_sx_obbligo}"),
-          (int(width_25 * 0.17), int(height_25 * 0.260), f"KM {km_25_sx_doppiosenso}"),
-          (int(width_25 * 0.17), int(height_25 * 0.195), f"KM {km_25_sx_corsiaunica}"),
-          (int(width_25 * 0.17), int(height_25 * 0.130), f"KM {km_25_sx_immissione_altro}"),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.260),
+              f"KM {km_25_sx_doppiosenso}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.195),
+              f"KM {km_25_sx_corsiaunica}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.130),
+              f"KM {km_25_sx_immissione_altro}",
+          ),
       ]
 
       for x, y, testo in etichette_25:
@@ -1101,8 +1204,6 @@ elif "25" in tavola_selezionata:
       st.exception(errore)
   else:
     st.error("Immagine 'TAVOLA 25.jpg' non trovata nella cartella.")
-
-
 # ====================================================================
 # TAVOLA 66
 # ====================================================================
