@@ -2699,24 +2699,24 @@ elif "44" in tavola_selezionata:
       width_44, height_44 = base_img_44.size
       draw_44 = ImageDraw.Draw(base_img_44)
       font_km = load_custom_font(45)
-      font_ub_44 = load_custom_font(55)
+      font_ub_44 = load_custom_font(60)
       BORDO = 2
 
       # Coordinate mappate sulla Tavola 44 (dal basso verso l'alto)
       etichette_44 = [
           (
-              int(width_44 * 0.61),
-              int(height_44 * 0.930),
+              int(width_44 * 0.625),
+              int(height_44 * 0.905),
               f"KM {km_44_primo_preavviso}",
           ),
           (
-              int(width_44 * 0.61),
-              int(height_44 * 0.670),
+              int(width_44 * 0.625),
+              int(height_44 * 0.725),
               f"KM {km_44_secondo_preavviso}",
           ),
-          (int(width_44 * 0.61), int(height_44 * 0.450), f"KM {km_44_passaggio}"),
-          (int(width_44 * 0.61), int(height_44 * 0.290), f"KM {km_44_inizio}"),
-          (int(width_44 * 0.44), int(height_44 * 0.050), f"KM {km_44_vialibera}"),
+          (int(width_44 * 0.625), int(height_44 * 0.520), f"KM {km_44_passaggio}"),
+          (int(width_44 * 0.625), int(height_44 * 0.430), f"KM {km_44_inizio}"),
+          (int(width_44 * 0.435), int(height_44 * 0.040), f"KM {km_44_vialibera}"),
       ]
 
       for x, y, testo in etichette_44:
