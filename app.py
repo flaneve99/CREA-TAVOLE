@@ -518,7 +518,7 @@ elif "40" in tavola_selezionata:
       width_40, height_40 = base_img_40.size
       draw_40 = ImageDraw.Draw(base_img_40)
       font_km = load_custom_font(25)
-      font_ubicazione_40 = load_custom_font(29)
+      font_ubicazione_40 = load_custom_font(30)
       BORDO = 2
 
       # Mappatura coordinate progressive lato destro (dal basso verso l'alto)
@@ -545,7 +545,7 @@ elif "40" in tavola_selezionata:
         )
 
       draw_40.multiline_text(
-          (int(width_40 * 0.66), int(height_40 * 0.330)),
+          (int(width_40 * 0.655), int(height_40 * 0.330)),
           ubicazione_testo_40,
           fill=(255, 0, 0),
           font=font_ubicazione_40,
