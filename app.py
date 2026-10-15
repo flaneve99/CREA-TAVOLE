@@ -78,6 +78,10 @@ tavola_selezionata = st.selectbox(
     "Seleziona la Tavola di Cantiere",
     [
         "Tavola 39 - Cantiere mobile carreggiata a due corsie",
+        (
+            "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura"
+            " della corsia di sorpasso"
+        ),
         "Tavola 16 - Chiusura della corsia di marcia su carreggiata a due corsie",
         (
             "Tavola 17 - Chiusura della corsia di sorpasso su carreggiata a due"
@@ -93,7 +97,6 @@ tavola_selezionata = st.selectbox(
         ),
     ],
 )
-
 
 # ====================================================================
 # TAVOLA 39
@@ -311,7 +314,267 @@ if "39" in tavola_selezionata:
   else:
     st.error("Immagine 'TAVOLA 39.jpg' non trovata nella cartella.")
 
+# ====================================================================
+# TAVOLA 40
+# ====================================================================
+elif "40" in tavola_selezionata:
 
+  st.subheader("📍 Dati e Progressive Chilometriche - Tavola 40")
+
+  ubicazione_testo_40 = st.text_area(
+      "Ubicazione / Direzione (Tavola 40)",
+      value="DIREZIONE NORD\nKM VARIA",
+  )
+
+  col1, col2 = st.columns(2)
+
+  with col1:
+    km_40_750 = st.text_input(
+        "KM Chiusura corsia a 750m (Basso)", value="35+560"
+    )
+    km_40_500 = st.text_input("KM Chiusura corsia a 500m", value="35+810")
+    km_40_preavviso = st.text_input(
+        "KM Segnale mobile di preavviso (Centro)", value="36+060"
+    )
+
+  with col2:
+    km_40_testata = st.text_input("KM Inizio Testata", value="36+110")
+    km_40_vialibera = st.text_input("KM Via Libera / Fine (Alto)", value="36+600")
+
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 40"):
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Tavola 40"
+
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = (
+        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 40"
+    )
+
+    fill_verde_chiaro = PatternFill(
+        start_color="92D050", end_color="92D050", fill_type="solid"
+    )
+    fill_verde_scuro = PatternFill(
+        start_color="70AD47", end_color="70AD47", fill_type="solid"
+    )
+
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+
+    bordo_sottile = Border(
+        left=Side(style="thin", color="000000"),
+        right=Side(style="thin", color="000000"),
+        top=Side(style="thin", color="000000"),
+        bottom=Side(style="thin", color="000000"),
+    )
+
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(
+        horizontal="center", vertical="center"
+    )
+
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(
+          horizontal="center", vertical="center", wrap_text=True
+      )
+      cell.border = bordo_sottile
+
+    dati_righe_40 = [
+        (
+            "fig_399.jpg",
+            "FIG. II 399",
+            "PREAVVISO DI CANTIERE MOBILE",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
+        (
+            "fig_070.jpg",
+            "FIG. II 070",
+            "FINE CANTIERE",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_400.jpg",
+            "FIG. II 400",
+            "SEGNALE MOBILE DI PREAVVISO CON FRECCIA LUMINOSA",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_401.jpg",
+            "FIG. II 401",
+            "VEICOLO DI PROTEZIONE CON PANNELLO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+    ]
+
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 15
+    ws.column_dimensions["C"].width = 40
+    ws.column_dimensions["D"].width = 20
+    ws.column_dimensions["E"].width = 25
+
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+
+    immagini_inserite = 0
+
+    for i, row_data in enumerate(dati_righe_40, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value=dettagli)
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(
+            horizontal="center", vertical="center", wrap_text=True
+        )
+        cell.border = bordo_sottile
+
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+
+      nomi_da_cercare = [
+          img_nome,
+          img_nome.replace(".jpg", ".png"),
+          img_nome.replace(".png", ".jpg"),
+      ]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_40_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(
+              col=0, colOff=150000, row=i - 1, rowOff=40000
+          )
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell", _from=marker_from, to=marker_to
+          )
+
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+
+    st.success(
+        "Abaco Excel Tavola 40 generato con successo! (Immagini:"
+        f" {immagini_inserite}/5)"
+    )
+    st.download_button(
+        label="📥 Scarica Excel Abaco Segnaletica Tavola 40",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_40.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+
+  st.divider()
+  st.subheader("🖼️ Anteprima Tavola 40 Personalizzata")
+
+  img_path_40 = os.path.join(cartella_app, "TAVOLA 40.jpg")
+  if os.path.exists(img_path_40):
+    try:
+      with Image.open(img_path_40) as immagine_originale:
+        base_img_40 = immagine_originale.convert("RGB")
+
+      width_40, height_40 = base_img_40.size
+      draw_40 = ImageDraw.Draw(base_img_40)
+      font_km = load_custom_font(25)
+      font_ubicazione_40 = load_custom_font(30)
+      BORDO = 2
+
+      # Mappatura coordinate progressive lato destro (dal basso verso l'alto)
+      etichette_40 = [
+          (int(width_40 * 0.58), int(height_40 * 0.925), f"KM {km_40_750}"),
+          (int(width_40 * 0.58), int(height_40 * 0.815), f"KM {km_40_500}"),
+          (
+              int(width_40 * 0.58),
+              int(height_40 * 0.635),
+              f"KM {km_40_preavviso}",
+          ),
+          (int(width_40 * 0.58), int(height_40 * 0.320), f"KM {km_40_testata}"),
+          (int(width_40 * 0.58), int(height_40 * 0.120), f"KM {km_40_vialibera}"),
+      ]
+
+      for x, y, testo in etichette_40:
+        draw_40.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      draw_40.multiline_text(
+          (int(width_40 * 0.73), int(height_40 * 0.220)),
+          ubicazione_testo_40,
+          fill=(255, 0, 0),
+          font=font_ubicazione_40,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_40 = io.BytesIO()
+      base_img_40.save(img_io_40, format="JPEG", quality=100, subsampling=0)
+      jpg_data_40 = img_io_40.getvalue()
+
+      st.image(
+          base_img_40,
+          caption="Tavola 40 - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola 40 in formato JPG",
+          data=jpg_data_40,
+          file_name="Tavola_40_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 40.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 40.jpg' non trovata nella cartella.")
 # ====================================================================
 # TAVOLA 16
 # ====================================================================
