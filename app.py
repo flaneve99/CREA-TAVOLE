@@ -869,7 +869,7 @@ elif "66" in tavola_selezionata:
               int(height_66 * 0.880),
               f"KM {km_66_dx_preavviso}",
           ),
-          (int(width_66 * 0.65), int(height_66 * 0.830), f"KM {km_66_dx_limite60}"),
+          (int(width_66 * 0.65), int(height_66 * 0.825), f"KM {km_66_dx_limite60}"),
           (
               int(width_66 * 0.65),
               int(height_66 * 0.780),
@@ -877,7 +877,7 @@ elif "66" in tavola_selezionata:
           ),
           (int(width_66 * 0.65), int(height_66 * 0.727), f"KM {km_66_dx_semaforo}"),
           (int(width_66 * 0.65), int(height_66 * 0.600), f"KM {km_66_dx_chiusura}"),
-          (int(width_66 * 0.65), int(height_66 * 0.360), f"KM {km_66_dx_fine}"),
+          (int(width_66 * 0.65), int(height_66 * 0.370), f"KM {km_66_dx_fine}"),
           # --- LATO SINISTRO ---
           (int(width_66 * 0.01), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
           (int(width_66 * 0.01), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
