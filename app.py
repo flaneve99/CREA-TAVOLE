@@ -882,27 +882,27 @@ elif "25" in tavola_selezionata:
   st.write("### Lato Sinistro dell'Immagine (dal basso verso l'alto)")
   col3, col4 = st.columns(2)
   with col3:
-    km_25_sx_immissione_altro = st.text_input(
-        "KM Inizio immissione altro senso (Sx)", value="812+862"
-    )
-    km_25_sx_corsiaunica = st.text_input("KM Corsia unica (Sx)", value="812+742")
-    km_25_sx_doppiosenso = st.text_input(
-        "KM Doppio senso di circolazione (Sx)", value="812+622"
-    )
-    km_25_sx_obbligo = st.text_input(
-        "KM Segnale obbligo passaggio (Sx)", value="812+502"
-    )
-    km_25_sx_testata = st.text_input("KM Inizio testata (Sx)", value="812+382")
-  with col4:
-    km_25_sx_corsia100 = st.text_input(
-        "KM Corsia chiusa 100m (Sx)", value="812+322"
-    )
-    km_25_sx_limite60 = st.text_input("KM Limite 60 (Sx)", value="812+286")
+    km_25_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="812+100")
+    km_25_sx_limite90 = st.text_input("KM Limite 90 (Sx)", value="812+142")
     km_25_sx_corsia250 = st.text_input(
         "KM Corsia chiusa 250m (Sx)", value="812+178"
     )
-    km_25_sx_limite90 = st.text_input("KM Limite 90 (Sx)", value="812+142")
-    km_25_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="812+100")
+    km_25_sx_limite60 = st.text_input("KM Limite 60 (Sx)", value="812+286")
+    km_25_sx_corsia100 = st.text_input(
+        "KM Corsia chiusa 100m (Sx)", value="812+322"
+  )
+  with col4:
+    km_25_sx_testata = st.text_input("KM Inizio testata (Sx)", value="812+382")
+    km_25_sx_obbligo = st.text_input(
+        "KM Segnale obbligo passaggio (Sx)", value="812+502"
+    )
+    km_25_sx_doppiosenso = st.text_input(
+        "KM Doppio senso di circolazione (Sx)", value="812+622"
+    )
+    km_25_sx_corsiaunica = st.text_input("KM Corsia unica (Sx)", value="812+742")
+    km_25_sx_immissione_altro = st.text_input(
+        "KM Inizio immissione altro senso (Sx)", value="812+862"
+    )
 
   if st.button("Genera Abaco Segnaletica (Excel) - Tavola 25"):
     wb = openpyxl.Workbook()
@@ -1118,7 +1118,7 @@ elif "25" in tavola_selezionata:
               int(height_25 * 0.730),
               f"KM {km_25_dx_immissione}",
           ),
-          # --- LATO SINISTRO (dal basso verso l'alto) ---
+          # --- LATO SINISTRO (dal basso verso l'alto: da 812+100 a 812+862) ---
           (int(width_25 * 0.17), int(height_25 * 0.715), f"KM {km_25_sx_lavori}"),
           (int(width_25 * 0.17), int(height_25 * 0.650), f"KM {km_25_sx_limite90}"),
           (
