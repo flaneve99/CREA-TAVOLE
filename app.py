@@ -2032,3 +2032,238 @@ elif "18" in tavola_selezionata:
       st.exception(errore)
   else:
     st.error("Immagine 'TAVOLA 18.jpg' non trovata nella cartella.")
+
+# ====================================================================
+# CORSIA DI EMERGENZA NJ
+# ====================================================================
+elif "CORSIA DI EMERGENZA NJ" in tavola_selezionata:
+  st.subheader(
+      "📍 Dati e Progressive Chilometriche - Chiusura Corsia di Emergenza NJ"
+  )
+  ubicazione_testo_em = st.text_area(
+      "Ubicazione / Direzione", value="CARREGGIATA SUD"
+  )
+  st.write("### Progressive Chilometriche (dal basso verso l'alto)")
+  col1, col2 = st.columns(2)
+  with col1:
+    km_em_rallentare = st.text_input("KM Rallentare (In basso)", value="813+950")
+    km_em_lavori = st.text_input("KM Lavori in corso", value="814+050")
+    km_em_passaggio = st.text_input("KM Passaggio obbligatorio", value="814+200")
+  with col2:
+    km_em_barriera = st.text_input("KM Barriera", value="814+250")
+    km_em_fine = st.text_input("KM Fine / Inizio tratto (In alto)", value="814+450")
+
+  if st.button("Genera Abaco Segnaletica (Excel) - Corsia di Emergenza NJ"):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Corsia di Emergenza"
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = (
+        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - CHIUSURA CORSIA DI"
+        " EMERGENZA"
+    )
+    fill_verde_chiaro = PatternFill(
+        start_color="92D050", end_color="92D050", fill_type="solid"
+    )
+    fill_verde_scuro = PatternFill(
+        start_color="70AD47", end_color="70AD47", fill_type="solid"
+    )
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+    bordo_sottile = Border(
+        left=Side(style="thin", color="000000"),
+        right=Side(style="thin", color="000000"),
+        top=Side(style="thin", color="000000"),
+        bottom=Side(style="thin", color="000000"),
+    )
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(
+        horizontal="center", vertical="center"
+    )
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(
+          horizontal="center", vertical="center", wrap_text=True
+      )
+      cell.border = bordo_sottile
+
+    dati_righe_em = [
+        (
+            "fig_421.jpg",
+            "FIG. II 421",
+            "RALLENTARE OPERAI AL LAVORO",
+            "",
+            "SEGNALI DI PREAVVISO",
+        ),
+        (
+            "fig_383_n.jpg",
+            "FIG. II 383",
+            "LAVORI IN CORSO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_082a.jpg",
+            "FIG. II 082/a",
+            "PASSAGGIO OBBLIGATORIO A SINISTRA",
+            "",
+            "SEGNALI DI OBBLIGO",
+        ),
+        (
+            "fig_392.jpg",
+            "FIG. II 392",
+            "BARRIERA NORMALE",
+            "",
+            "SEGNALI COMPLEMENTARI",
+        ),
+        (
+            "NEWJERSEY.jpg",
+            "NEW JERSEY",
+            "NEW JERSEY IN CLS A PROTEZIONE",
+            "",
+            "PROTEZIONE CANTIERE",
+        ),
+    ]
+
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 45
+    ws.column_dimensions["D"].width = 20
+    ws.column_dimensions["E"].width = 25
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+    immagini_inserite = 0
+    for i, row_data in enumerate(dati_righe_em, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value=dettagli)
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(
+            horizontal="center", vertical="center", wrap_text=True
+        )
+        cell.border = bordo_sottile
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+      nomi_da_cercare = [
+          img_nome,
+          img_nome.replace(".jpg", ".png"),
+          img_nome.replace(".png", ".jpg"),
+      ]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_em_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(
+              col=0, colOff=150000, row=i - 1, rowOff=40000
+          )
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell", _from=marker_from, to=marker_to
+          )
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+    st.success(
+        "Abaco Excel Corsia di Emergenza generato! (Immagini inserite:"
+        f" {immagini_inserite}/{len(dati_righe_em)})"
+    )
+    st.download_button(
+        label="📥 Scarica Excel Abaco Corsia di Emergenza",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Corsia_Emergenza.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+  st.divider()
+  st.subheader("🖼️ Anteprima Corsia di Emergenza NJ Personalizzata")
+  img_path_em = os.path.join(cartella_app, "CORSIA DI EMERGENZA NJ.jpg")
+  if os.path.exists(img_path_em):
+    try:
+      with Image.open(img_path_em) as immagine_originale:
+        base_img_em = immagine_originale.convert("RGB")
+      width_em, height_em = base_img_em.size
+      draw_em = ImageDraw.Draw(base_img_em)
+      font_km = load_custom_font(18)
+      font_ub_em = load_custom_font(24)
+      BORDO = 2
+
+      # Coordinate provvisorie da calibrare in base alle posizioni sull'immagine pulita
+      etichette_em = [
+          (int(width_em * 0.55), int(height_em * 0.895), f"KM {km_em_rallentare}"),
+          (int(width_em * 0.55), int(height_em * 0.775), f"KM {km_em_lavori}"),
+          (int(width_em * 0.55), int(height_em * 0.590), f"KM {km_em_passaggio}"),
+          (int(width_em * 0.55), int(height_em * 0.550), f"KM {km_em_barriera}"),
+          (int(width_em * 0.38), int(height_em * 0.035), f"KM {km_em_fine}"),
+      ]
+
+      for x, y, testo in etichette_em:
+        draw_em.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      # Testo fisso "CHIUSURA DELLA CORSIA DI EMERGENZA" già presente o da aggiungere se necessario, più l'ubicazione
+      draw_em.multiline_text(
+          (int(width_em * 0.55), int(height_em * 0.420)),
+          ubicazione_testo_em,
+          fill=(255, 0, 0),
+          font=font_ub_em,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_em = io.BytesIO()
+      base_img_em.save(img_io_em, format="JPEG", quality=100, subsampling=0)
+      jpg_data_em = img_io_em.getvalue()
+      st.image(
+          base_img_em,
+          caption="Corsia di Emergenza NJ - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola Corsia di Emergenza in formato JPG",
+          data=jpg_data_em,
+          file_name="Corsia_Emergenza_NJ_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola Corsia di Emergenza.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'CORSIA DI EMERGENZA NJ.jpg' non trovata nella cartella.")
