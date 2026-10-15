@@ -1964,31 +1964,31 @@ elif "18" in tavola_selezionata:
       BORDO = 2
 
       etichette_18 = [
-          (int(width_18 * 0.65), int(height_18 * 0.922), f"KM {km_18_lavori}"),
-          (int(width_18 * 0.65), int(height_18 * 0.850), f"KM {km_18_limite70}"),
-          (int(width_18 * 0.65), int(height_18 * 0.760), f"KM {km_18_limite50}"),
+          (int(width_18 * 0.65), int(height_18 * 0.928), f"KM {km_18_lavori}"),
+          (int(width_18 * 0.65), int(height_18 * 0.860), f"KM {km_18_limite70}"),
+          (int(width_18 * 0.65), int(height_18 * 0.790), f"KM {km_18_limite50}"),
           (
               int(width_18 * 0.65),
               int(height_18 * 0.735),
               f"KM {km_18_corsia250}",
           ),
-          (int(width_18 * 0.65), int(height_18 * 0.665), f"KM {km_18_sorpasso}"),
+          (int(width_18 * 0.65), int(height_18 * 0.670), f"KM {km_18_sorpasso}"),
           (
               int(width_18 * 0.65),
-              int(height_18 * 0.600),
+              int(height_18 * 0.605),
               f"KM {km_18_corsia100}",
           ),
           (
               int(width_18 * 0.65),
-              int(height_18 * 0.510),
+              int(height_18 * 0.475),
               f"KM {km_18_inizio_chiusura}",
           ),
           (
               int(width_18 * 0.65),
-              int(height_18 * 0.350),
+              int(height_18 * 0.310),
               f"KM {km_18_ultima_chiusura}",
           ),
-          (int(width_18 * 0.65), int(height_18 * 0.080), f"KM {km_18_via_libera}"),
+          (int(width_18 * 0.50), int(height_18 * 0.060), f"KM {km_18_via_libera}"),
       ]
 
       for x, y, testo in etichette_18:
