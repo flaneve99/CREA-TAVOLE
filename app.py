@@ -98,6 +98,7 @@ tavola_selezionata = st.selectbox(
             "Tavola 66 - Lavori su carreggiata con senso unico alternato"
             " semaforico"
         ),
+        "CORSIA DI EMERGENZA NJ - Chiusura della corsia di emergenza",
     ],
 )
 # ====================================================================
