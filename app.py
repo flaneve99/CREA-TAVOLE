@@ -333,7 +333,7 @@ if "39" in tavola_selezionata:
       st.error("Errore generazione Tavola 39.")
       st.exception(errore)
   else:
-    st.error("Immagine 'TAVOLA 39.jpg' not trovata nella cartella.")
+    st.error("Immagine 'TAVOLA 39.jpg' non trovata nella cartella.")
 
 
 # ====================================================================
@@ -420,63 +420,52 @@ elif "16" in tavola_selezionata:
       )
       cell.border = bordo_sottile
 
+    # Dettagli impostati a stringa vuota "" per mantenere la colonna pulita nell'Excel
     dati_righe_16 = [
-        (
-            "fig_383.jpg",
-            "FIG. II 383",
-            "LAVORI IN CORSO",
-            km_inizio_testata,
-            "SEGNALI TEMPORANEI",
-        ),
+        ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
         (
             "fig_082a.jpg",
             "FIG. II 082/a",
             "PASSAGGIO OBBLIGATORIO A SINISTRA",
-            km_preavviso_700,
+            "",
             "SEGNALI DI OBBLIGO",
         ),
         (
             "fig_048.jpg",
             "FIG. II 048",
             "DIVIETO DI SORPASSO",
-            km_limite_60,
+            "",
             "SEGNALI DI DIVIETO",
         ),
         (
             "fig_411a.jpg",
             "FIG. II 411/a",
             "SEGNALE DI CORSIA CHIUSA (CHIUSURA CORSIA DI DESTRA)",
-            km_preavviso_250,
+            "",
             "SEGNALI TEMPORANEI",
         ),
         (
             "fig050_lim110.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 110 KM/H",
-            km_limite_110,
+            "",
             "SEGNALI DI PRESCRIZIONE",
         ),
         (
             "fig050_lim90.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 90 KM/H",
-            km_limite_90,
+            "",
             "SEGNALI DI PRESCRIZIONE",
         ),
         (
             "fig_050_lim60.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 60 KM/H",
-            km_limite_60,
+            "",
             "SEGNALI DI PRESCRIZIONE",
         ),
-        (
-            "fig_070.jpg",
-            "FIG. II 070",
-            "VIA LIBERA",
-            km_fine_16,
-            "SEGNALI DI DIVIETO",
-        ),
+        ("fig_070.jpg", "FIG. II 070", "VIA LIBERA", "", "SEGNALI DI DIVIETO"),
     ]
 
     ws.column_dimensions["A"].width = 18
@@ -578,23 +567,15 @@ elif "16" in tavola_selezionata:
       font_ub_16 = load_custom_font(30)
       BORDO = 2
 
-      # Mappatura corretta dal basso (0.925) verso l'alto (0.325) in ordine di sequenza dei cartelli:
+      # Mappatura coordinate verticali per i KM sulla Tavola 16
       etichette_16 = [
-          # 1. KM Fine / Rientro (In alto)
           (int(width_16 * 0.34), int(height_16 * 0.07), f"KM {km_fine_16}"),
-          # 2. Preavviso 700m (In basso) -> quota y più bassa (es. 0.925)
           (int(width_16 * 0.49), int(height_16 * 0.925), f"KM {km_preavviso_700}"),
-          # 3. Limite 110 km/h -> salendo (es. 0.825)
           (int(width_16 * 0.49), int(height_16 * 0.865), f"KM {km_limite_110}"),
-          # 4. Limite 90 km/h -> salendo (es. 0.725)
           (int(width_16 * 0.49), int(height_16 * 0.800), f"KM {km_limite_90}"),
-          # 5. Preavviso Chiusura Corsia 250m -> salendo (es. 0.625)
           (int(width_16 * 0.49), int(height_16 * 0.735), f"KM {km_preavviso_250}"),
-          # 6. Limite 60 km/h -> salendo (es. 0.525)
           (int(width_16 * 0.49), int(height_16 * 0.675), f"KM {km_limite_60}"),
-          # 7. Preavviso Chiusura Corsia 100m -> salendo (es. 0.425)
           (int(width_16 * 0.49), int(height_16 * 0.610), f"KM {km_preavviso_100}"),
-          # 8. Inizio Testata (Freccia blu / inizio cantiere) -> quota y più in alto (es. 0.325)
           (int(width_16 * 0.49), int(height_16 * 0.505), f"KM {km_inizio_testata}"),
       ]
 
