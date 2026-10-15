@@ -1100,7 +1100,7 @@ elif "25" in tavola_selezionata:
         base_img_25 = immagine_originale.convert("RGB")
       width_25, height_25 = base_img_25.size
       draw_25 = ImageDraw.Draw(base_img_25)
-      font_km = load_custom_font(31)
+      font_km = load_custom_font(32)
       font_ub_25 = load_custom_font(56)
       BORDO = 2
 
@@ -1128,52 +1128,52 @@ elif "25" in tavola_selezionata:
           ),
           # --- LATO SINISTRO (dall'alto verso il basso) ---
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.130),
+              int(width_25 * 0.18),
+              int(height_25 * 0.230),
               f"KM {km_25_sx_lavori}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.195),
+              int(width_25 * 0.18),
+              int(height_25 * 0.255),
               f"KM {km_25_sx_limite90}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.260),
+              int(width_25 * 0.18),
+              int(height_25 * 0.300),
               f"KM {km_25_sx_corsia250}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.325),
+              int(width_25 * 0.18),
+              int(height_25 * 0.350),
               f"KM {km_25_sx_limite60}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.390),
+              int(width_25 * 0.18),
+              int(height_25 * 0.410),
               f"KM {km_25_sx_corsia100}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.455),
+              int(width_25 * 0.18),
+              int(height_25 * 0.441),
               f"KM {km_25_sx_testata}",
           ),
           (
-              int(width_25 *0.17),
-              int(height_25 * 0.520),
+              int(width_25 *0.18),
+              int(height_25 * 0.480),
               f"KM {km_25_sx_obbligo}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.585),
+              int(width_25 * 0.18),
+              int(height_25 * 0.578),
               f"KM {km_25_sx_doppiosenso}",
           ),
           (
-              int(width_25 * 0.17),
-              int(height_25 * 0.650),
+              int(width_25 * 0.18),
+              int(height_25 * 0.630),
               f"KM {km_25_sx_corsiaunica}",
           ),
           (
-              int(width_25 * 0.17),
+              int(width_25 * 0.18),
               int(height_25 * 0.715),
               f"KM {km_25_sx_immissione_altro}",
           ),
