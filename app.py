@@ -2453,7 +2453,7 @@ elif "43" in tavola_selezionata:
       width_43, height_43 = base_img_43.size
       draw_43 = ImageDraw.Draw(base_img_43)
       font_km = load_custom_font(45)
-      font_ub_43 = load_custom_font(55)
+      font_ub_43 = load_custom_font(57)
       BORDO = 2
 
       # Coordinate mappate sulla Tavola 43 (dal basso verso l'alto)
@@ -2465,11 +2465,11 @@ elif "43" in tavola_selezionata:
           ),
           (
               int(width_43 * 0.64),
-              int(height_43 * 0.610),
+              int(height_43 * 0.594),
               f"KM {km_43_secondo_preavviso}",
           ),
           (int(width_43 * 0.64), int(height_43 * 0.420), f"KM {km_43_passaggio}"),
-          (int(width_43 * 0.64), int(height_43 * 0.280), f"KM {km_43_inizio}"),
+          (int(width_43 * 0.627), int(height_43 * 0.274), f"KM {km_43_inizio}"),
           (int(width_43 * 0.46), int(height_43 * 0.037), f"KM {km_43_vialibera}"),
       ]
 
@@ -2484,7 +2484,7 @@ elif "43" in tavola_selezionata:
         )
 
       draw_43.multiline_text(
-          (int(width_43 * 0.67), int(height_43 * 0.360)),
+          (int(width_43 * 0.67), int(height_43 * 0.340)),
           ubicazione_testo_43,
           fill=(255, 0, 0),
           font=font_ub_43,
