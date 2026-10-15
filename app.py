@@ -875,12 +875,12 @@ elif "17" in tavola_selezionata:
           (int(width_17 * 0.63), int(height_17 * 0.265), f"KM {km_17_stop}"),
           (
               int(width_17 * 0.63),
-              int(height_17 * 0.340),
+              int(height_17 * 0.333),
               f"KM {km_17_fine_testata}",
           ),
           (
               int(width_17 * 0.63),
-              int(height_17 * 0.485),
+              int(height_17 * 0.484),
               f"KM {km_17_inizio_testata}",
           ),
           (
