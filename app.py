@@ -82,6 +82,10 @@ tavola_selezionata = st.selectbox(
             " corsie"
         ),
         (
+            "Tavola 18 - Chiusura della corsia di destra su carreggiata a tre"
+            " corsie"
+        ),
+        (
             "Tavola 25 - Deviazione con una sola corsia per senso di marcia su"
             " carreggiata a due corsie"
         ),
