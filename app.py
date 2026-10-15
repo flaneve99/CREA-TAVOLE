@@ -1100,8 +1100,8 @@ elif "25" in tavola_selezionata:
         base_img_25 = immagine_originale.convert("RGB")
       width_25, height_25 = base_img_25.size
       draw_25 = ImageDraw.Draw(base_img_25)
-      font_km = load_custom_font(18)
-      font_ub_25 = load_custom_font(57)
+      font_km = load_custom_font(28)
+      font_ub_25 = load_custom_font(56)
       BORDO = 2
 
       etichette_25 = [
