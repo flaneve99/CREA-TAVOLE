@@ -1158,7 +1158,80 @@ elif "25" in tavola_selezionata:
               f"KM {km_25_sx_testata}",
           ),
           (
-              int(width_25 *
+              int(width_25 *0.17),
+              int(height_25 * 0.520),
+              f"KM {km_25_sx_obbligo}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.585),
+              f"KM {km_25_sx_doppiosenso}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.650),
+              f"KM {km_25_sx_corsiaunica}",
+          ),
+          (
+              int(width_25 * 0.17),
+              int(height_25 * 0.715),
+              f"KM {km_25_sx_immissione_altro}",
+          ),
+      ]
+
+      for x, y, testo in etichette_25:
+        draw_25.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      # Ubicazione Sinistra
+      draw_25.multiline_text(
+          (int(width_25 * 0.38), int(height_25 * 0.08)),
+          ubicazione_nord,
+          fill=(255, 0, 0),
+          font=font_ub_25,
+          align="center",
+          spacing=4,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      # Ubicazione Destra
+      draw_25.multiline_text(
+          (int(width_25 * 0.81), int(height_25 * 0.08)),
+          ubicazione_sud,
+          fill=(255, 0, 0),
+          font=font_ub_25,
+          align="center",
+          spacing=4,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_25 = io.BytesIO()
+      base_img_25.save(img_io_25, format="JPEG", quality=100, subsampling=0)
+      jpg_data_25 = img_io_25.getvalue()
+      st.image(
+          base_img_25,
+          caption="Tavola 25 - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola 25 in formato JPG",
+          data=jpg_data_25,
+          file_name="Tavola_25_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 25.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 25.jpg' non trovata nella cartella.")
 # ====================================================================
 # TAVOLA 66
 # ====================================================================
