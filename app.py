@@ -79,6 +79,10 @@ tavola_selezionata = st.selectbox(
     [
         "Tavola 39 - Cantiere mobile carreggiata a due corsie",
         "Tavola 16 - Chiusura della corsia di marcia su carreggiata a due corsie",
+        (
+            "Tavola 66 - Lavori su carreggiata con senso unico alternato"
+            " semaforico"
+        ),
     ],
 )
 
@@ -420,7 +424,6 @@ elif "16" in tavola_selezionata:
       )
       cell.border = bordo_sottile
 
-    # Dettagli impostati a stringa vuota "" per mantenere la colonna pulita nell'Excel
     dati_righe_16 = [
         ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
         (
@@ -567,7 +570,6 @@ elif "16" in tavola_selezionata:
       font_ub_16 = load_custom_font(30)
       BORDO = 2
 
-      # Mappatura coordinate verticali per i KM sulla Tavola 16
       etichette_16 = [
           (int(width_16 * 0.34), int(height_16 * 0.07), f"KM {km_fine_16}"),
           (int(width_16 * 0.49), int(height_16 * 0.925), f"KM {km_preavviso_700}"),
@@ -589,7 +591,6 @@ elif "16" in tavola_selezionata:
             stroke_fill=(255, 255, 255),
         )
 
-      # Testo Ubicazione
       x_ub = int(width_16 * 0.67)
       y_ub = int(height_16 * 0.27)
       draw_16.multiline_text(
@@ -623,3 +624,296 @@ elif "16" in tavola_selezionata:
       st.exception(errore)
   else:
     st.error("Immagine 'TAVOLA 16.jpg' non trovata nella cartella.")
+
+
+# ====================================================================
+# TAVOLA 66
+# ====================================================================
+elif "66" in tavola_selezionata:
+
+  st.subheader("📍 Dati e Progressive Chilometriche - Tavola 66")
+
+  ubicazione_testo_66 = st.text_area(
+      "Ubicazione / Direzione (Tavola 66)",
+      value="DIREZIONE MATERA LATO DX\nS.P. 3",
+  )
+
+  st.write("### Lato Destro dell'Immagine")
+  col1, col2 = st.columns(2)
+  with col1:
+    km_66_dx_preavviso = st.text_input(
+        "KM Preavviso Lavori a 200m (Dx)", value="5+065"
+    )
+    km_66_dx_limite60 = st.text_input("KM Limite 60 (Dx)", value="5+110")
+    km_66_dx_strettoia = st.text_input(
+        "KM Strettoia Asimmetrica a Destra (Dx)", value="5+155"
+    )
+  with col2:
+    km_66_dx_semaforo = st.text_input("KM Semaforo (Dx)", value="5+200")
+    km_66_dx_chiusura = st.text_input("KM Chiusura Zona Lavori (Dx)", value="5+300")
+    km_66_dx_fine = st.text_input("KM Fine Zona Lavori (Dx)", value="5+600")
+
+  st.write("### Lato Sinistro dell'Immagine")
+  col3, col4 = st.columns(2)
+  with col3:
+    km_66_sx_zona = st.text_input("KM Zona Lavori (Sx)", value="5+600")
+    km_66_sx_semaforo = st.text_input("KM Semaforo (Sx)", value="5+700")
+    km_66_sx_strettoia = st.text_input(
+        "KM Strettoia / Altro segnale (Sx)", value="5+745"
+    )
+  with col4:
+    km_66_sx_limite60 = st.text_input("KM Limite 60 / Divieto (Sx)", value="5+790")
+    km_66_sx_preavviso = st.text_input(
+        "KM Preavviso Lavori (Sx)", value="5+835"
+    )
+
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 66"):
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Tavola 66"
+
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = (
+        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 66"
+    )
+
+    fill_verde_chiaro = PatternFill(
+        start_color="92D050", end_color="92D050", fill_type="solid"
+    )
+    fill_verde_scuro = PatternFill(
+        start_color="70AD47", end_color="70AD47", fill_type="solid"
+    )
+
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+
+    bordo_sottile = Border(
+        left=Side(style="thin", color="000000"),
+        right=Side(style="thin", color="000000"),
+        top=Side(style="thin", color="000000"),
+        bottom=Side(style="thin", color="000000"),
+    )
+
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(
+        horizontal="center", vertical="center"
+    )
+
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(
+          horizontal="center", vertical="center", wrap_text=True
+      )
+      cell.border = bordo_sottile
+
+    dati_righe_66 = [
+        (
+            "fig_399.jpg",
+            "FIG. II 399",
+            "PREAVVISO DI CANTIERE",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_050_lim60.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 60 KM/H",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_386.jpg",
+            "FIG. II 386",
+            "STRETTOIA ASIMMETRICA A DESTRA",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        ("fig_404.jpg", "FIG. II 404", "SEMAFORO", "", "SEGNALI TEMPORANEI"),
+        (
+            "fig_383.jpg",
+            "FIG. II 383",
+            "ZONA LAVORI / SENSO UNICO ALTERNATO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+    ]
+
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 45
+    ws.column_dimensions["D"].width = 20
+    ws.column_dimensions["E"].width = 25
+
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+
+    immagini_inserite = 0
+
+    for i, row_data in enumerate(dati_righe_66, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value=dettagli)
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(
+            horizontal="center", vertical="center", wrap_text=True
+        )
+        cell.border = bordo_sottile
+
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+
+      nomi_da_cercare = [
+          img_nome,
+          img_nome.replace(".jpg", ".png"),
+          img_nome.replace(".png", ".jpg"),
+      ]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_66_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(
+              col=0, colOff=150000, row=i - 1, rowOff=40000
+          )
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell", _from=marker_from, to=marker_to
+          )
+
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+
+    st.success(
+        "Abaco Excel Tavola 66 generato! (Immagini inserite:"
+        f" {immagini_inserite}/{len(dati_righe_66)})"
+    )
+    st.download_button(
+        label="📥 Scarica Excel Abaco Tavola 66",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_66.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+
+  st.divider()
+  st.subheader("🖼️ Anteprima Tavola 66 Personalizzata")
+
+  img_path_66 = os.path.join(cartella_app, "TAVOLA 66.jpg")
+  if os.path.exists(img_path_66):
+    try:
+      with Image.open(img_path_66) as immagine_originale:
+        base_img_66 = immagine_originale.convert("RGB")
+
+      width_66, height_66 = base_img_66.size
+      draw_66 = ImageDraw.Draw(base_img_66)
+
+      font_km = load_custom_font(25)
+      font_ub_66 = load_custom_font(25)
+      BORDO = 2
+
+      # Mappatura coordinate per Tavola 66 (lato destro e lato sinistro)
+      etichette_66 = [
+          # --- LATO DESTRO (dal basso verso l'alto) ---
+          (
+              int(width_66 * 0.49),
+              int(height_66 * 0.905),
+              f"KM {km_66_dx_preavviso}",
+          ),
+          (int(width_66 * 0.49), int(height_66 * 0.845), f"KM {km_66_dx_limite60}"),
+          (
+              int(width_66 * 0.49),
+              int(height_66 * 0.785),
+              f"KM {km_66_dx_strettoia}",
+          ),
+          (int(width_66 * 0.49), int(height_66 * 0.725), f"KM {km_66_dx_semaforo}"),
+          (int(width_66 * 0.49), int(height_66 * 0.625), f"KM {km_66_dx_chiusura}"),
+          (int(width_66 * 0.49), int(height_66 * 0.380), f"KM {km_66_dx_fine}"),
+          # --- LATO SINISTRO (dall'alto verso il basso o sequenza speculare) ---
+          (int(width_66 * 0.01), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
+          (int(width_66 * 0.01), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
+          (int(width_66 * 0.01), int(height_66 * 0.265), f"KM {km_66_sx_strettoia}"),
+          (int(width_66 * 0.01), int(height_66 * 0.325), f"KM {km_66_sx_semaforo}"),
+          (int(width_66 * 0.01), int(height_66 * 0.530), f"KM {km_66_sx_zona}"),
+      ]
+
+      for x, y, testo in etichette_66:
+        draw_66.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      # Testo Ubicazione Tavola 66
+      x_ub_66 = int(width_66 * 0.67)
+      y_ub_66 = int(height_66 * 0.27)
+      draw_66.multiline_text(
+          (x_ub_66, y_ub_66),
+          ubicazione_testo_66,
+          fill=(255, 0, 0),
+          font=font_ub_66,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_66 = io.BytesIO()
+      base_img_66.save(img_io_66, format="JPEG", quality=100, subsampling=0)
+      jpg_data_66 = img_io_66.getvalue()
+
+      st.image(
+          base_img_66,
+          caption="Tavola 66 - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola 66 in formato JPG",
+          data=jpg_data_66,
+          file_name="Tavola_66_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 66.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 66.jpg' non trovata nella cartella.")
