@@ -1100,7 +1100,7 @@ elif "25" in tavola_selezionata:
         base_img_25 = immagine_originale.convert("RGB")
       width_25, height_25 = base_img_25.size
       draw_25 = ImageDraw.Draw(base_img_25)
-      font_km = load_custom_font(30)
+      font_km = load_custom_font(31)
       font_ub_25 = load_custom_font(56)
       BORDO = 2
 
@@ -1108,7 +1108,7 @@ elif "25" in tavola_selezionata:
           # --- LATO DESTRO (dal basso verso l'alto) ---
           (
               int(width_25 * 0.77),
-              int(height_25 * 0.925),
+              int(height_25 * 0.928),
               f"KM {km_25_dx_limite60}",
           ),
           (
@@ -1118,12 +1118,12 @@ elif "25" in tavola_selezionata:
           ),
           (
               int(width_25 * 0.77),
-              int(height_25 * 0.795),
+              int(height_25 * 0.785),
               f"KM {km_25_dx_rientro}",
           ),
           (
               int(width_25 * 0.77),
-              int(height_25 * 0.730),
+              int(height_25 * 0.715),
               f"KM {km_25_dx_immissione}",
           ),
           # --- LATO SINISTRO (dall'alto verso il basso) ---
