@@ -70,18 +70,12 @@ def load_custom_font(size):
   except TypeError:
     return ImageFont.load_default()
 
-
 # ==================================================
 # SELEZIONE DELLA TAVOLA
 # ==================================================
 tavola_selezionata = st.selectbox(
     "Seleziona la Tavola di Cantiere",
     [
-        "Tavola 39 - Cantiere mobile carreggiata a due corsie",
-        (
-            "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura"
-            " della corsia di sorpasso"
-        ),
         "Tavola 16 - Chiusura della corsia di marcia su carreggiata a due corsie",
         (
             "Tavola 17 - Chiusura della corsia di sorpasso su carreggiata a due"
@@ -91,13 +85,17 @@ tavola_selezionata = st.selectbox(
             "Tavola 25 - Deviazione con una sola corsia per senso di marcia su"
             " carreggiata a due corsie"
         ),
+        "Tavola 39 - Cantiere mobile carreggiata a due corsie",
+        (
+            "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura"
+            " della corsia di sorpasso"
+        ),
         (
             "Tavola 66 - Lavori su carreggiata con senso unico alternato"
             " semaforico"
         ),
     ],
 )
-
 # ====================================================================
 # TAVOLA 39
 # ====================================================================
