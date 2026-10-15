@@ -2453,7 +2453,7 @@ elif "43" in tavola_selezionata:
       width_43, height_43 = base_img_43.size
       draw_43 = ImageDraw.Draw(base_img_43)
       font_km = load_custom_font(45)
-      font_ub_43 = load_custom_font(57)
+      font_ub_43 = load_custom_font(60)
       BORDO = 2
 
       # Coordinate mappate sulla Tavola 43 (dal basso verso l'alto)
