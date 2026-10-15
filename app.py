@@ -857,8 +857,8 @@ elif "66" in tavola_selezionata:
       width_66, height_66 = base_img_66.size
       draw_66 = ImageDraw.Draw(base_img_66)
 
-      font_km = load_custom_font(25)
-      font_ub_66 = load_custom_font(25)
+      font_km = load_custom_font(10)
+      font_ub_66 = load_custom_font(20)
       BORDO = 2
 
       # Mappatura coordinate per Tavola 66 (lato destro e lato sinistro)
@@ -866,7 +866,7 @@ elif "66" in tavola_selezionata:
           # --- LATO DESTRO (dal basso verso l'alto) ---
           (
               int(width_66 * 0.65),
-              int(height_66 * 0.905),
+              int(height_66 * 0.850),
               f"KM {km_66_dx_preavviso}",
           ),
           (int(width_66 * 0.65), int(height_66 * 0.845), f"KM {km_66_dx_limite60}"),
