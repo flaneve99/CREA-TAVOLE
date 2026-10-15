@@ -884,7 +884,7 @@ elif "66" in tavola_selezionata:
           (int(width_66 * 0.01), int(height_66 * 0.210), f"KM {km_66_sx_strettoia}"),
           (int(width_66 * 0.01), int(height_66 * 0.245), f"KM {km_66_sx_semaforo}"),
           (int(width_66 * 0.01), int(height_66 * 0.370), f"KM {km_66_sx_zona}"),
-
+      ]
       for x, y, testo in etichette_66:
         draw_66.text(
             (x, y),
