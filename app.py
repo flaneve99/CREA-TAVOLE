@@ -523,15 +523,15 @@ elif "40" in tavola_selezionata:
 
       # Mappatura coordinate progressive lato destro (dal basso verso l'alto)
       etichette_40 = [
-          (int(width_40 * 0.58), int(height_40 * 0.925), f"KM {km_40_750}"),
-          (int(width_40 * 0.58), int(height_40 * 0.815), f"KM {km_40_500}"),
+          (int(width_40 * 0.65), int(height_40 * 0.935), f"KM {km_40_750}"),
+          (int(width_40 * 0.65), int(height_40 * 0.775), f"KM {km_40_500}"),
           (
-              int(width_40 * 0.58),
-              int(height_40 * 0.635),
+              int(width_40 * 0.65),
+              int(height_40 * 0.615),
               f"KM {km_40_preavviso}",
           ),
-          (int(width_40 * 0.58), int(height_40 * 0.320), f"KM {km_40_testata}"),
-          (int(width_40 * 0.58), int(height_40 * 0.120), f"KM {km_40_vialibera}"),
+          (int(width_40 * 0.65), int(height_40 * 0.535), f"KM {km_40_testata}"),
+          (int(width_40 * 0.54), int(height_40 * 0.100), f"KM {km_40_vialibera}"),
       ]
 
       for x, y, testo in etichette_40:
