@@ -2932,17 +2932,17 @@ elif "37" in tavola_selezionata:
         base_img_37 = immagine_originale.convert("RGB")
       width_37, height_37 = base_img_37.size
       draw_37 = ImageDraw.Draw(base_img_37)
-      font_km = load_custom_font(38)
-      font_ub_37 = load_custom_font(48)
+      font_km = load_custom_font(44)
+      font_ub_37 = load_custom_font(56)
       BORDO = 2
 
       # Coordinate mappate sulla Tavola 37 (dal basso verso l'alto)
       etichette_37 = [
-          (int(width_37 * 0.60), int(height_37 * 0.900), f"KM {km_37_lavori}"),
-          (int(width_37 * 0.60), int(height_37 * 0.815), f"KM {km_37_strettoia}"),
-          (int(width_37 * 0.60), int(height_37 * 0.700), f"KM {km_37_passaggio}"),
-          (int(width_37 * 0.60), int(height_37 * 0.585), f"KM {km_37_chiusura}"),
-          (int(width_37 * 0.44), int(height_37 * 0.105), f"KM {km_37_vialibera}"),
+          (int(width_37 * 0.62), int(height_37 * 0.880), f"KM {km_37_lavori}"),
+          (int(width_37 * 0.62), int(height_37 * 0.794), f"KM {km_37_strettoia}"),
+          (int(width_37 * 0.62), int(height_37 * 0.705), f"KM {km_37_passaggio}"),
+          (int(width_37 * 0.62), int(height_37 * 0.490), f"KM {km_37_chiusura}"),
+          (int(width_37 * 0.47), int(height_37 * 0.90), f"KM {km_37_vialibera}"),
       ]
 
       for x, y, testo in etichette_37:
@@ -2956,7 +2956,7 @@ elif "37" in tavola_selezionata:
         )
 
       draw_37.multiline_text(
-          (int(width_37 * 0.63), int(height_37 * 0.180)),
+          (int(width_37 * 0.65), int(height_37 * 0.250)),
           ubicazione_testo_37,
           fill=(255, 0, 0),
           font=font_ub_37,
