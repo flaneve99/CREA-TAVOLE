@@ -2459,18 +2459,18 @@ elif "43" in tavola_selezionata:
       # Coordinate mappate sulla Tavola 43 (dal basso verso l'alto)
       etichette_43 = [
           (
-              int(width_43 * 0.61),
-              int(height_43 * 0.930),
+              int(width_43 * 0.63),
+              int(height_43 * 0.890),
               f"KM {km_43_primo_preavviso}",
           ),
           (
-              int(width_43 * 0.61),
-              int(height_43 * 0.670),
+              int(width_43 * 0.63),
+              int(height_43 * 0.636),
               f"KM {km_43_secondo_preavviso}",
           ),
-          (int(width_43 * 0.61), int(height_43 * 0.450), f"KM {km_43_passaggio}"),
-          (int(width_43 * 0.61), int(height_43 * 0.290), f"KM {km_43_inizio}"),
-          (int(width_43 * 0.44), int(height_43 * 0.050), f"KM {km_43_vialibera}"),
+          (int(width_43 * 0.63), int(height_43 * 0.450), f"KM {km_43_passaggio}"),
+          (int(width_43 * 0.63), int(height_43 * 0.280), f"KM {km_43_inizio}"),
+          (int(width_43 * 0.46), int(height_43 * 0.037), f"KM {km_43_vialibera}"),
       ]
 
       for x, y, testo in etichette_43:
