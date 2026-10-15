@@ -2213,16 +2213,16 @@ elif "CORSIA DI EMERGENZA NJ" in tavola_selezionata:
         base_img_em = immagine_originale.convert("RGB")
       width_em, height_em = base_img_em.size
       draw_em = ImageDraw.Draw(base_img_em)
-      font_km = load_custom_font(18)
-      font_ub_em = load_custom_font(24)
+      font_km = load_custom_font(35)
+      font_ub_em = load_custom_font(50)
       BORDO = 2
 
       # Coordinate provvisorie da calibrare in base alle posizioni sull'immagine pulita
       etichette_em = [
           (int(width_em * 0.55), int(height_em * 0.895), f"KM {km_em_rallentare}"),
           (int(width_em * 0.55), int(height_em * 0.775), f"KM {km_em_lavori}"),
-          (int(width_em * 0.55), int(height_em * 0.590), f"KM {km_em_passaggio}"),
-          (int(width_em * 0.55), int(height_em * 0.550), f"KM {km_em_barriera}"),
+          (int(width_em * 0.55), int(height_em * 0.620), f"KM {km_em_passaggio}"),
+          (int(width_em * 0.55), int(height_em * 0.560), f"KM {km_em_barriera}"),
           (int(width_em * 0.38), int(height_em * 0.035), f"KM {km_em_fine}"),
       ]
 
@@ -2238,7 +2238,7 @@ elif "CORSIA DI EMERGENZA NJ" in tavola_selezionata:
 
       # Testo fisso "CHIUSURA DELLA CORSIA DI EMERGENZA" già presente o da aggiungere se necessario, più l'ubicazione
       draw_em.multiline_text(
-          (int(width_em * 0.55), int(height_em * 0.420)),
+          (int(width_em * 0.63), int(height_em * 0.420)),
           ubicazione_testo_em,
           fill=(255, 0, 0),
           font=font_ub_em,
