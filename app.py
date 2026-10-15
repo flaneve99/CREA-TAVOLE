@@ -872,41 +872,41 @@ elif "17" in tavola_selezionata:
               int(height_17 * 0.009),
               f"KM {km_17_via_libera}",
           ),
-          (int(width_17 * 0.61), int(height_17 * 0.265), f"KM {km_17_stop}"),
+          (int(width_17 * 0.63), int(height_17 * 0.265), f"KM {km_17_stop}"),
           (
-              int(width_17 * 0.61),
+              int(width_17 * 0.63),
               int(height_17 * 0.340),
               f"KM {km_17_fine_testata}",
           ),
           (
-              int(width_17 * 0.61),
+              int(width_17 * 0.63),
               int(height_17 * 0.485),
               f"KM {km_17_inizio_testata}",
           ),
           (
-              int(width_17 * 0.61),
-              int(height_17 * 0.600),
+              int(width_17 * 0.63),
+              int(height_17 * 0.605),
               f"KM {km_17_preavviso_100}",
           ),
           (
-              int(width_17 * 0.61),
+              int(width_17 * 0.63),
               int(height_17 * 0.670),
               f"KM {km_17_limite_50_alta}",
           ),
           (
-              int(width_17 * 0.61),
-              int(height_17 * 0.730),
+              int(width_17 * 0.63),
+              int(height_17 * 0.735),
               f"KM {km_17_preavviso_250}",
           ),
           (
-              int(width_17 * 0.61),
-              int(height_17 * 0.800),
+              int(width_17 * 0.63),
+              int(height_17 * 0.807),
               f"KM {km_17_limite_50_bassa}",
           ),
-          (int(width_17 * 0.61), int(height_17 * 0.865), f"KM {km_17_limite_70}"),
+          (int(width_17 * 0.63), int(height_17 * 0.867), f"KM {km_17_limite_70}"),
           (
               int(width_17 * 0.61),
-              int(height_17 * 0.927),
+              int(height_17 * 0.930),
               f"KM {km_17_preavviso_700}",
           ),
       ]
@@ -922,7 +922,7 @@ elif "17" in tavola_selezionata:
         )
 
       x_ub_17 = int(width_17 * 0.67)
-      y_ub_17 = int(height_17 * 0.34)
+      y_ub_17 = int(height_17 * 0.37)
       draw_17.multiline_text(
           (x_ub_17, y_ub_17),
           ubicazione_testo_17,
