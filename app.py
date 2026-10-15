@@ -719,18 +719,18 @@ elif "66" in tavola_selezionata:
 
     dati_righe_66 = [
         (
-            "fig_399.jpg",
-            "FIG. II 399",
-            "PREAVVISO DI CANTIERE",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_050_lim60.jpg",
+            "fig050_lim60.jpg",
             "FIG. II 050",
             "LIMITE DI VELOCITÀ 60 KM/H",
             "",
             "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_048.jpg",
+            "FIG. II 048",
+            "DIVIETO DI SORPASSO",
+            "",
+            "SEGNALI DI DIVIETO",
         ),
         (
             "fig_386.jpg",
@@ -739,13 +739,26 @@ elif "66" in tavola_selezionata:
             "",
             "SEGNALI TEMPORANEI",
         ),
-        ("fig_404.jpg", "FIG. II 404", "SEMAFORO", "", "SEGNALI TEMPORANEI"),
+        (
+            "fig_404.jpg",
+            "FIG. II 404",
+            "SEMAFORO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
         (
             "fig_383.jpg",
             "FIG. II 383",
             "ZONA LAVORI / SENSO UNICO ALTERNATO",
             "",
             "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_070.jpg",
+            "FIG. II 070",
+            "VIA LIBERA / FINE CANTIERE",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
         ),
     ]
 
@@ -865,7 +878,7 @@ elif "66" in tavola_selezionata:
           (int(width_66 * 0.49), int(height_66 * 0.725), f"KM {km_66_dx_semaforo}"),
           (int(width_66 * 0.49), int(height_66 * 0.625), f"KM {km_66_dx_chiusura}"),
           (int(width_66 * 0.49), int(height_66 * 0.380), f"KM {km_66_dx_fine}"),
-          # --- LATO SINISTRO (dall'alto verso il basso o sequenza speculare) ---
+          # --- LATO SINISTRO ---
           (int(width_66 * 0.01), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
           (int(width_66 * 0.01), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
           (int(width_66 * 0.01), int(height_66 * 0.265), f"KM {km_66_sx_strettoia}"),
