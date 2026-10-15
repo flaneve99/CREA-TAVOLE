@@ -857,7 +857,7 @@ elif "66" in tavola_selezionata:
       width_66, height_66 = base_img_66.size
       draw_66 = ImageDraw.Draw(base_img_66)
 
-      font_km = load_custom_font(12)
+      font_km = load_custom_font(13)
       font_ub_66 = load_custom_font(20)
       BORDO = 2
 
@@ -866,18 +866,18 @@ elif "66" in tavola_selezionata:
           # --- LATO DESTRO (dal basso verso l'alto) ---
           (
               int(width_66 * 0.65),
-              int(height_66 * 0.875),
+              int(height_66 * 0.880),
               f"KM {km_66_dx_preavviso}",
           ),
-          (int(width_66 * 0.65), int(height_66 * 0.865), f"KM {km_66_dx_limite60}"),
+          (int(width_66 * 0.65), int(height_66 * 0.830), f"KM {km_66_dx_limite60}"),
           (
               int(width_66 * 0.65),
-              int(height_66 * 0.785),
+              int(height_66 * 0.780),
               f"KM {km_66_dx_strettoia}",
           ),
-          (int(width_66 * 0.65), int(height_66 * 0.725), f"KM {km_66_dx_semaforo}"),
-          (int(width_66 * 0.65), int(height_66 * 0.625), f"KM {km_66_dx_chiusura}"),
-          (int(width_66 * 0.65), int(height_66 * 0.380), f"KM {km_66_dx_fine}"),
+          (int(width_66 * 0.65), int(height_66 * 0.727), f"KM {km_66_dx_semaforo}"),
+          (int(width_66 * 0.65), int(height_66 * 0.600), f"KM {km_66_dx_chiusura}"),
+          (int(width_66 * 0.65), int(height_66 * 0.360), f"KM {km_66_dx_fine}"),
           # --- LATO SINISTRO ---
           (int(width_66 * 0.01), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
           (int(width_66 * 0.01), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
