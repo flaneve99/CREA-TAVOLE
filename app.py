@@ -1966,7 +1966,7 @@ elif "18" in tavola_selezionata:
       etichette_18 = [
           (int(width_18 * 0.65), int(height_18 * 0.928), f"KM {km_18_lavori}"),
           (int(width_18 * 0.65), int(height_18 * 0.860), f"KM {km_18_limite70}"),
-          (int(width_18 * 0.65), int(height_18 * 0.797), f"KM {km_18_limite50}"),
+          (int(width_18 * 0.65), int(height_18 * 0.799), f"KM {km_18_limite50}"),
           (
               int(width_18 * 0.65),
               int(height_18 * 0.735),
@@ -1988,7 +1988,7 @@ elif "18" in tavola_selezionata:
               int(height_18 * 0.270),
               f"KM {km_18_ultima_chiusura}",
           ),
-          (int(width_18 * 0.485), int(height_18 * 0.052), f"KM {km_18_via_libera}"),
+          (int(width_18 * 0.49), int(height_18 * 0.052), f"KM {km_18_via_libera}"),
       ]
 
       for x, y, testo in etichette_18:
