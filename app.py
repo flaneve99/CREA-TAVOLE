@@ -865,25 +865,25 @@ elif "66" in tavola_selezionata:
       etichette_66 = [
           # --- LATO DESTRO (dal basso verso l'alto) ---
           (
-              int(width_66 * 0.49),
+              int(width_66 * 0.65),
               int(height_66 * 0.905),
               f"KM {km_66_dx_preavviso}",
           ),
-          (int(width_66 * 0.49), int(height_66 * 0.845), f"KM {km_66_dx_limite60}"),
+          (int(width_66 * 0.65), int(height_66 * 0.845), f"KM {km_66_dx_limite60}"),
           (
-              int(width_66 * 0.49),
+              int(width_66 * 0.65),
               int(height_66 * 0.785),
               f"KM {km_66_dx_strettoia}",
           ),
-          (int(width_66 * 0.49), int(height_66 * 0.725), f"KM {km_66_dx_semaforo}"),
-          (int(width_66 * 0.49), int(height_66 * 0.625), f"KM {km_66_dx_chiusura}"),
-          (int(width_66 * 0.49), int(height_66 * 0.380), f"KM {km_66_dx_fine}"),
+          (int(width_66 * 0.65), int(height_66 * 0.725), f"KM {km_66_dx_semaforo}"),
+          (int(width_66 * 0.65), int(height_66 * 0.625), f"KM {km_66_dx_chiusura}"),
+          (int(width_66 * 0.65), int(height_66 * 0.380), f"KM {km_66_dx_fine}"),
           # --- LATO SINISTRO ---
-          (int(width_66 * 0.01), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
-          (int(width_66 * 0.01), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
-          (int(width_66 * 0.01), int(height_66 * 0.265), f"KM {km_66_sx_strettoia}"),
-          (int(width_66 * 0.01), int(height_66 * 0.325), f"KM {km_66_sx_semaforo}"),
-          (int(width_66 * 0.01), int(height_66 * 0.530), f"KM {km_66_sx_zona}"),
+          (int(width_66 * 0.05), int(height_66 * 0.150), f"KM {km_66_sx_preavviso}"),
+          (int(width_66 * 0.05), int(height_66 * 0.205), f"KM {km_66_sx_limite60}"),
+          (int(width_66 * 0.05), int(height_66 * 0.265), f"KM {km_66_sx_strettoia}"),
+          (int(width_66 * 0.05), int(height_66 * 0.325), f"KM {km_66_sx_semaforo}"),
+          (int(width_66 * 0.05), int(height_66 * 0.530), f"KM {km_66_sx_zona}"),
       ]
 
       for x, y, testo in etichette_66:
@@ -897,8 +897,8 @@ elif "66" in tavola_selezionata:
         )
 
       # Testo Ubicazione Tavola 66
-      x_ub_66 = int(width_66 * 0.67)
-      y_ub_66 = int(height_66 * 0.27)
+      x_ub_66 = int(width_66 * 0.65)
+      y_ub_66 = int(height_66 * 0.245)
       draw_66.multiline_text(
           (x_ub_66, y_ub_66),
           ubicazione_testo_66,
