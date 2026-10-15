@@ -1960,7 +1960,7 @@ elif "18" in tavola_selezionata:
       width_18, height_18 = base_img_18.size
       draw_18 = ImageDraw.Draw(base_img_18)
       font_km = load_custom_font(17)
-      font_ub_18 = load_custom_font(25)
+      font_ub_18 = load_custom_font(26)
       BORDO = 2
 
       etichette_18 = [
@@ -2002,7 +2002,7 @@ elif "18" in tavola_selezionata:
         )
 
       draw_18.multiline_text(
-          (int(width_18 * 0.68), int(height_18 * 0.395)),
+          (int(width_18 * 0.668), int(height_18 * 0.315)),
           ubicazione_testo_18,
           fill=(255, 0, 0),
           font=font_ub_18,
