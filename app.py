@@ -3553,25 +3553,25 @@ elif "CHIUSURA CON SVINCOLO NJ" in tavola_selezionata:
       width_sv, height_sv = base_img_sv.size
       draw_sv = ImageDraw.Draw(base_img_sv)
       font_km = load_custom_font(20)
-      font_ub_sv = load_custom_font(28)
+      font_ub_sv = load_custom_font(30)
       BORDO = 2
 
       # Mappatura coordinate progressive e ubicazione
       etichette_sv = [
-          (int(width_sv * 0.70), int(height_sv * 0.940), f"KM {km_sv_lavori}"),
-          (int(width_sv * 0.70), int(height_sv * 0.880), f"KM {km_sv_limite70}"),
+          (int(width_sv * 0.73), int(height_sv * 0.950), f"KM {km_sv_lavori}"),
+          (int(width_sv * 0.73), int(height_sv * 0.920), f"KM {km_sv_limite70}"),
           (
-              int(width_sv * 0.70),
-              int(height_sv * 0.810),
+              int(width_sv * 0.73),
+              int(height_sv * 0.880),
               f"KM {km_sv_restringimento1}",
           ),
-          (int(width_sv * 0.70), int(height_sv * 0.740), f"KM {km_sv_limite50}"),
+          (int(width_sv * 0.73), int(height_sv * 0.840), f"KM {km_sv_limite50}"),
           (
-              int(width_sv * 0.70),
-              int(height_sv * 0.670),
+              int(width_sv * 0.73),
+              int(height_sv * 0.770),
               f"KM {km_sv_restringimento2}",
           ),
-          (int(width_sv * 0.58), int(height_sv * 0.035), f"KM {km_sv_fine}"),
+          (int(width_sv * 0.69), int(height_sv * 0.010), f"KM {km_sv_fine}"),
       ]
 
       for x, y, testo in etichette_sv:
@@ -3585,7 +3585,7 @@ elif "CHIUSURA CON SVINCOLO NJ" in tavola_selezionata:
         )
 
       draw_sv.multiline_text(
-          (int(width_sv * 0.58), int(height_sv * 0.170)),
+          (int(width_sv * 0.58), int(height_sv * 0.110)),
           ubicazione_testo_svincolo,
           fill=(255, 0, 0),
           font=font_ub_sv,
