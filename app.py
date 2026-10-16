@@ -4491,7 +4491,7 @@ elif "Tavola 21" in tavola_selezionata:
           ),
           (
               int(width_21 * 0.50),
-              int(height_21 * 0.180),
+              int(height_21 * 0.162),
               f"KM {km_21_finetestata2}",
           ),
           (int(width_21 * 0.50), int(height_21 * 0.052), f"KM {km_21_vialibera}"),
