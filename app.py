@@ -3553,7 +3553,7 @@ elif "CHIUSURA CON SVINCOLO NJ" in tavola_selezionata:
       width_sv, height_sv = base_img_sv.size
       draw_sv = ImageDraw.Draw(base_img_sv)
       font_km = load_custom_font(20)
-      font_ub_sv = load_custom_font(30)
+      font_ub_sv = load_custom_font(29)
       BORDO = 2
 
       # Mappatura coordinate progressive e ubicazione
@@ -3585,7 +3585,7 @@ elif "CHIUSURA CON SVINCOLO NJ" in tavola_selezionata:
         )
 
       draw_sv.multiline_text(
-          (int(width_sv * 0.57), int(height_sv * 0.110)),
+          (int(width_sv * 0.565), int(height_sv * 0.110)),
           ubicazione_testo_svincolo,
           fill=(255, 0, 0),
           font=font_ub_sv,
