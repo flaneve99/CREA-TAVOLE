@@ -99,7 +99,7 @@ tavola_selezionata = st.selectbox(
         ),
         
             "Tavola 22 - Chiusura della corsia di destra su carreggiata a tre corsie priva di corsia di emergenza",
-    ,
+    
         (
             "Tavola 25 - Deviazione con una sola corsia per senso di marcia su"
             " carreggiata a due corsie"
