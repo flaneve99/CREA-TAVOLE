@@ -4986,7 +4986,7 @@ elif "Tavola 23" in tavola_selezionata:
       width_23, height_23 = base_img_23.size
       draw_23 = ImageDraw.Draw(base_img_23)
       font_km = load_custom_font(23)
-      font_ub_23 = load_custom_font(30)
+      font_ub_23 = load_custom_font(31)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 23 (dal basso verso l'alto)
@@ -5014,7 +5014,7 @@ elif "Tavola 23" in tavola_selezionata:
         )
 
       draw_23.multiline_text(
-          (int(width_23 * 0.66), int(height_23 * 0.280)),
+          (int(width_23 * 0.64), int(height_23 * 0.2900)),
           ubicazione_testo_23,
           fill=(255, 0, 0),
           font=font_ub_23,
