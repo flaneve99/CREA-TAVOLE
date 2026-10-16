@@ -5000,7 +5000,7 @@ elif "Tavola 23" in tavola_selezionata:
               f"KM {km_23_iniziotestata}",
           ),
           (int(width_23 * 0.54), int(height_23 * 0.415), f"KM {km_23_finetestata}"),
-          (int(width_23 * 0.54), int(height_23 * 0.21), f"KM {km_23_vialibera}"),
+          (int(width_23 * 0.54), int(height_23 * 0.215), f"KM {km_23_vialibera}"),
       ]
 
       for x, y, testo in etichette_23:
