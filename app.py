@@ -4991,16 +4991,16 @@ elif "Tavola 23" in tavola_selezionata:
 
       # Mappatura coordinate progressive per la Tavola 23 (dal basso verso l'alto)
       etichette_23 = [
-          (int(width_23 * 0.54), int(height_23 * 0.860), f"KM {km_23_restr1}"),
-          (int(width_23 * 0.54), int(height_23 * 0.720), f"KM {km_23_limite60}"),
-          (int(width_23 * 0.54), int(height_23 * 0.650), f"KM {km_23_restr2}"),
+          (int(width_23 * 0.54), int(height_23 * 0.840), f"KM {km_23_restr1}"),
+          (int(width_23 * 0.54), int(height_23 * 0.727), f"KM {km_23_limite60}"),
+          (int(width_23 * 0.54), int(height_23 * 0.6350), f"KM {km_23_restr2}"),
           (
               int(width_23 * 0.54),
-              int(height_23 * 0.520),
+              int(height_23 * 0.528),
               f"KM {km_23_iniziotestata}",
           ),
-          (int(width_23 * 0.54), int(height_23 * 0.300), f"KM {km_23_finetestata}"),
-          (int(width_23 * 0.54), int(height_23 * 0.077), f"KM {km_23_vialibera}"),
+          (int(width_23 * 0.54), int(height_23 * 0.400), f"KM {km_23_finetestata}"),
+          (int(width_23 * 0.54), int(height_23 * 0.2), f"KM {km_23_vialibera}"),
       ]
 
       for x, y, testo in etichette_23:
