@@ -4135,32 +4135,32 @@ elif "Tavola 20" in tavola_selezionata:
       width_20, height_20 = base_img_20.size
       draw_20 = ImageDraw.Draw(base_img_20)
       font_km = load_custom_font(18)
-      font_ub_20 = load_custom_font(29)
+      font_ub_20 = load_custom_font(30)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 20
       etichette_20 = [
-          (int(width_20 * 0.49), int(height_20 * 0.925), f"KM {km_20_lavori}"),
+          (int(width_20 * 0.49), int(height_20 * 0.924), f"KM {km_20_lavori}"),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.885),
+              int(height_20 * 0.884),
               f"KM {km_20_limite110}",
           ),
-          (int(width_20 * 0.49), int(height_20 * 0.840), f"KM {km_20_limite90}"),
+          (int(width_20 * 0.49), int(height_20 * 0.841), f"KM {km_20_limite90}"),
           (int(width_20 * 0.49), int(height_20 * 0.800), f"KM {km_20_restr1}"),
           (int(width_20 * 0.49), int(height_20 * 0.757), f"KM {km_20_sorpasso}"),
           (int(width_20 * 0.49), int(height_20 * 0.716), f"KM {km_20_restr2}"),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.644),
+              int(height_20 * 0.6435),
               f"KM {km_20_iniziotestata1}",
           ),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.5120),
+              int(height_20 * 0.5050),
               f"KM {km_20_finetestata1}",
           ),
-          (int(width_20 * 0.49), int(height_20 * 0.470), f"KM {km_20_restr3}"),
+          (int(width_20 * 0.49), int(height_20 * 0.468), f"KM {km_20_restr3}"),
           (int(width_20 * 0.49), int(height_20 * 0.420), f"KM {km_20_limite60}"),
           (int(width_20 * 0.49), int(height_20 * 0.381), f"KM {km_20_restr4}"),
           (
@@ -4170,10 +4170,10 @@ elif "Tavola 20" in tavola_selezionata:
           ),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.18),
+              int(height_20 * 0.15),
               f"KM {km_20_finetestata2}",
           ),
-          (int(width_20 * 0.49), int(height_20 * 0.047), f"KM {km_20_vialibera}"),
+          (int(width_20 * 0.49), int(height_20 * 0.044), f"KM {km_20_vialibera}"),
       ]
 
       for x, y, testo in etichette_20:
