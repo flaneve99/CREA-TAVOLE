@@ -69,7 +69,6 @@ def load_custom_font(size):
     return ImageFont.load_default(size=size)
   except TypeError:
     return ImageFont.load_default()
-
 # ==================================================
 # SELEZIONE DELLA TAVOLA
 # ==================================================
@@ -104,7 +103,7 @@ tavola_selezionata = st.selectbox(
         (
             "Tavola 23 - Chiusura delle corsie di destra e centrale su"
             " carreggiata a tre corsie priva di corsia di emergenza"
-        ), 
+        ),
         (
             "Tavola 23 - Chiusura delle corsie di destra e centrale (Parte"
             " Inferiore)"
