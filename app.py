@@ -4985,8 +4985,8 @@ elif "Tavola 23" in tavola_selezionata:
         base_img_23 = immagine_originale.convert("RGB")
       width_23, height_23 = base_img_23.size
       draw_23 = ImageDraw.Draw(base_img_23)
-      font_km = load_custom_font(20)
-      font_ub_23 = load_custom_font(25)
+      font_km = load_custom_font(23)
+      font_ub_23 = load_custom_font(30)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 23 (dal basso verso l'alto)
