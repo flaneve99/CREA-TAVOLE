@@ -3827,33 +3827,33 @@ elif "Tavola 19" in tavola_selezionata:
         base_img_19 = immagine_originale.convert("RGB")
       width_19, height_19 = base_img_19.size
       draw_19 = ImageDraw.Draw(base_img_19)
-      font_km = load_custom_font(17)
-      font_ub_19 = load_custom_font(26)
+      font_km = load_custom_font(22)
+      font_ub_19 = load_custom_font(33)
       BORDO = 2
 
       # Mappatura coordinate progressive (speculare/adattata alla Tavola 19)
       etichette_19 = [
-          (int(width_19 * 0.65), int(height_19 * 0.928), f"KM {km_19_lavori}"),
+          (int(width_19 * 0.53), int(height_19 * 0.910), f"KM {km_19_lavori}"),
           (
-              int(width_19 * 0.65),
-              int(height_19 * 0.860),
+              int(width_19 * 0.53),
+              int(height_19 * 0.850),
               f"KM {km_19_limite110}",
           ),
-          (int(width_19 * 0.65), int(height_19 * 0.799), f"KM {km_19_limite90}"),
-          (int(width_19 * 0.65), int(height_19 * 0.735), f"KM {km_19_restr1}"),
-          (int(width_19 * 0.65), int(height_19 * 0.670), f"KM {km_19_sorpasso}"),
-          (int(width_19 * 0.65), int(height_19 * 0.605), f"KM {km_19_restr2}"),
+          (int(width_19 * 0.53), int(height_19 * 0.780), f"KM {km_19_limite90}"),
+          (int(width_19 * 0.53), int(height_19 * 0.728), f"KM {km_19_restr1}"),
+          (int(width_19 * 0.53), int(height_19 * 0.667), f"KM {km_19_sorpasso}"),
+          (int(width_19 * 0.53), int(height_19 * 0.605), f"KM {km_19_restr2}"),
           (
-              int(width_19 * 0.65),
-              int(height_19 * 0.470),
+              int(width_19 * 0.53),
+              int(height_19 * 0.500),
               f"KM {km_19_iniziotestata}",
           ),
           (
-              int(width_19 * 0.65),
-              int(height_19 * 0.270),
+              int(width_19 * 0.53),
+              int(height_19 * 0.287),
               f"KM {km_19_finetestata}",
           ),
-          (int(width_19 * 0.49), int(height_19 * 0.052), f"KM {km_19_vialibera}"),
+          (int(width_19 * 0.53), int(height_19 * 0.110), f"KM {km_19_vialibera}"),
       ]
 
       for x, y, testo in etichette_19:
