@@ -1511,6 +1511,339 @@ elif "25" in tavola_selezionata:
       st.exception(errore)
   else:
     st.error("Immagine 'TAVOLA 25.jpg' non trovata nella cartella.")
+
+# ====================================================================
+# TAVOLA 66 NJ
+# ====================================================================
+elif "66 NJ" in tavola_selezionata:
+  st.subheader(
+      "📍 Dati e Progressive Chilometriche - Tavola 66 NJ (New Jersey)"
+  )
+  ubicazione_testo_66_nj = st.text_area(
+      "Ubicazione / Direzione (Tavola 66 NJ)",
+      value="VIADOTTO MARCHITELLO I\nS.P. 3",
+  )
+  st.write("### Lato Destro dell'Immagine")
+  col1, col2 = st.columns(2)
+  with col1:
+    km_66nj_dx_preavviso = st.text_input(
+        "KM Preavviso Lavori a 200m (Dx)", value="5+065"
+    )
+    km_66nj_dx_limite60 = st.text_input("KM Limite 60 (Dx)", value="5+110")
+    km_66nj_dx_strettoia = st.text_input(
+        "KM Strettoia Asimmetrica a Destra (Dx)", value="5+155"
+    )
+  with col2:
+    km_66nj_dx_semaforo = st.text_input("KM Semaforo (Dx)", value="5+200")
+    km_66nj_dx_chiusura = st.text_input(
+        "KM Chiusura Zona Lavori (Dx)", value="5+300"
+    )
+    km_66nj_dx_fine = st.text_input("KM Fine Zona Lavori (Dx)", value="5+600")
+
+  st.write("### Lato Sinistro dell'Immagine")
+  col3, col4 = st.columns(2)
+  with col3:
+    km_66nj_sx_zona = st.text_input("KM Zona Lavori (Sx)", value="5+600")
+    km_66nj_sx_semaforo = st.text_input("KM Semaforo (Sx)", value="5+700")
+    km_66nj_sx_strettoia = st.text_input(
+        "KM Strettoia / Altro segnale (Sx)", value="5+745"
+    )
+  with col4:
+    km_66nj_sx_limite60 = st.text_input(
+        "KM Limite 60 / Divieto (Sx)", value="5+790"
+    )
+    km_66nj_sx_preavviso = st.text_input(
+        "KM Preavviso Lavori (Sx)", value="5+835"
+    )
+
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 66 NJ"):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Abaco Tavola 66 NJ"
+    ws.merge_cells("A1:E1")
+    titolo_principale = ws["A1"]
+    titolo_principale.value = (
+        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 66 NJ"
+    )
+
+    fill_verde_chiaro = PatternFill(
+        start_color="92D050", end_color="92D050", fill_type="solid"
+    )
+    fill_verde_scuro = PatternFill(
+        start_color="70AD47", end_color="70AD47", fill_type="solid"
+    )
+    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+    font_header = Font(name="Arial", size=10, bold=True, color="000000")
+    font_testo = Font(name="Arial", size=10, color="000000")
+    bordo_sottile = Border(
+        left=Side(style="thin", color="000000"),
+        right=Side(style="thin", color="000000"),
+        top=Side(style="thin", color="000000"),
+        bottom=Side(style="thin", color="000000"),
+    )
+
+    titolo_principale.fill = fill_verde_chiaro
+    titolo_principale.font = font_titolo
+    titolo_principale.alignment = Alignment(
+        horizontal="center", vertical="center"
+    )
+    for col in range(1, 6):
+      ws.cell(row=1, column=col).border = bordo_sottile
+
+    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+    for col_idx, header in enumerate(headers, 1):
+      cell = ws.cell(row=2, column=col_idx)
+      cell.value = header
+      cell.fill = fill_verde_scuro
+      cell.font = font_header
+      cell.alignment = Alignment(
+          horizontal="center", vertical="center", wrap_text=True
+      )
+      cell.border = bordo_sottile
+
+    # Abaco Tavola 66 con l'aggiunta del New Jersey in plastica
+    dati_righe_66nj = [
+        (
+            "fig_050_lim60.jpg",
+            "FIG. II 050",
+            "LIMITE DI VELOCITÀ 60 KM/H",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+        (
+            "fig_048.jpg",
+            "FIG. II 048",
+            "DIVIETO DI SORPASSO",
+            "",
+            "SEGNALI DI DIVIETO",
+        ),
+        (
+            "fig_386.jpg",
+            "FIG. II 386",
+            "STRETTOIA ASIMMETRICA A DESTRA",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_404.jpg",
+            "FIG. II 404",
+            "SEMAFORO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "fig_383.jpg",
+            "FIG. II 383",
+            "ZONA LAVORI / SENSO UNICO ALTERNATO",
+            "",
+            "SEGNALI TEMPORANEI",
+        ),
+        (
+            "newjerseyplastica.jpg",
+            "NEW JERSEY",
+            "NEW JERSEY IN PLASTICA CON RETE ROSSA",
+            "",
+            "PROTEZIONE CANTIERE",
+        ),
+        (
+            "fig_070.jpg",
+            "FIG. II 070",
+            "VIA LIBERA / FINE CANTIERE",
+            "",
+            "SEGNALI DI PRESCRIZIONE",
+        ),
+    ]
+
+    ws.column_dimensions["A"].width = 18
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 45
+    ws.column_dimensions["D"].width = 20
+    ws.column_dimensions["E"].width = 25
+    ws.row_dimensions[1].height = 30
+    ws.row_dimensions[2].height = 25
+
+    immagini_inserite = 0
+    for i, row_data in enumerate(dati_righe_66nj, start=3):
+      img_nome, figura, descrizione, dettagli, segnaletica = row_data
+      ws.row_dimensions[i].height = 55
+      c_fig = ws.cell(row=i, column=2, value=figura)
+      c_desc = ws.cell(row=i, column=3, value=descrizione)
+      c_det = ws.cell(row=i, column=4, value=dettagli)
+      c_seg = ws.cell(row=i, column=5, value=segnaletica)
+      for cell in [c_fig, c_desc, c_det, c_seg]:
+        cell.font = font_testo
+        cell.alignment = Alignment(
+            horizontal="center", vertical="center", wrap_text=True
+        )
+        cell.border = bordo_sottile
+
+      c_segnale = ws.cell(row=i, column=1)
+      c_segnale.border = bordo_sottile
+
+      nomi_da_cercare = [
+          img_nome,
+          img_nome.replace(".jpg", ".png"),
+          img_nome.replace(".png", ".jpg"),
+      ]
+      percorso_trovato = None
+      for nome in nomi_da_cercare:
+        tentativo = os.path.join(dir_immagini, nome)
+        if os.path.exists(tentativo):
+          percorso_trovato = tentativo
+          break
+
+      if percorso_trovato:
+        try:
+          img_pil = Image.open(percorso_trovato).convert("RGB")
+          temp_path = os.path.join("/tmp", f"abaco_66nj_img_{i}.jpg")
+          img_pil.save(temp_path, "JPEG")
+          img_obj = OpenpyxlImage(temp_path)
+          marker_from = AnchorMarker(
+              col=0, colOff=150000, row=i - 1, rowOff=40000
+          )
+          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+          img_obj.anchor = TwoCellAnchor(
+              editAs="twoCell", _from=marker_from, to=marker_to
+          )
+          ws.add_image(img_obj)
+          immagini_inserite += 1
+        except Exception as e:
+          st.warning(f"Errore caricamento immagine per {figura}: {e}")
+      else:
+        c_segnale.value = "[Img non trovata]"
+        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+
+    output = io.BytesIO()
+    wb.save(output)
+    excel_data = output.getvalue()
+    st.success(
+        "Abaco Excel Tavola 66 NJ generato! (Immagini inserite:"
+        f" {immagini_inserite}/{len(dati_righe_66nj)})"
+    )
+    st.download_button(
+        label="📥 Scarica Excel Abaco Tavola 66 NJ",
+        data=excel_data,
+        file_name="Abaco_Segnaletica_Tavola_66_NJ.xlsx",
+        mime=(
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ),
+    )
+
+  st.divider()
+  st.subheader("🖼️ Anteprima Tavola 66 NJ Personalizzata")
+  img_path_66nj = os.path.join(cartella_app, "TAVOLA 66 NJ.jpg")
+  if os.path.exists(img_path_66nj):
+    try:
+      with Image.open(img_path_66nj) as immagine_originale:
+        base_img_66nj = immagine_originale.convert("RGB")
+      width_66nj, height_66nj = base_img_66nj.size
+      draw_66nj = ImageDraw.Draw(base_img_66nj)
+      font_km = load_custom_font(14)
+      font_ub_66nj = load_custom_font(20)
+      BORDO = 2
+
+      # Stesse coordinate della Tavola 66
+      etichette_66nj = [
+          (
+              int(width_66nj * 0.65),
+              int(height_66nj * 0.880),
+              f"KM {km_66nj_dx_preavviso}",
+          ),
+          (
+              int(width_66nj * 0.65),
+              int(height_66nj * 0.825),
+              f"KM {km_66nj_dx_limite60}",
+          ),
+          (
+              int(width_66nj * 0.65),
+              int(height_66nj * 0.780),
+              f"KM {km_66nj_dx_strettoia}",
+          ),
+          (
+              int(width_66nj * 0.65),
+              int(height_66nj * 0.727),
+              f"KM {km_66nj_dx_semaforo}",
+          ),
+          (
+              int(width_66nj * 0.65),
+              int(height_66nj * 0.600),
+              f"KM {km_66nj_dx_chiusura}",
+          ),
+          (
+              int(width_66nj * 0.65),
+              int(height_66nj * 0.370),
+              f"KM {km_66nj_dx_fine}",
+          ),
+          (
+              int(width_66nj * 0.0075),
+              int(height_66nj * 0.107),
+              f"KM {km_66nj_sx_preavviso}",
+          ),
+          (
+              int(width_66nj * 0.0075),
+              int(height_66nj * 0.152),
+              f"KM {km_66nj_sx_limite60}",
+          ),
+          (
+              int(width_66nj * 0.0075),
+              int(height_66nj * 0.200),
+              f"KM {km_66nj_sx_strettoia}",
+          ),
+          (
+              int(width_66nj * 0.0075),
+              int(height_66nj * 0.242),
+              f"KM {km_66nj_sx_semaforo}",
+          ),
+          (
+              int(width_66nj * 0.0075),
+              int(height_66nj * 0.370),
+              f"KM {km_66nj_sx_zona}",
+          ),
+      ]
+
+      for x, y, testo in etichette_66nj:
+        draw_66nj.text(
+            (x, y),
+            testo,
+            fill=(255, 0, 0),
+            font=font_km,
+            stroke_width=BORDO,
+            stroke_fill=(255, 255, 255),
+        )
+
+      x_ub_66nj = int(width_66nj * 0.65)
+      y_ub_66nj = int(height_66nj * 0.245)
+      draw_66nj.multiline_text(
+          (x_ub_66nj, y_ub_66nj),
+          ubicazione_testo_66_nj,
+          fill=(255, 0, 0),
+          font=font_ub_66nj,
+          align="center",
+          spacing=6,
+          stroke_width=BORDO,
+          stroke_fill=(255, 255, 255),
+      )
+
+      img_io_66nj = io.BytesIO()
+      base_img_66nj.save(img_io_66nj, format="JPEG", quality=100, subsampling=0)
+      jpg_data_66nj = img_io_66nj.getvalue()
+      st.image(
+          base_img_66nj,
+          caption="Tavola 66 NJ - Configurazione completata",
+          use_container_width=True,
+      )
+      st.download_button(
+          label="📥 Scarica Tavola 66 NJ in formato JPG",
+          data=jpg_data_66nj,
+          file_name="Tavola_66_NJ_Compilata.jpg",
+          mime="image/jpeg",
+      )
+    except Exception as errore:
+      st.error("Errore generazione Tavola 66 NJ.")
+      st.exception(errore)
+  else:
+    st.error("Immagine 'TAVOLA 66 NJ.jpg' non trovata nella cartella.")
 # ====================================================================
 # TAVOLA 66
 # ====================================================================
@@ -2990,335 +3323,3 @@ elif "37" in tavola_selezionata:
   else:
     st.error("Immagine 'TAVOLA 37.jpg' non trovata nella cartella.")
 
-# ====================================================================
-# TAVOLA 66 NJ
-# ====================================================================
-elif "66 NJ" in tavola_selezionata:
-  st.subheader(
-      "📍 Dati e Progressive Chilometriche - Tavola 66 NJ (New Jersey)"
-  )
-  ubicazione_testo_66_nj = st.text_area(
-      "Ubicazione / Direzione (Tavola 66 NJ)",
-      value="VIADOTTO MARCHITELLO I\nS.P. 3",
-  )
-  st.write("### Lato Destro dell'Immagine")
-  col1, col2 = st.columns(2)
-  with col1:
-    km_66nj_dx_preavviso = st.text_input(
-        "KM Preavviso Lavori a 200m (Dx)", value="5+065"
-    )
-    km_66nj_dx_limite60 = st.text_input("KM Limite 60 (Dx)", value="5+110")
-    km_66nj_dx_strettoia = st.text_input(
-        "KM Strettoia Asimmetrica a Destra (Dx)", value="5+155"
-    )
-  with col2:
-    km_66nj_dx_semaforo = st.text_input("KM Semaforo (Dx)", value="5+200")
-    km_66nj_dx_chiusura = st.text_input(
-        "KM Chiusura Zona Lavori (Dx)", value="5+300"
-    )
-    km_66nj_dx_fine = st.text_input("KM Fine Zona Lavori (Dx)", value="5+600")
-
-  st.write("### Lato Sinistro dell'Immagine")
-  col3, col4 = st.columns(2)
-  with col3:
-    km_66nj_sx_zona = st.text_input("KM Zona Lavori (Sx)", value="5+600")
-    km_66nj_sx_semaforo = st.text_input("KM Semaforo (Sx)", value="5+700")
-    km_66nj_sx_strettoia = st.text_input(
-        "KM Strettoia / Altro segnale (Sx)", value="5+745"
-    )
-  with col4:
-    km_66nj_sx_limite60 = st.text_input(
-        "KM Limite 60 / Divieto (Sx)", value="5+790"
-    )
-    km_66nj_sx_preavviso = st.text_input(
-        "KM Preavviso Lavori (Sx)", value="5+835"
-    )
-
-  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 66 NJ"):
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Abaco Tavola 66 NJ"
-    ws.merge_cells("A1:E1")
-    titolo_principale = ws["A1"]
-    titolo_principale.value = (
-        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 66 NJ"
-    )
-
-    fill_verde_chiaro = PatternFill(
-        start_color="92D050", end_color="92D050", fill_type="solid"
-    )
-    fill_verde_scuro = PatternFill(
-        start_color="70AD47", end_color="70AD47", fill_type="solid"
-    )
-    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
-    font_header = Font(name="Arial", size=10, bold=True, color="000000")
-    font_testo = Font(name="Arial", size=10, color="000000")
-    bordo_sottile = Border(
-        left=Side(style="thin", color="000000"),
-        right=Side(style="thin", color="000000"),
-        top=Side(style="thin", color="000000"),
-        bottom=Side(style="thin", color="000000"),
-    )
-
-    titolo_principale.fill = fill_verde_chiaro
-    titolo_principale.font = font_titolo
-    titolo_principale.alignment = Alignment(
-        horizontal="center", vertical="center"
-    )
-    for col in range(1, 6):
-      ws.cell(row=1, column=col).border = bordo_sottile
-
-    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
-    for col_idx, header in enumerate(headers, 1):
-      cell = ws.cell(row=2, column=col_idx)
-      cell.value = header
-      cell.fill = fill_verde_scuro
-      cell.font = font_header
-      cell.alignment = Alignment(
-          horizontal="center", vertical="center", wrap_text=True
-      )
-      cell.border = bordo_sottile
-
-    # Abaco Tavola 66 con l'aggiunta del New Jersey in plastica
-    dati_righe_66nj = [
-        (
-            "fig_050_lim60.jpg",
-            "FIG. II 050",
-            "LIMITE DI VELOCITÀ 60 KM/H",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-        (
-            "fig_048.jpg",
-            "FIG. II 048",
-            "DIVIETO DI SORPASSO",
-            "",
-            "SEGNALI DI DIVIETO",
-        ),
-        (
-            "fig_386.jpg",
-            "FIG. II 386",
-            "STRETTOIA ASIMMETRICA A DESTRA",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_404.jpg",
-            "FIG. II 404",
-            "SEMAFORO",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_383.jpg",
-            "FIG. II 383",
-            "ZONA LAVORI / SENSO UNICO ALTERNATO",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "newjerseyplastica.jpg",
-            "NEW JERSEY",
-            "NEW JERSEY IN PLASTICA CON RETE ROSSA",
-            "",
-            "PROTEZIONE CANTIERE",
-        ),
-        (
-            "fig_070.jpg",
-            "FIG. II 070",
-            "VIA LIBERA / FINE CANTIERE",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-    ]
-
-    ws.column_dimensions["A"].width = 18
-    ws.column_dimensions["B"].width = 16
-    ws.column_dimensions["C"].width = 45
-    ws.column_dimensions["D"].width = 20
-    ws.column_dimensions["E"].width = 25
-    ws.row_dimensions[1].height = 30
-    ws.row_dimensions[2].height = 25
-
-    immagini_inserite = 0
-    for i, row_data in enumerate(dati_righe_66nj, start=3):
-      img_nome, figura, descrizione, dettagli, segnaletica = row_data
-      ws.row_dimensions[i].height = 55
-      c_fig = ws.cell(row=i, column=2, value=figura)
-      c_desc = ws.cell(row=i, column=3, value=descrizione)
-      c_det = ws.cell(row=i, column=4, value=dettagli)
-      c_seg = ws.cell(row=i, column=5, value=segnaletica)
-      for cell in [c_fig, c_desc, c_det, c_seg]:
-        cell.font = font_testo
-        cell.alignment = Alignment(
-            horizontal="center", vertical="center", wrap_text=True
-        )
-        cell.border = bordo_sottile
-
-      c_segnale = ws.cell(row=i, column=1)
-      c_segnale.border = bordo_sottile
-
-      nomi_da_cercare = [
-          img_nome,
-          img_nome.replace(".jpg", ".png"),
-          img_nome.replace(".png", ".jpg"),
-      ]
-      percorso_trovato = None
-      for nome in nomi_da_cercare:
-        tentativo = os.path.join(dir_immagini, nome)
-        if os.path.exists(tentativo):
-          percorso_trovato = tentativo
-          break
-
-      if percorso_trovato:
-        try:
-          img_pil = Image.open(percorso_trovato).convert("RGB")
-          temp_path = os.path.join("/tmp", f"abaco_66nj_img_{i}.jpg")
-          img_pil.save(temp_path, "JPEG")
-          img_obj = OpenpyxlImage(temp_path)
-          marker_from = AnchorMarker(
-              col=0, colOff=150000, row=i - 1, rowOff=40000
-          )
-          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
-          img_obj.anchor = TwoCellAnchor(
-              editAs="twoCell", _from=marker_from, to=marker_to
-          )
-          ws.add_image(img_obj)
-          immagini_inserite += 1
-        except Exception as e:
-          st.warning(f"Errore caricamento immagine per {figura}: {e}")
-      else:
-        c_segnale.value = "[Img non trovata]"
-        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
-        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
-
-    output = io.BytesIO()
-    wb.save(output)
-    excel_data = output.getvalue()
-    st.success(
-        "Abaco Excel Tavola 66 NJ generato! (Immagini inserite:"
-        f" {immagini_inserite}/{len(dati_righe_66nj)})"
-    )
-    st.download_button(
-        label="📥 Scarica Excel Abaco Tavola 66 NJ",
-        data=excel_data,
-        file_name="Abaco_Segnaletica_Tavola_66_NJ.xlsx",
-        mime=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
-    )
-
-  st.divider()
-  st.subheader("🖼️ Anteprima Tavola 66 NJ Personalizzata")
-  img_path_66nj = os.path.join(cartella_app, "TAVOLA 66 NJ.jpg")
-  if os.path.exists(img_path_66nj):
-    try:
-      with Image.open(img_path_66nj) as immagine_originale:
-        base_img_66nj = immagine_originale.convert("RGB")
-      width_66nj, height_66nj = base_img_66nj.size
-      draw_66nj = ImageDraw.Draw(base_img_66nj)
-      font_km = load_custom_font(14)
-      font_ub_66nj = load_custom_font(20)
-      BORDO = 2
-
-      # Stesse coordinate della Tavola 66
-      etichette_66nj = [
-          (
-              int(width_66nj * 0.65),
-              int(height_66nj * 0.880),
-              f"KM {km_66nj_dx_preavviso}",
-          ),
-          (
-              int(width_66nj * 0.65),
-              int(height_66nj * 0.825),
-              f"KM {km_66nj_dx_limite60}",
-          ),
-          (
-              int(width_66nj * 0.65),
-              int(height_66nj * 0.780),
-              f"KM {km_66nj_dx_strettoia}",
-          ),
-          (
-              int(width_66nj * 0.65),
-              int(height_66nj * 0.727),
-              f"KM {km_66nj_dx_semaforo}",
-          ),
-          (
-              int(width_66nj * 0.65),
-              int(height_66nj * 0.600),
-              f"KM {km_66nj_dx_chiusura}",
-          ),
-          (
-              int(width_66nj * 0.65),
-              int(height_66nj * 0.370),
-              f"KM {km_66nj_dx_fine}",
-          ),
-          (
-              int(width_66nj * 0.0075),
-              int(height_66nj * 0.107),
-              f"KM {km_66nj_sx_preavviso}",
-          ),
-          (
-              int(width_66nj * 0.0075),
-              int(height_66nj * 0.152),
-              f"KM {km_66nj_sx_limite60}",
-          ),
-          (
-              int(width_66nj * 0.0075),
-              int(height_66nj * 0.200),
-              f"KM {km_66nj_sx_strettoia}",
-          ),
-          (
-              int(width_66nj * 0.0075),
-              int(height_66nj * 0.242),
-              f"KM {km_66nj_sx_semaforo}",
-          ),
-          (
-              int(width_66nj * 0.0075),
-              int(height_66nj * 0.370),
-              f"KM {km_66nj_sx_zona}",
-          ),
-      ]
-
-      for x, y, testo in etichette_66nj:
-        draw_66nj.text(
-            (x, y),
-            testo,
-            fill=(255, 0, 0),
-            font=font_km,
-            stroke_width=BORDO,
-            stroke_fill=(255, 255, 255),
-        )
-
-      x_ub_66nj = int(width_66nj * 0.65)
-      y_ub_66nj = int(height_66nj * 0.245)
-      draw_66nj.multiline_text(
-          (x_ub_66nj, y_ub_66nj),
-          ubicazione_testo_66_nj,
-          fill=(255, 0, 0),
-          font=font_ub_66nj,
-          align="center",
-          spacing=6,
-          stroke_width=BORDO,
-          stroke_fill=(255, 255, 255),
-      )
-
-      img_io_66nj = io.BytesIO()
-      base_img_66nj.save(img_io_66nj, format="JPEG", quality=100, subsampling=0)
-      jpg_data_66nj = img_io_66nj.getvalue()
-      st.image(
-          base_img_66nj,
-          caption="Tavola 66 NJ - Configurazione completata",
-          use_container_width=True,
-      )
-      st.download_button(
-          label="📥 Scarica Tavola 66 NJ in formato JPG",
-          data=jpg_data_66nj,
-          file_name="Tavola_66_NJ_Compilata.jpg",
-          mime="image/jpeg",
-      )
-    except Exception as errore:
-      st.error("Errore generazione Tavola 66 NJ.")
-      st.exception(errore)
-  else:
-    st.error("Immagine 'TAVOLA 66 NJ.jpg' non trovata nella cartella.")
