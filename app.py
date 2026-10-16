@@ -111,6 +111,7 @@ tavola_selezionata = st.selectbox(
             "Tavola 66 NJ - Lavori con senso unico alternato e New Jersey in"
             " plastica"
         ),
+        "CHIUSURA CON SVINCOLO NJ - Chiusura con Svincolo e New Jersey",
         "CORSIA DI EMERGENZA NJ - Chiusura della corsia di emergenza",
     ],
 )
