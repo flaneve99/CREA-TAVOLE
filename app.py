@@ -4455,46 +4455,46 @@ elif "Tavola 21" in tavola_selezionata:
         base_img_21 = immagine_originale.convert("RGB")
       width_21, height_21 = base_img_21.size
       draw_21 = ImageDraw.Draw(base_img_21)
-      font_km = load_custom_font(15)
-      font_ub_21 = load_custom_font(24)
+      font_km = load_custom_font(17)
+      font_ub_21 = load_custom_font(30)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 21 (identica alla 20)
       etichette_21 = [
-          (int(width_21 * 0.65), int(height_21 * 0.940), f"KM {km_21_lavori}"),
+          (int(width_21 * 0.50), int(height_21 * 0.947), f"KM {km_21_lavori}"),
           (
-              int(width_21 * 0.65),
-              int(height_21 * 0.900),
+              int(width_21 * 0.50),
+              int(height_21 * 0.905),
               f"KM {km_21_limite110}",
           ),
-          (int(width_21 * 0.65), int(height_21 * 0.855), f"KM {km_21_limite90}"),
-          (int(width_21 * 0.65), int(height_21 * 0.810), f"KM {km_21_restr1}"),
-          (int(width_21 * 0.65), int(height_21 * 0.765), f"KM {km_21_sorpasso}"),
-          (int(width_21 * 0.65), int(height_21 * 0.720), f"KM {km_21_restr2}"),
+          (int(width_21 * 0.50), int(height_21 * 0.865), f"KM {km_21_limite90}"),
+          (int(width_21 * 0.50), int(height_21 * 0.820), f"KM {km_21_restr1}"),
+          (int(width_21 * 0.50), int(height_21 * 0.780), f"KM {km_21_sorpasso}"),
+          (int(width_21 * 0.50), int(height_21 * 0.737), f"KM {km_21_restr2}"),
           (
-              int(width_21 * 0.65),
-              int(height_21 * 0.650),
+              int(width_21 * 0.50),
+              int(height_21 * 0.665),
               f"KM {km_21_iniziotestata1}",
           ),
           (
-              int(width_21 * 0.65),
-              int(height_21 * 0.580),
+              int(width_21 * 0.50),
+              int(height_21 * 0.525),
               f"KM {km_21_finetestata1}",
           ),
-          (int(width_21 * 0.65), int(height_21 * 0.520), f"KM {km_21_restr3}"),
-          (int(width_21 * 0.65), int(height_21 * 0.460), f"KM {km_21_limite60}"),
-          (int(width_21 * 0.65), int(height_21 * 0.400), f"KM {km_21_restr4}"),
+          (int(width_21 * 0.50), int(height_21 * 0.480), f"KM {km_21_restr3}"),
+          (int(width_21 * 0.50), int(height_21 * 0.430), f"KM {km_21_limite60}"),
+          (int(width_21 * 0.50), int(height_21 * 0.387), f"KM {km_21_restr4}"),
           (
-              int(width_21 * 0.65),
-              int(height_21 * 0.320),
+              int(width_21 * 0.50),
+              int(height_21 * 0.325),
               f"KM {km_21_iniziotestata2}",
           ),
           (
-              int(width_21 * 0.65),
-              int(height_21 * 0.220),
+              int(width_21 * 0.50),
+              int(height_21 * 0.200),
               f"KM {km_21_finetestata2}",
           ),
-          (int(width_21 * 0.49), int(height_21 * 0.052), f"KM {km_21_vialibera}"),
+          (int(width_21 * 0.50), int(height_21 * 0.052), f"KM {km_21_vialibera}"),
       ]
 
       for x, y, testo in etichette_21:
@@ -4508,7 +4508,7 @@ elif "Tavola 21" in tavola_selezionata:
         )
 
       draw_21.multiline_text(
-          (int(width_21 * 0.668), int(height_21 * 0.140)),
+          (int(width_21 * 0.673), int(height_21 * 0.350)),
           ubicazione_testo_21,
           fill=(255, 0, 0),
           font=font_ub_21,
