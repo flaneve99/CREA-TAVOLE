@@ -3565,13 +3565,13 @@ elif "CHIUSURA CON SVINCOLO NJ" in tavola_selezionata:
               int(height_sv * 0.880),
               f"KM {km_sv_restringimento1}",
           ),
-          (int(width_sv * 0.73), int(height_sv * 0.840), f"KM {km_sv_limite50}"),
+          (int(width_sv * 0.75), int(height_sv * 0.838), f"KM {km_sv_limite50}"),
           (
               int(width_sv * 0.73),
-              int(height_sv * 0.770),
+              int(height_sv * 0.7970),
               f"KM {km_sv_restringimento2}",
           ),
-          (int(width_sv * 0.69), int(height_sv * 0.010), f"KM {km_sv_fine}"),
+          (int(width_sv * 0.675), int(height_sv * 0.009), f"KM {km_sv_fine}"),
       ]
 
       for x, y, testo in etichette_sv:
@@ -3585,7 +3585,7 @@ elif "CHIUSURA CON SVINCOLO NJ" in tavola_selezionata:
         )
 
       draw_sv.multiline_text(
-          (int(width_sv * 0.58), int(height_sv * 0.110)),
+          (int(width_sv * 0.57), int(height_sv * 0.110)),
           ubicazione_testo_svincolo,
           fill=(255, 0, 0),
           font=font_ub_sv,
