@@ -4135,34 +4135,34 @@ elif "Tavola 20" in tavola_selezionata:
       width_20, height_20 = base_img_20.size
       draw_20 = ImageDraw.Draw(base_img_20)
       font_km = load_custom_font(18)
-      font_ub_20 = load_custom_font(27)
+      font_ub_20 = load_custom_font(29)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 20
       etichette_20 = [
-          (int(width_20 * 0.49), int(height_20 * 0.930), f"KM {km_20_lavori}"),
+          (int(width_20 * 0.49), int(height_20 * 0.925), f"KM {km_20_lavori}"),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.880),
+              int(height_20 * 0.885),
               f"KM {km_20_limite110}",
           ),
-          (int(width_20 * 0.49), int(height_20 * 0.845), f"KM {km_20_limite90}"),
-          (int(width_20 * 0.49), int(height_20 * 0.795), f"KM {km_20_restr1}"),
-          (int(width_20 * 0.49), int(height_20 * 0.750), f"KM {km_20_sorpasso}"),
-          (int(width_20 * 0.49), int(height_20 * 0.717), f"KM {km_20_restr2}"),
+          (int(width_20 * 0.49), int(height_20 * 0.840), f"KM {km_20_limite90}"),
+          (int(width_20 * 0.49), int(height_20 * 0.800), f"KM {km_20_restr1}"),
+          (int(width_20 * 0.49), int(height_20 * 0.757), f"KM {km_20_sorpasso}"),
+          (int(width_20 * 0.49), int(height_20 * 0.716), f"KM {km_20_restr2}"),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.645),
+              int(height_20 * 0.644),
               f"KM {km_20_iniziotestata1}",
           ),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.530),
+              int(height_20 * 0.5120),
               f"KM {km_20_finetestata1}",
           ),
-          (int(width_20 * 0.49), int(height_20 * 0.490), f"KM {km_20_restr3}"),
-          (int(width_20 * 0.49), int(height_20 * 0.460), f"KM {km_20_limite60}"),
-          (int(width_20 * 0.49), int(height_20 * 0.380), f"KM {km_20_restr4}"),
+          (int(width_20 * 0.49), int(height_20 * 0.470), f"KM {km_20_restr3}"),
+          (int(width_20 * 0.49), int(height_20 * 0.420), f"KM {km_20_limite60}"),
+          (int(width_20 * 0.49), int(height_20 * 0.381), f"KM {km_20_restr4}"),
           (
               int(width_20 * 0.49),
               int(height_20 * 0.310),
@@ -4170,7 +4170,7 @@ elif "Tavola 20" in tavola_selezionata:
           ),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.205),
+              int(height_20 * 0.18),
               f"KM {km_20_finetestata2}",
           ),
           (int(width_20 * 0.49), int(height_20 * 0.047), f"KM {km_20_vialibera}"),
