@@ -4170,7 +4170,7 @@ elif "Tavola 20" in tavola_selezionata:
           ),
           (
               int(width_20 * 0.49),
-              int(height_20 * 0.15),
+              int(height_20 * 0.16),
               f"KM {km_20_finetestata2}",
           ),
           (int(width_20 * 0.49), int(height_20 * 0.044), f"KM {km_20_vialibera}"),
