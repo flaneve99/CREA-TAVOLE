@@ -4741,17 +4741,17 @@ elif "Tavola 22" in tavola_selezionata:
       width_22, height_22 = base_img_22.size
       draw_22 = ImageDraw.Draw(base_img_22)
       font_km = load_custom_font(25)
-      font_ub_22 = load_custom_font(32)
+      font_ub_22 = load_custom_font(33)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 22 (dal basso verso l'alto)
       etichette_22 = [
-          (int(width_22 * 0.49), int(height_22 * 0.85), f"KM {km_22_lavori}"),
-          (int(width_22 * 0.49), int(height_22 * 0.690), f"KM {km_22_limite110}"),
-          (int(width_22 * 0.49), int(height_22 * 0.510), f"KM {km_22_restr}"),
-          (int(width_22 * 0.49), int(height_22 * 0.290), f"KM {km_22_limite80}"),
-          (int(width_22 * 0.49), int(height_22 * 0.2420), f"KM {km_22_obbligo}"),
-          (int(width_22 * 0.49), int(height_22 * 0.070), f"KM {km_22_vialibera}"),
+          (int(width_22 * 0.49), int(height_22 * 0.835), f"KM {km_22_lavori}"),
+          (int(width_22 * 0.49), int(height_22 * 0.692), f"KM {km_22_limite110}"),
+          (int(width_22 * 0.49), int(height_22 * 0.5050), f"KM {km_22_restr}"),
+          (int(width_22 * 0.49), int(height_22 * 0.2880), f"KM {km_22_limite80}"),
+          (int(width_22 * 0.49), int(height_22 * 0.2310), f"KM {km_22_obbligo}"),
+          (int(width_22 * 0.49), int(height_22 * 0.073), f"KM {km_22_vialibera}"),
       ]
 
       for x, y, testo in etichette_22:
@@ -4765,7 +4765,7 @@ elif "Tavola 22" in tavola_selezionata:
         )
 
       draw_22.multiline_text(
-          (int(width_22 * 0.68), int(height_22 * 0.400)),
+          (int(width_22 * 0.66), int(height_22 * 0.400)),
           ubicazione_testo_22,
           fill=(255, 0, 0),
           font=font_ub_22,
