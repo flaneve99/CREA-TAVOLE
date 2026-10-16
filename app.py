@@ -4455,43 +4455,43 @@ elif "Tavola 21" in tavola_selezionata:
         base_img_21 = immagine_originale.convert("RGB")
       width_21, height_21 = base_img_21.size
       draw_21 = ImageDraw.Draw(base_img_21)
-      font_km = load_custom_font(17)
-      font_ub_21 = load_custom_font(30)
+      font_km = load_custom_font(18)
+      font_ub_21 = load_custom_font(32)
       BORDO = 2
 
       # Mappatura coordinate progressive per la Tavola 21 (identica alla 20)
       etichette_21 = [
-          (int(width_21 * 0.50), int(height_21 * 0.947), f"KM {km_21_lavori}"),
+          (int(width_21 * 0.50), int(height_21 * 0.944), f"KM {km_21_lavori}"),
           (
               int(width_21 * 0.50),
-              int(height_21 * 0.905),
+              int(height_21 * 0.900),
               f"KM {km_21_limite110}",
           ),
-          (int(width_21 * 0.50), int(height_21 * 0.865), f"KM {km_21_limite90}"),
-          (int(width_21 * 0.50), int(height_21 * 0.820), f"KM {km_21_restr1}"),
-          (int(width_21 * 0.50), int(height_21 * 0.780), f"KM {km_21_sorpasso}"),
-          (int(width_21 * 0.50), int(height_21 * 0.737), f"KM {km_21_restr2}"),
+          (int(width_21 * 0.50), int(height_21 * 0.858), f"KM {km_21_limite90}"),
+          (int(width_21 * 0.50), int(height_21 * 0.814), f"KM {km_21_restr1}"),
+          (int(width_21 * 0.50), int(height_21 * 0.774), f"KM {km_21_sorpasso}"),
+          (int(width_21 * 0.50), int(height_21 * 0.732), f"KM {km_21_restr2}"),
           (
               int(width_21 * 0.50),
-              int(height_21 * 0.665),
+              int(height_21 * 0.660),
               f"KM {km_21_iniziotestata1}",
           ),
           (
               int(width_21 * 0.50),
-              int(height_21 * 0.525),
+              int(height_21 * 0.520),
               f"KM {km_21_finetestata1}",
           ),
           (int(width_21 * 0.50), int(height_21 * 0.480), f"KM {km_21_restr3}"),
           (int(width_21 * 0.50), int(height_21 * 0.430), f"KM {km_21_limite60}"),
-          (int(width_21 * 0.50), int(height_21 * 0.387), f"KM {km_21_restr4}"),
+          (int(width_21 * 0.50), int(height_21 * 0.392), f"KM {km_21_restr4}"),
           (
               int(width_21 * 0.50),
-              int(height_21 * 0.325),
+              int(height_21 * 0.320),
               f"KM {km_21_iniziotestata2}",
           ),
           (
               int(width_21 * 0.50),
-              int(height_21 * 0.200),
+              int(height_21 * 0.180),
               f"KM {km_21_finetestata2}",
           ),
           (int(width_21 * 0.50), int(height_21 * 0.052), f"KM {km_21_vialibera}"),
