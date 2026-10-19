@@ -5273,7 +5273,7 @@ elif "Tavola 24" in tavola_selezionata:
                     ),
                     (
                         int(width_24inf * 0.65),
-                        int(height_24inf * 0.605),
+                        int(height_24inf * 0.610),
                         f"KM {km_24inf_limite110}",
                     ),
                     (
@@ -5283,22 +5283,22 @@ elif "Tavola 24" in tavola_selezionata:
                     ),
                     (
                         int(width_24inf * 0.65),
-                        int(height_24inf * 0.412),
+                        int(height_24inf * 0.408),
                         f"KM {km_24inf_limite80}",
                     ),
                     (
                         int(width_24inf * 0.65),
-                        int(height_24inf * 0.3250),
+                        int(height_24inf * 0.3370),
                         f"KM {km_24inf_limite60}",
                     ),
                     (
                         int(width_24inf * 0.65),
-                        int(height_24inf * 0.2650),
+                        int(height_24inf * 0.2680),
                         f"KM {km_24inf_iniziotestata}",
                     ),
                     (
                         int(width_24inf * 0.65),
-                        int(height_24inf * 0.125),
+                        int(height_24inf * 0.142),
                         f"KM {km_24inf_finetestata}",
                     ),
                 ]
@@ -5313,7 +5313,7 @@ elif "Tavola 24" in tavola_selezionata:
                     )
 
                 draw_24inf.multiline_text(
-                    (int(width_24inf * 0.66), int(height_24inf * 0.050)),
+                    (int(width_24inf * 0.66), int(height_24inf * 0.060)),
                     ubicazione_testo_24,
                     fill=(255, 0, 0),
                     font=font_ub_24inf,
