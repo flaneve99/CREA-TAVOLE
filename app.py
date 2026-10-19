@@ -5381,7 +5381,7 @@ elif "Tavola 24" in tavola_selezionata:
                     ),
                     (
                         int(width_24alta * 0.52),
-                        int(height_24alta * 0.5110),
+                        int(height_24alta * 0.5140),
                         f"KM {km_24_finetestata}",
                     ),
                     (
