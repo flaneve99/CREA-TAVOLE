@@ -5361,12 +5361,12 @@ elif "Tavola 24" in tavola_selezionata:
                 etichette_24alta = [
                     (
                         int(width_24alta * 0.52),
-                        int(height_24alta * 0.8550),
+                        int(height_24alta * 0.8570),
                         f"KM {km_24_restr1}",
                     ),
                     (
                         int(width_24alta * 0.52),
-                        int(height_24alta * 0.793),
+                        int(height_24alta * 0.786),
                         f"KM {km_24_limite60}",
                     ),
                     (
@@ -5376,17 +5376,17 @@ elif "Tavola 24" in tavola_selezionata:
                     ),
                     (
                         int(width_24alta * 0.52),
-                        int(height_24alta * 0.637),
+                        int(height_24alta * 0.633),
                         f"KM {km_24_iniziotestata}",
                     ),
                     (
                         int(width_24alta * 0.52),
-                        int(height_24alta * 0.520),
+                        int(height_24alta * 0.5110),
                         f"KM {km_24_finetestata}",
                     ),
                     (
                         int(width_24alta * 0.52),
-                        int(height_24alta * 0.32),
+                        int(height_24alta * 0.312),
                         f"KM {km_24_vialibera}",
                     ),
                 ]
