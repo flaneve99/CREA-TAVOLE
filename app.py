@@ -72,6 +72,9 @@ def load_custom_font(size):
 # ==================================================
 # SELEZIONE DELLA TAVOLA
 # ==================================================
+# ==================================================
+# SELEZIONE DELLA TAVOLA
+# ==================================================
 tavola_selezionata = st.selectbox(
     "Seleziona la Tavola di Cantiere",
     [
