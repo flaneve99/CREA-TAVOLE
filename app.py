@@ -5053,17 +5053,17 @@ elif "Parte Inferiore" in tavola_selezionata:
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.510),
+              int(height_23inf * 0.490),
               f"KM {km_23inf_restr}",
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.300),
+              int(height_23inf * 0.260),
               f"KM {km_23inf_limite80}",
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.275),
+              int(height_23inf * 0.240),
               f"KM {km_23inf_obbligo}",
           ),
           (
