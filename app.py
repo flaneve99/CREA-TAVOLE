@@ -5108,7 +5108,7 @@ elif "Tavola 24" in tavola_selezionata:
             (
                 "fig_400.jpg",
                 "FIG. II 400",
-                "SEGNALE MOBILE DI PREAVVISO CON FRECCIA",
+                "SEGNALE MOBILE DI PREAVVISO",
                 "",
                 "SEGNALI TEMPORANEI",
             ),
