@@ -5143,7 +5143,7 @@ elif "Tavola 24" in tavola_selezionata:
             (
                 "fig_411a.jpg",
                 "FIG. II 411/a",
-                "PANNELLO DEVIATORE / PASSAGGIO OBBLIGATO",
+                "SEGNALE DI CORSIA CHIUSA",
                 "",
                 "SEGNALI TEMPORANEI",
             ),
@@ -5360,33 +5360,33 @@ elif "Tavola 24" in tavola_selezionata:
                 # Coordinate percentuali adattate a "TAVOLA 24 PARTE ALTA.jpg" (dal basso verso l'alto)
                 etichette_24alta = [
                     (
-                        int(width_24alta * 0.54),
-                        int(height_24alta * 0.915),
+                        int(width_24alta * 0.53),
+                        int(height_24alta * 0.880),
                         f"KM {km_24_restr1}",
                     ),
                     (
-                        int(width_24alta * 0.54),
-                        int(height_24alta * 0.805),
+                        int(width_24alta * 0.53),
+                        int(height_24alta * 0.785),
                         f"KM {km_24_limite60}",
                     ),
                     (
-                        int(width_24alta * 0.54),
-                        int(height_24alta * 0.760),
+                        int(width_24alta * 0.53),
+                        int(height_24alta * 0.7300),
                         f"KM {km_24_restr2}",
                     ),
                     (
-                        int(width_24alta * 0.54),
-                        int(height_24alta * 0.648),
+                        int(width_24alta * 0.53),
+                        int(height_24alta * 0.630),
                         f"KM {km_24_iniziotestata}",
                     ),
                     (
-                        int(width_24alta * 0.54),
-                        int(height_24alta * 0.528),
+                        int(width_24alta * 0.53),
+                        int(height_24alta * 0.510),
                         f"KM {km_24_finetestata}",
                     ),
                     (
-                        int(width_24alta * 0.54),
-                        int(height_24alta * 0.328),
+                        int(width_24alta * 0.53),
+                        int(height_24alta * 0.3128),
                         f"KM {km_24_vialibera}",
                     ),
                 ]
@@ -5401,7 +5401,7 @@ elif "Tavola 24" in tavola_selezionata:
                     )
 
                 draw_24alta.multiline_text(
-                    (int(width_24alta * 0.64), int(height_24alta * 0.290)),
+                    (int(width_24alta * 0.50), int(height_24alta * 0.20)),
                     ubicazione_testo_24,
                     fill=(255, 0, 0),
                     font=font_ub_24alta,
