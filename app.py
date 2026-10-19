@@ -5084,7 +5084,7 @@ elif "Parte Inferiore" in tavola_selezionata:
         )
 
       draw_23inf.multiline_text(
-          (int(width_23inf * 0.68), int(height_23inf * 0.400)),
+          (int(width_23inf * 0.68), int(height_23inf * 0.380)),
           ubicazione_testo_23inf,
           fill=(255, 0, 0),
           font=font_ub_23inf,
