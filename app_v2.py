@@ -8,7 +8,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from PIL import Image, ImageDraw, ImageFont
 import streamlit as st
 
-# Importiamo il dizionario di configurazione che hai appena creato
+# Importiamo il dizionario di configurazione che hai creato
 from config_tavole import CONFIG_TAVOLE
 
 # ==================================================
@@ -59,7 +59,7 @@ def genera_abaco_universale(chiave_tavola, dati_segnali):
     
     ws.merge_cells("A1:E1")
     titolo_principale = ws["A1"]
-    titolo_principale.value = f"TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - {chiave_tavola.split(' - ')[0]}"
+    titolo_principale.value = f"TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - {chiave_tavola}"
     
     fill_verde_chiaro = PatternFill(start_color="92D050", end_color="92D050", fill_type="solid")
     fill_verde_scuro = PatternFill(start_color="70AD47", end_color="70AD47", fill_type="solid")
@@ -184,7 +184,7 @@ def compila_immagine_universale(config_tavola, valori_km, testo_ubicazione):
 tavola_selezionata = st.selectbox("Seleziona la Tavola di Cantiere", list(CONFIG_TAVOLE.keys()))
 tavola = CONFIG_TAVOLE[tavola_selezionata]
 
-st.subheader(f"📍 Configurazione: {tavola_selezionata.split(' - ')[0]}")
+st.subheader(f"📍 Configurazione: {tavola_selezionata}")
 ubicazione_testo = st.text_area("Ubicazione / Direzione (Può essere divisa su più righe)", value=tavola["ubicazione_default"])
 
 # Generazione dinamica dei campi di input KM su due colonne
@@ -197,13 +197,13 @@ for idx, campo in enumerate(tavola["inputs_km"]):
         valori_km[campo["id"]] = st.text_input(campo["label"], value=campo["default"])
 
 # Pulsante per Excel Universale
-if st.button(f"Genera Abaco Segnaletica (Excel) - {tavola_selezionata.split(' - ')[0]}"):
+if st.button("Genera Abaco Segnaletica (Excel)"):
     excel_bytes, n_img = genera_abaco_universale(tavola_selezionata, tavola["abaco_segnali"])
     st.success(f"Abaco Excel generato con successo! (Immagini inserite: {n_img}/{len(tavola['abaco_segnali'])})")
     st.download_button(
         label="📥 Scarica Excel Abaco Segnaletica Formattato",
         data=excel_bytes,
-        file_name=f"Abaco_Segnaletica_{tavola_selezionata.split(' - ')[0].replace(' ', '_')}.xlsx",
+        file_name=f"Abaco_Segnaletica_{tavola_selezionata.replace(' ', '_')}.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
@@ -219,6 +219,6 @@ if risultato_jpg is not None:
     st.download_button(
         label="📥 Scarica Tavola in formato JPG",
         data=jpg_bytes,
-        file_name=f"{tavola_selezionata.split(' - ')[0].replace(' ', '_')}_Compilata.jpg",
+        file_name=f"{tavola_selezionata.replace(' ', '_')}_Compilata.jpg",
         mime="image/jpeg"
     )
