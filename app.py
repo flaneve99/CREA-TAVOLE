@@ -5089,18 +5089,19 @@ elif "Tavola 24" in tavola_selezionata:
             cell.border = bordo_sottile
 
         # Elenco figure per l'Abaco della Tavola 24
+       # Elenco figure corretto per l'Abaco della Tavola 24
         dati_righe_24completa = [
             (
                 "fig_383.jpg",
                 "FIG. II 383",
-                "LAVORI IN CORSO",
+                "PREAVVISO LAVORI",
                 "",
                 "SEGNALI TEMPORANEI",
             ),
             (
                 "fig050_lim110.jpg",
                 "FIG. II 050",
-                "LIMITE DI VELOCITÀ 110 KM/H",
+                "LIMITE MASSIMO DI VELOCITÀ 110 KM/H",
                 "",
                 "SEGNALI DI PRESCRIZIONE",
             ),
@@ -5121,35 +5122,35 @@ elif "Tavola 24" in tavola_selezionata:
             (
                 "fig_050_lim60.jpg",
                 "FIG. II 050",
-                "LIMITE DI VELOCITÀ 60 KM/H",
+                "LIMITE MASSIMO DI VELOCITÀ 60 KM/H",
                 "",
                 "SEGNALI DI PRESCRIZIONE",
             ),
             (
                 "fig_052.jpg",
                 "FIG. II 052",
-                "INIZIO RESTRINGIMENTO / TESTATA",
+                "DIVIETO DI SORPASSO PER GLI AUTOCARRI",
                 "",
-                "SEGNALI TEMPORANEI",
+                "SEGNALI DI DIVIETO",
             ),
             (
                 "fig_082_b.jpg",
                 "FIG. II 082/b",
-                "DELIMITATORI DI CORSIA / DELINEATORI",
+                "PASSAGGIO OBBLIGATORIO A DESTRA",
                 "",
                 "SEGNALETICA DI OBBLIGO",
             ),
             (
                 "fig_411a.jpg",
                 "FIG. II 411/a",
-                "SEGNALE DI CORSIA CHIUSA",
+                "PANNELLO DEVIATORE / PASSAGGIO OBBLIGATO",
                 "",
                 "SEGNALI TEMPORANEI",
             ),
             (
                 "fig_048.jpg",
                 "FIG. II 048",
-                "FINE PRESCRIZIONI / FINE DIVIETI",
+                "DIVIETO DI SORPASSO",
                 "",
                 "SEGNALI DI DIVIETO",
             ),
