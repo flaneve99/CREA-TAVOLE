@@ -4806,14 +4806,14 @@ elif "Tavola 22" in tavola_selezionata:
   else:
     st.error("Immagine 'TAVOLA 22.jpg' non trovata nella cartella.")
 # ====================================================================
-# TAVOLA 23 (PARTE INFERIORE)
+# TAVOLA 23 - PARTE INFERIORE
 # ====================================================================
-elif "Tavola 23" in tavola_selezionata:
+elif "Parte Inferiore" in tavola_selezionata:
   st.subheader(
       "📍 Dati e Progressive Chilometriche - Tavola 23 (Parte Inferiore)"
   )
   ubicazione_testo_23inf = st.text_area(
-      "Ubicazione / Direzione (Tavola 23)", value="DIREZIONE SUD"
+      "Ubicazione / Direzione (Tavola 23 Bassa)", value="DIREZIONE SUD"
   )
   st.write("### Progressive Chilometriche (dal basso verso l'alto)")
   col1, col2 = st.columns(2)
@@ -4830,14 +4830,15 @@ elif "Tavola 23" in tavola_selezionata:
         "KM Divieto di sorpasso (In alto)", value="806+650"
     )
 
-  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 23"):
+  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 23 Bassa"):
     wb = openpyxl.Workbook()
     ws = wb.active
-    ws.title = "Abaco Tavola 23"
+    ws.title = "Abaco Tavola 23 Bassa"
     ws.merge_cells("A1:E1")
     titolo_principale = ws["A1"]
     titolo_principale.value = (
-        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 23"
+        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 23 (PARTE"
+        " INFERIORE)"
     )
 
     fill_verde_chiaro = PatternFill(
@@ -4875,7 +4876,6 @@ elif "Tavola 23" in tavola_selezionata:
       )
       cell.border = bordo_sottile
 
-    # Abaco completo richiesto per la Tavola 23
     dati_righe_23inf = [
         (
             "fig_383.jpg",
@@ -5013,13 +5013,13 @@ elif "Tavola 23" in tavola_selezionata:
     wb.save(output)
     excel_data = output.getvalue()
     st.success(
-        "Abaco Excel Tavola 23 generato! (Immagini inserite:"
+        "Abaco Excel Tavola 23 (Parte Inferiore) generato! (Immagini inserite:"
         f" {immagini_inserite}/{len(dati_righe_23inf)})"
     )
     st.download_button(
-        label="📥 Scarica Excel Abaco Tavola 23",
+        label="📥 Scarica Excel Abaco Tavola 23 Bassa",
         data=excel_data,
-        file_name="Abaco_Segnaletica_Tavola_23.xlsx",
+        file_name="Abaco_Segnaletica_Tavola_23_Bassa.xlsx",
         mime=(
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         ),
@@ -5040,7 +5040,6 @@ elif "Tavola 23" in tavola_selezionata:
       font_ub_23inf = load_custom_font(25)
       BORDO = 2
 
-      # Mappatura coordinate progressive per la Tavola 23 - Parte Inferiore (dal basso verso l'alto)
       etichette_23inf = [
           (
               int(width_23inf * 0.49),
@@ -5117,8 +5116,9 @@ elif "Tavola 23" in tavola_selezionata:
         "Immagine 'TAVOLA 23 - PARTE INFERIORE.jpg' non trovata nella cartella."
     )
 
+
 # ====================================================================
-# TAVOLA 23
+# TAVOLA 23 - PARTE ALTA (ORIGINALE)
 # ====================================================================
 elif "Tavola 23" in tavola_selezionata:
   st.subheader("📍 Dati e Progressive Chilometriche - Tavola 23")
@@ -5185,7 +5185,6 @@ elif "Tavola 23" in tavola_selezionata:
       )
       cell.border = bordo_sottile
 
-    # Abaco Tavola 23 richiesto
     dati_righe_23 = [
         (
             "fig_411a.jpg",
@@ -5306,7 +5305,6 @@ elif "Tavola 23" in tavola_selezionata:
       font_ub_23 = load_custom_font(31)
       BORDO = 2
 
-      # Mappatura coordinate progressive per la Tavola 23 (dal basso verso l'alto)
       etichette_23 = [
           (int(width_23 * 0.54), int(height_23 * 0.835), f"KM {km_23_restr1}"),
           (int(width_23 * 0.54), int(height_23 * 0.727), f"KM {km_23_limite60}"),
@@ -5360,5 +5358,3 @@ elif "Tavola 23" in tavola_selezionata:
       st.exception(errore)
   else:
     st.error("Immagine 'TAVOLA 23.jpg' non trovata nella cartella.")
-
-
