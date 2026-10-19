@@ -4992,3 +4992,440 @@ elif "Tavola 23" in tavola_selezionata:
                 st.error(f"Errore grafica parte superiore: {e}")
         else:
             st.error("Immagine 'TAVOLA 23.jpg' non trovata.")
+
+
+# ====================================================================
+# TAVOLA 24 - UNIFICATA (PARTE BASSA + PARTE ALTA)
+# ====================================================================
+elif "Tavola 24" in tavola_selezionata:
+    st.subheader("📍 Dati e Progressive Chilometriche - Tavola 24 (Unificata)")
+    ubicazione_testo_24 = st.text_area(
+        "Ubicazione / Direzione (Tavola 24)", value="DIREZIONE SUD"
+    )
+
+    st.write(
+        "### 🛣️ Progressive Chilometriche (In ordine dal basso verso l'alto)"
+    )
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Sezione Inferiore (Parte Bassa)**")
+        km_24inf_lavori = st.text_input(
+            "KM Lavori in corso (In basso)", value="805+560"
+        )
+        km_24inf_limite110 = st.text_input(
+            "KM Limite 110 km/h", value="805+800"
+        )
+        km_24inf_restr = st.text_input("KM Restringimento", value="806+040")
+        km_24inf_limite80 = st.text_input("KM Limite 80 km/h", value="806+280")
+        km_24inf_limite60 = st.text_input("KM Limite 60 km/h", value="806+400")
+        km_24inf_iniziotestata = st.text_input(
+            "KM Inizio testata", value="806+508"
+        )
+        km_24inf_finetestata = st.text_input("KM Fine testata", value="806+688")
+    with col2:
+        st.markdown("**Sezione Superiore (Parte Alta)**")
+        km_24_restr1 = st.text_input("KM Restringimento 1", value="806+860")
+        km_24_limite60 = st.text_input("KM Limite 60 km/h", value="806+956")
+        km_24_restr2 = st.text_input("KM Restringimento 2", value="807+052")
+        km_24_iniziotestata = st.text_input(
+            "KM Inizio testata", value="807+148"
+        )
+        km_24_finetestata = st.text_input("KM Fine testata", value="807+256")
+        km_24_vialibera = st.text_input(
+            "KM Via libera / Fine (In alto)", value="807+436"
+        )
+
+    if st.button("Genera Abaco Segnaletica (Excel) - Tavola 24 Unificata"):
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Abaco Tavola 24 Completa"
+        ws.merge_cells("A1:E1")
+
+        titolo_principale = ws["A1"]
+        titolo_principale.value = (
+            "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 24"
+        )
+
+        fill_verde_chiaro = PatternFill(
+            start_color="92D050", end_color="92D050", fill_type="solid"
+        )
+        fill_verde_scuro = PatternFill(
+            start_color="70AD47", end_color="70AD47", fill_type="solid"
+        )
+        font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+        font_header = Font(name="Arial", size=10, bold=True, color="000000")
+        font_testo = Font(name="Arial", size=10, color="000000")
+        bordo_sottile = Border(
+            left=Side(style="thin", color="000000"),
+            right=Side(style="thin", color="000000"),
+            top=Side(style="thin", color="000000"),
+            bottom=Side(style="thin", color="000000"),
+        )
+
+        titolo_principale.fill = fill_verde_chiaro
+        titolo_principale.font = font_titolo
+        titolo_principale.alignment = Alignment(
+            horizontal="center", vertical="center"
+        )
+
+        for col in range(1, 6):
+            ws.cell(row=1, column=col).border = bordo_sottile
+
+        headers = [
+            "SEGNALE",
+            "FIGURA",
+            "DESCRIZIONE",
+            "DETTAGLI",
+            "SEGNALETICA",
+        ]
+        for col_idx, header in enumerate(headers, 1):
+            cell = ws.cell(row=2, column=col_idx)
+            cell.value = header
+            cell.fill = fill_verde_scuro
+            cell.font = font_header
+            cell.alignment = Alignment(
+                horizontal="center", vertical="center", wrap_text=True
+            )
+            cell.border = bordo_sottile
+
+        # Elenco figure per l'Abaco della Tavola 24
+        dati_righe_24completa = [
+            (
+                "fig_383.jpg",
+                "FIG. II 383",
+                "LAVORI IN CORSO",
+                "",
+                "SEGNALI TEMPORANEI",
+            ),
+            (
+                "fig050_lim110.jpg",
+                "FIG. II 050",
+                "LIMITE DI VELOCITÀ 110 KM/H",
+                "",
+                "SEGNALI DI PRESCRIZIONE",
+            ),
+            (
+                "fig_400.jpg",
+                "FIG. II 400",
+                "SEGNALE MOBILE DI PREAVVISO CON FRECCIA",
+                "",
+                "SEGNALI TEMPORANEI",
+            ),
+            (
+                "fig050_lim80.jpg",
+                "FIG. II 050",
+                "LIMITE MASSIMO DI VELOCITÀ 80 KM/H",
+                "",
+                "SEGNALI DI DIVIETO",
+            ),
+            (
+                "fig_050_lim60.jpg",
+                "FIG. II 050",
+                "LIMITE DI VELOCITÀ 60 KM/H",
+                "",
+                "SEGNALI DI PRESCRIZIONE",
+            ),
+            (
+                "fig_052.jpg",
+                "FIG. II 052",
+                "INIZIO RESTRINGIMENTO / TESTATA",
+                "",
+                "SEGNALI TEMPORANEI",
+            ),
+            (
+                "fig_082_b.jpg",
+                "FIG. II 082/b",
+                "DELIMITATORI DI CORSIA / DELINEATORI",
+                "",
+                "SEGNALETICA DI OBBLIGO",
+            ),
+            (
+                "fig_411a.jpg",
+                "FIG. II 411/a",
+                "SEGNALE DI CORSIA CHIUSA",
+                "",
+                "SEGNALI TEMPORANEI",
+            ),
+            (
+                "fig_048.jpg",
+                "FIG. II 048",
+                "FINE PRESCRIZIONI / FINE DIVIETI",
+                "",
+                "SEGNALI DI DIVIETO",
+            ),
+            (
+                "fig_070.jpg",
+                "FIG. II 070",
+                "VIA LIBERA / FINE CANTIERE",
+                "",
+                "SEGNALI DI PRESCRIZIONE",
+            ),
+        ]
+
+        ws.column_dimensions["A"].width = 18
+        ws.column_dimensions["B"].width = 16
+        ws.column_dimensions["C"].width = 45
+        ws.column_dimensions["D"].width = 20
+        ws.column_dimensions["E"].width = 25
+        ws.row_dimensions[1].height = 30
+        ws.row_dimensions[2].height = 25
+
+        immagini_inserite = 0
+        for i, row_data in enumerate(dati_righe_24completa, start=3):
+            img_nome, figura, descrizione, dettagli, segnaletica = row_data
+            ws.row_dimensions[i].height = 55
+            c_fig = ws.cell(row=i, column=2, value=figura)
+            c_desc = ws.cell(row=i, column=3, value=descrizione)
+            c_det = ws.cell(row=i, column=4, value=dettagli)
+            c_seg = ws.cell(row=i, column=5, value=segnaletica)
+
+            for cell in [c_fig, c_desc, c_det, c_seg]:
+                cell.font = font_testo
+                cell.alignment = Alignment(
+                    horizontal="center", vertical="center", wrap_text=True
+                )
+                cell.border = bordo_sottile
+
+            c_segnale = ws.cell(row=i, column=1)
+            c_segnale.border = bordo_sottile
+
+            nomi_da_cercare = [
+                img_nome,
+                img_nome.replace(".jpg", ".png"),
+                img_nome.replace(".png", ".jpg"),
+            ]
+            percorso_trovato = None
+            for nome in nomi_da_cercare:
+                tentativo = os.path.join(dir_immagini, nome)
+                if os.path.exists(tentativo):
+                    percorso_trovato = tentativo
+                    break
+
+            if percorso_trovato:
+                try:
+                    img_pil = Image.open(percorso_trovato).convert("RGB")
+                    temp_path = os.path.join(
+                        "/tmp", f"abaco_24completa_{i}.jpg"
+                    )
+                    img_pil.save(temp_path, "JPEG")
+                    img_obj = OpenpyxlImage(temp_path)
+                    marker_from = AnchorMarker(
+                        col=0, colOff=150000, row=i - 1, rowOff=40000
+                    )
+                    marker_to = AnchorMarker(
+                        col=1, colOff=-150000, row=i, rowOff=-40000
+                    )
+                    img_obj.anchor = TwoCellAnchor(
+                        editAs="twoCell", _from=marker_from, to=marker_to
+                    )
+                    ws.add_image(img_obj)
+                    immagini_inserite += 1
+                except Exception as e:
+                    st.warning(
+                        f"Errore caricamento immagine per {figura}: {e}"
+                    )
+            else:
+                c_segnale.value = "[Img non trovata]"
+                c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+                c_segnale.alignment = Alignment(
+                    horizontal="center", vertical="center"
+                )
+
+        output = io.BytesIO()
+        wb.save(output)
+        excel_data = output.getvalue()
+        st.success(
+            f"Abaco Excel Unificato generato! (Immagini inserite: {immagini_inserite}/{len(dati_righe_24completa)})"
+        )
+        st.download_button(
+            label="📥 Scarica Excel Abaco Segnaletica Tavola 24 Completa",
+            data=excel_data,
+            file_name="Abaco_Segnaletica_Tavola_24_Completa.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+
+    st.divider()
+    st.subheader("🖼️ Anteprima Tavola 24 Personalizzata (Unificata)")
+
+    col_tav1, col_tav2 = st.columns(2)
+
+    # --- GESTIONE PARTE BASSA ---
+    with col_tav1:
+        st.markdown("#### 🔽 Parte Bassa")
+        img_path_24inf = os.path.join(cartella_app, "TAVOLA 24 PARTE BASSA.jpg")
+        if os.path.exists(img_path_24inf):
+            try:
+                with Image.open(img_path_24inf) as immagine_originale:
+                    base_img_24inf = immagine_originale.convert("RGB")
+                width_24inf, height_24inf = base_img_24inf.size
+                draw_24inf = ImageDraw.Draw(base_img_24inf)
+                font_km = load_custom_font(18)
+                font_ub_24inf = load_custom_font(25)
+                BORDO = 2
+
+                # Coordinate percentuali adattate a "TAVOLA 24 PARTE BASSA.jpg" (dal basso verso l'alto)
+                etichette_24inf = [
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.745),
+                        f"KM {km_24inf_lavori}",
+                    ),
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.635),
+                        f"KM {km_24inf_limite110}",
+                    ),
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.525),
+                        f"KM {km_24inf_restr}",
+                    ),
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.415),
+                        f"KM {km_24inf_limite80}",
+                    ),
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.360),
+                        f"KM {km_24inf_limite60}",
+                    ),
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.280),
+                        f"KM {km_24inf_iniziotestata}",
+                    ),
+                    (
+                        int(width_24inf * 0.66),
+                        int(height_24inf * 0.165),
+                        f"KM {km_24inf_finetestata}",
+                    ),
+                ]
+                for x, y, testo in etichette_24inf:
+                    draw_24inf.text(
+                        (x, y),
+                        testo,
+                        fill=(255, 0, 0),
+                        font=font_km,
+                        stroke_width=BORDO,
+                        stroke_fill=(255, 255, 255),
+                    )
+
+                draw_24inf.multiline_text(
+                    (int(width_24inf * 0.68), int(height_24inf * 0.480)),
+                    ubicazione_testo_24,
+                    fill=(255, 0, 0),
+                    font=font_ub_24inf,
+                    align="center",
+                    spacing=6,
+                    stroke_width=BORDO,
+                    stroke_fill=(255, 255, 255),
+                )
+
+                img_io_24inf = io.BytesIO()
+                base_img_24inf.save(
+                    img_io_24inf, format="JPEG", quality=100, subsampling=0
+                )
+                st.image(
+                    base_img_24inf,
+                    caption="Tavola 24 - Parte Bassa Compilata",
+                    use_container_width=True,
+                )
+                st.download_button(
+                    label="📥 Scarica JPG Parte Bassa",
+                    data=img_io_24inf.getvalue(),
+                    file_name="Tavola_24_Parte_Bassa.jpg",
+                    mime="image/jpeg",
+                )
+            except Exception as e:
+                st.error(f"Errore grafica parte bassa: {e}")
+        else:
+            st.error("Immagine 'TAVOLA 24 PARTE BASSA.jpg' non trovata.")
+
+    # --- GESTIONE PARTE ALTA ---
+    with col_tav2:
+        st.markdown("#### 🔼 Parte Alta")
+        img_path_24alta = os.path.join(cartella_app, "TAVOLA 24 PARTE ALTA.jpg")
+        if os.path.exists(img_path_24alta):
+            try:
+                with Image.open(img_path_24alta) as immagine_originale:
+                    base_img_24alta = immagine_originale.convert("RGB")
+                width_24alta, height_24alta = base_img_24alta.size
+                draw_24alta = ImageDraw.Draw(base_img_24alta)
+                font_km = load_custom_font(23)
+                font_ub_24alta = load_custom_font(31)
+                BORDO = 2
+
+                # Coordinate percentuali adattate a "TAVOLA 24 PARTE ALTA.jpg" (dal basso verso l'alto)
+                etichette_24alta = [
+                    (
+                        int(width_24alta * 0.54),
+                        int(height_24alta * 0.915),
+                        f"KM {km_24_restr1}",
+                    ),
+                    (
+                        int(width_24alta * 0.54),
+                        int(height_24alta * 0.805),
+                        f"KM {km_24_limite60}",
+                    ),
+                    (
+                        int(width_24alta * 0.54),
+                        int(height_24alta * 0.760),
+                        f"KM {km_24_restr2}",
+                    ),
+                    (
+                        int(width_24alta * 0.54),
+                        int(height_24alta * 0.648),
+                        f"KM {km_24_iniziotestata}",
+                    ),
+                    (
+                        int(width_24alta * 0.54),
+                        int(height_24alta * 0.528),
+                        f"KM {km_24_finetestata}",
+                    ),
+                    (
+                        int(width_24alta * 0.54),
+                        int(height_24alta * 0.328),
+                        f"KM {km_24_vialibera}",
+                    ),
+                ]
+                for x, y, testo in etichette_24alta:
+                    draw_24alta.text(
+                        (x, y),
+                        testo,
+                        fill=(255, 0, 0),
+                        font=font_km,
+                        stroke_width=BORDO,
+                        stroke_fill=(255, 255, 255),
+                    )
+
+                draw_24alta.multiline_text(
+                    (int(width_24alta * 0.64), int(height_24alta * 0.290)),
+                    ubicazione_testo_24,
+                    fill=(255, 0, 0),
+                    font=font_ub_24alta,
+                    align="center",
+                    spacing=6,
+                    stroke_width=BORDO,
+                    stroke_fill=(255, 255, 255),
+                )
+
+                img_io_24alta = io.BytesIO()
+                base_img_24alta.save(
+                    img_io_24alta, format="JPEG", quality=100, subsampling=0
+                )
+                st.image(
+                    base_img_24alta,
+                    caption="Tavola 24 - Parte Alta Compilata",
+                    use_container_width=True,
+                )
+                st.download_button(
+                    label="📥 Scarica JPG Parte Alta",
+                    data=img_io_24alta.getvalue(),
+                    file_name="Tavola_24_Parte_Alta.jpg",
+                    mime="image/jpeg",
+                )
+            except Exception as e:
+                st.error(f"Errore grafica parte alta: {e}")
+        else:
+            st.error("Immagine 'TAVOLA 24 PARTE ALTA.jpg' non trovata.")
