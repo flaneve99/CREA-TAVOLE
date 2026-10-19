@@ -5042,33 +5042,33 @@ elif "Parte Inferiore" in tavola_selezionata:
 
       etichette_23inf = [
           (
-              int(width_23inf * 0.49),
-              int(height_23inf * 0.930),
+              int(width_23inf * 0.66),
+              int(height_23inf * 0.840),
               f"KM {km_23inf_lavori}",
           ),
           (
-              int(width_23inf * 0.49),
-              int(height_23inf * 0.770),
+              int(width_23inf * 0.66),
+              int(height_23inf * 0.690),
               f"KM {km_23inf_limite110}",
           ),
           (
-              int(width_23inf * 0.49),
-              int(height_23inf * 0.630),
+              int(width_23inf * 0.66),
+              int(height_23inf * 0.540),
               f"KM {km_23inf_restr}",
           ),
           (
-              int(width_23inf * 0.49),
-              int(height_23inf * 0.410),
+              int(width_23inf * 0.66),
+              int(height_23inf * 0.350),
               f"KM {km_23inf_limite80}",
           ),
           (
-              int(width_23inf * 0.49),
-              int(height_23inf * 0.310),
+              int(width_23inf * 0.66),
+              int(height_23inf * 0.290),
               f"KM {km_23inf_obbligo}",
           ),
           (
-              int(width_23inf * 0.49),
-              int(height_23inf * 0.130),
+              int(width_23inf * 0.66),
+              int(height_23inf * 0.100),
               f"KM {km_23inf_sorpasso}",
           ),
       ]
