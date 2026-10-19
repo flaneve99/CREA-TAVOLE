@@ -5043,7 +5043,7 @@ elif "Parte Inferiore" in tavola_selezionata:
       etichette_23inf = [
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.840),
+              int(height_23inf * 0.847),
               f"KM {km_23inf_lavori}",
           ),
           (
@@ -5053,22 +5053,22 @@ elif "Parte Inferiore" in tavola_selezionata:
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.540),
+              int(height_23inf * 0.510),
               f"KM {km_23inf_restr}",
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.350),
+              int(height_23inf * 0.300),
               f"KM {km_23inf_limite80}",
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.290),
+              int(height_23inf * 0.275),
               f"KM {km_23inf_obbligo}",
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.100),
+              int(height_23inf * 0.0850),
               f"KM {km_23inf_sorpasso}",
           ),
       ]
@@ -5084,7 +5084,7 @@ elif "Parte Inferiore" in tavola_selezionata:
         )
 
       draw_23inf.multiline_text(
-          (int(width_23inf * 0.68), int(height_23inf * 0.200)),
+          (int(width_23inf * 0.68), int(height_23inf * 0.400)),
           ubicazione_testo_23inf,
           fill=(255, 0, 0),
           font=font_ub_23inf,
