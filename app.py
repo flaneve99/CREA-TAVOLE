@@ -85,6 +85,7 @@ tavola_selezionata = st.selectbox("Seleziona la Tavola di Cantiere", [
     "Tavola 21 - Chiusura della corsia centrale e di sorpasso su carreggiata a tre corsie",
     "Tavola 22 - Chiusura della corsia di destra su carreggiata a tre corsie priva di corsia di emergenza",
     "Tavola 23 - Chiusura delle corsie di destra e centrale su carreggiata a tre corsie priva di corsia di emergenza (Unificata)",
+    "Tavola 24 - Chiusura delle corsie di sorpasso e centrale su carreggiata a tre corsie priva di corsia di emergenza e spartitraffico ridotto (Unificata)",
     "Tavola 25 - Deviazione con una sola corsia per senso di marcia su carreggiata a due corsie",
     "Tavola 37 - Restringimento della carreggiata su rampa a senso unico",
     "Tavola 39 - Cantiere mobile carreggiata a due corsie",
@@ -96,7 +97,6 @@ tavola_selezionata = st.selectbox("Seleziona la Tavola di Cantiere", [
     "CHIUSURA CON SVINCOLO NJ - Chiusura con Svincolo e New Jersey",
     "CORSIA DI EMERGENZA NJ - Chiusura della corsia di emergenza"
 ])
-
 # ====================================================================
 # TAVOLA 39
 # ====================================================================
