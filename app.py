@@ -5063,7 +5063,7 @@ elif "Parte Inferiore" in tavola_selezionata:
           ),
           (
               int(width_23inf * 0.66),
-              int(height_23inf * 0.1950),
+              int(height_23inf * 0.2000),
               f"KM {km_23inf_obbligo}",
           ),
           (
