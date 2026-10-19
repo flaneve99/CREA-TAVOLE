@@ -75,72 +75,28 @@ def load_custom_font(size):
 # ==================================================
 # SELEZIONE DELLA TAVOLA
 # ==================================================
-tavola_selezionata = st.selectbox(
-    "Seleziona la Tavola di Cantiere",
-    [
-        "Tavola 16 - Chiusura della corsia di marcia su carreggiata a due corsie",
-        (
-            "Tavola 17 - Chiusura della corsia di sorpasso su carreggiata a due"
-            " corsie"
-        ),
-        (
-            "Tavola 18 - Chiusura della corsia di destra su carreggiata a tre"
-            " corsie"
-        ),
-        (
-            "Tavola 19 - Chiusura della corsia di sorpasso su carreggiata a tre"
-            " corsie"
-        ),
-        (
-            "Tavola 20 - Chiusura delle corsie di destra e centrale su"
-            " carreggiata a tre corsie"
-        ),
-        (
-            "Tavola 21 - Chiusura della corsia centrale e di sorpasso su"
-            " carreggiata a tre corsie"
-        ),
-        (
-            "Tavola 22 - Chiusura della corsia di destra su carreggiata a tre"
-            " corsie priva di corsia di emergenza"
-        ),
-        (
-            "Tavola 23 - Chiusura delle corsie di destra e centrale su"
-            " carreggiata a tre corsie priva di corsia di emergenza"
-        ),
-        (
-            "Tavola 23 - Chiusura delle corsie di destra e centrale (Parte"
-            " Inferiore)"
-        ),
-        (
-            "Tavola 25 - Deviazione con una sola corsia per senso di marcia su"
-            " carreggiata a due corsie"
-        ),
-        "Tavola 37 - Restringimento della carreggiata su rampa a senso unico",
-        "Tavola 39 - Cantiere mobile carreggiata a due corsie",
-        (
-            "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura"
-            " della corsia di sorpasso"
-        ),
-        (
-            "Tavola 43 - Cantiere mobile su carreggiata a tre corsie chiusura"
-            " della corsia di destra"
-        ),
-        (
-            "Tavola 44 - Cantiere mobile su carreggiata a tre corsie chiusura"
-            " della corsia di sorpasso"
-        ),
-        (
-            "Tavola 66 - Lavori su carreggiata con senso unico alternato"
-            " semaforico"
-        ),
-        (
-            "Tavola 66 NJ - Lavori con senso unico alternato e New Jersey in"
-            " plastica"
-        ),
-        "CHIUSURA CON SVINCOLO NJ - Chiusura con Svincolo e New Jersey",
-        "CORSIA DI EMERGENZA NJ - Chiusura della corsia di emergenza",
-    ],
-)
+# Sostituisci il vecchio blocco selectbox con questo:
+tavola_selezionata = st.selectbox("Seleziona la Tavola di Cantiere", [
+    "Tavola 16 - Chiusura della corsia di marcia su carreggiata a due corsie",
+    "Tavola 17 - Chiusura della corsia di sorpasso su carreggiata a due corsie",
+    "Tavola 18 - Chiusura della corsia di destra su carreggiata a tre corsie",
+    "Tavola 19 - Chiusura della corsia di sorpasso su carreggiata a tre corsie",
+    "Tavola 20 - Chiusura delle corsie di destra e centrale su carreggiata a tre corsie",
+    "Tavola 21 - Chiusura della corsia centrale e di sorpasso su carreggiata a tre corsie",
+    "Tavola 22 - Chiusura della corsia di destra su carreggiata a tre corsie priva di corsia di emergenza",
+    "Tavola 23 - Chiusura delle corsie di destra e centrale su carreggiata a tre corsie priva di corsia di emergenza (Unificata)",
+    "Tavola 25 - Deviazione con una sola corsia per senso di marcia su carreggiata a due corsie",
+    "Tavola 37 - Restringimento della carreggiata su rampa a senso unico",
+    "Tavola 39 - Cantiere mobile carreggiata a due corsie",
+    "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura della corsia di sorpasso",
+    "Tavola 43 - Cantiere mobile su carreggiata a tre corsie chiusura della corsia di destra",
+    "Tavola 44 - Cantiere mobile su carreggiata a tre corsie chiusura della corsia di sorpasso",
+    "Tavola 66 - Lavori su carreggiata con senso unico alternato semaforico",
+    "Tavola 66 NJ - Lavori con senso unico alternato e New Jersey in plastica",
+    "CHIUSURA CON SVINCOLO NJ - Chiusura con Svincolo e New Jersey",
+    "CORSIA DI EMERGENZA NJ - Chiusura della corsia di emergenza"
+])
+
 # ====================================================================
 # TAVOLA 39
 # ====================================================================
@@ -4806,555 +4762,212 @@ elif "Tavola 22" in tavola_selezionata:
   else:
     st.error("Immagine 'TAVOLA 22.jpg' non trovata nella cartella.")
 # ====================================================================
-# TAVOLA 23 - PARTE INFERIORE
-# ====================================================================
-elif "Parte Inferiore" in tavola_selezionata:
-  st.subheader(
-      "📍 Dati e Progressive Chilometriche - Tavola 23 (Parte Inferiore)"
-  )
-  ubicazione_testo_23inf = st.text_area(
-      "Ubicazione / Direzione (Tavola 23 Bassa)", value="DIREZIONE SUD"
-  )
-  st.write("### Progressive Chilometriche (dal basso verso l'alto)")
-  col1, col2 = st.columns(2)
-  with col1:
-    km_23inf_lavori = st.text_input(
-        "KM Lavori in corso (In basso)", value="805+560"
-    )
-    km_23inf_limite110 = st.text_input("KM Limite 110 km/h", value="805+800")
-    km_23inf_restr = st.text_input("KM Restringimento", value="806+040")
-  with col2:
-    km_23inf_limite80 = st.text_input("KM Limite 80 km/h", value="806+460")
-    km_23inf_obbligo = st.text_input("KM Passaggio obbligatorio", value="806+556")
-    km_23inf_sorpasso = st.text_input(
-        "KM Divieto di sorpasso (In alto)", value="806+650"
-    )
-
-  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 23 Bassa"):
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Abaco Tavola 23 Bassa"
-    ws.merge_cells("A1:E1")
-    titolo_principale = ws["A1"]
-    titolo_principale.value = (
-        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 23 (PARTE"
-        " INFERIORE)"
-    )
-
-    fill_verde_chiaro = PatternFill(
-        start_color="92D050", end_color="92D050", fill_type="solid"
-    )
-    fill_verde_scuro = PatternFill(
-        start_color="70AD47", end_color="70AD47", fill_type="solid"
-    )
-    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
-    font_header = Font(name="Arial", size=10, bold=True, color="000000")
-    font_testo = Font(name="Arial", size=10, color="000000")
-    bordo_sottile = Border(
-        left=Side(style="thin", color="000000"),
-        right=Side(style="thin", color="000000"),
-        top=Side(style="thin", color="000000"),
-        bottom=Side(style="thin", color="000000"),
-    )
-
-    titolo_principale.fill = fill_verde_chiaro
-    titolo_principale.font = font_titolo
-    titolo_principale.alignment = Alignment(
-        horizontal="center", vertical="center"
-    )
-    for col in range(1, 6):
-      ws.cell(row=1, column=col).border = bordo_sottile
-
-    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
-    for col_idx, header in enumerate(headers, 1):
-      cell = ws.cell(row=2, column=col_idx)
-      cell.value = header
-      cell.fill = fill_verde_scuro
-      cell.font = font_header
-      cell.alignment = Alignment(
-          horizontal="center", vertical="center", wrap_text=True
-      )
-      cell.border = bordo_sottile
-
-    dati_righe_23inf = [
-        (
-            "fig_383.jpg",
-            "FIG. II 383",
-            "LAVORI IN CORSO",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig050_lim110.jpg",
-            "FIG. II 050",
-            "LIMITE DI VELOCITÀ 110 KM/H",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-        (
-            "fig050_lim80.jpg",
-            "FIG. II 050",
-            "LIMITE MASSIMO DI VELOCITÀ 80 KM/H",
-            "",
-            "SEGNALI DI DIVIETO",
-        ),
-        (
-            "fig_050_lim60.jpg",
-            "FIG. II 050",
-            "LIMITE DI VELOCITÀ 60 KM/H",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-        (
-            "fig_048.jpg",
-            "FIG. II 048",
-            "DIVIETO DI SORPASSO",
-            "",
-            "SEGNALI DI DIVIETO",
-        ),
-        (
-            "fig_411a.jpg",
-            "FIG. II 411/a",
-            "SEGNALE DI CORSIA CHIUSA",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_082_b.jpg",
-            "FIG. II 082/b",
-            "PASSAGGIO OBBLIGATORIO A DESTRA",
-            "",
-            "SEGNALETICA DI OBBLIGO",
-        ),
-        (
-            "fig_400.jpg",
-            "FIG. II 400",
-            "SEGNALE MOBILE DI PREAVVISO CON FRECCIA",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_401.jpg",
-            "FIG. II 401",
-            "VEICOLO DI PROTEZIONE CON PANNELLO",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_070.jpg",
-            "FIG. II 070",
-            "VIA LIBERA / FINE CANTIERE",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-    ]
-
-    ws.column_dimensions["A"].width = 18
-    ws.column_dimensions["B"].width = 16
-    ws.column_dimensions["C"].width = 45
-    ws.column_dimensions["D"].width = 20
-    ws.column_dimensions["E"].width = 25
-    ws.row_dimensions[1].height = 30
-    ws.row_dimensions[2].height = 25
-
-    immagini_inserite = 0
-    for i, row_data in enumerate(dati_righe_23inf, start=3):
-      img_nome, figura, descrizione, dettagli, segnaletica = row_data
-      ws.row_dimensions[i].height = 55
-      c_fig = ws.cell(row=i, column=2, value=figura)
-      c_desc = ws.cell(row=i, column=3, value=descrizione)
-      c_det = ws.cell(row=i, column=4, value=dettagli)
-      c_seg = ws.cell(row=i, column=5, value=segnaletica)
-      for cell in [c_fig, c_desc, c_det, c_seg]:
-        cell.font = font_testo
-        cell.alignment = Alignment(
-            horizontal="center", vertical="center", wrap_text=True
-        )
-        cell.border = bordo_sottile
-
-      c_segnale = ws.cell(row=i, column=1)
-      c_segnale.border = bordo_sottile
-
-      nomi_da_cercare = [
-          img_nome,
-          img_nome.replace(".jpg", ".png"),
-          img_nome.replace(".png", ".jpg"),
-      ]
-      percorso_trovato = None
-      for nome in nomi_da_cercare:
-        tentativo = os.path.join(dir_immagini, nome)
-        if os.path.exists(tentativo):
-          percorso_trovato = tentativo
-          break
-
-      if percorso_trovato:
-        try:
-          img_pil = Image.open(percorso_trovato).convert("RGB")
-          temp_path = os.path.join("/tmp", f"abaco_23inf_img_{i}.jpg")
-          img_pil.save(temp_path, "JPEG")
-          img_obj = OpenpyxlImage(temp_path)
-          marker_from = AnchorMarker(
-              col=0, colOff=150000, row=i - 1, rowOff=40000
-          )
-          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
-          img_obj.anchor = TwoCellAnchor(
-              editAs="twoCell", _from=marker_from, to=marker_to
-          )
-          ws.add_image(img_obj)
-          immagini_inserite += 1
-        except Exception as e:
-          st.warning(f"Errore caricamento immagine per {figura}: {e}")
-      else:
-        c_segnale.value = "[Img non trovata]"
-        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
-        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
-
-    output = io.BytesIO()
-    wb.save(output)
-    excel_data = output.getvalue()
-    st.success(
-        "Abaco Excel Tavola 23 (Parte Inferiore) generato! (Immagini inserite:"
-        f" {immagini_inserite}/{len(dati_righe_23inf)})"
-    )
-    st.download_button(
-        label="📥 Scarica Excel Abaco Tavola 23 Bassa",
-        data=excel_data,
-        file_name="Abaco_Segnaletica_Tavola_23_Bassa.xlsx",
-        mime=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
-    )
-
-  st.divider()
-  st.subheader("🖼️ Anteprima Tavola 23 - Parte Inferiore Personalizzata")
-  img_path_23inf = os.path.join(
-      cartella_app, "TAVOLA 23 - PARTE INFERIORE.jpg"
-  )
-  if os.path.exists(img_path_23inf):
-    try:
-      with Image.open(img_path_23inf) as immagine_originale:
-        base_img_23inf = immagine_originale.convert("RGB")
-      width_23inf, height_23inf = base_img_23inf.size
-      draw_23inf = ImageDraw.Draw(base_img_23inf)
-      font_km = load_custom_font(18)
-      font_ub_23inf = load_custom_font(25)
-      BORDO = 2
-
-      etichette_23inf = [
-          (
-              int(width_23inf * 0.66),
-              int(height_23inf * 0.847),
-              f"KM {km_23inf_lavori}",
-          ),
-          (
-              int(width_23inf * 0.66),
-              int(height_23inf * 0.690),
-              f"KM {km_23inf_limite110}",
-          ),
-          (
-              int(width_23inf * 0.66),
-              int(height_23inf * 0.490),
-              f"KM {km_23inf_restr}",
-          ),
-          (
-              int(width_23inf * 0.66),
-              int(height_23inf * 0.260),
-              f"KM {km_23inf_limite80}",
-          ),
-          (
-              int(width_23inf * 0.66),
-              int(height_23inf * 0.2000),
-              f"KM {km_23inf_obbligo}",
-          ),
-          (
-              int(width_23inf * 0.66),
-              int(height_23inf * 0.0850),
-              f"KM {km_23inf_sorpasso}",
-          ),
-      ]
-
-      for x, y, testo in etichette_23inf:
-        draw_23inf.text(
-            (x, y),
-            testo,
-            fill=(255, 0, 0),
-            font=font_km,
-            stroke_width=BORDO,
-            stroke_fill=(255, 255, 255),
-        )
-
-      draw_23inf.multiline_text(
-          (int(width_23inf * 0.68), int(height_23inf * 0.380)),
-          ubicazione_testo_23inf,
-          fill=(255, 0, 0),
-          font=font_ub_23inf,
-          align="center",
-          spacing=6,
-          stroke_width=BORDO,
-          stroke_fill=(255, 255, 255),
-      )
-
-      img_io_23inf = io.BytesIO()
-      base_img_23inf.save(img_io_23inf, format="JPEG", quality=100, subsampling=0)
-      jpg_data_23inf = img_io_23inf.getvalue()
-      st.image(
-          base_img_23inf,
-          caption="Tavola 23 - Parte Inferiore configurata",
-          use_container_width=True,
-      )
-      st.download_button(
-          label="📥 Scarica Tavola 23 - Parte Inferiore in formato JPG",
-          data=jpg_data_23inf,
-          file_name="Tavola_23_Parte_Inferiore_Compilata.jpg",
-          mime="image/jpeg",
-      )
-    except Exception as errore:
-      st.error("Errore generazione Tavola 23 - Parte Inferiore.")
-      st.exception(errore)
-  else:
-    st.error(
-        "Immagine 'TAVOLA 23 - PARTE INFERIORE.jpg' non trovata nella cartella."
-    )
-
-
-# ====================================================================
-# TAVOLA 23 - PARTE ALTA (ORIGINALE)
+# TAVOLA 23 - UNIFICATA (PARTE INFERIORE + ALTA)
 # ====================================================================
 elif "Tavola 23" in tavola_selezionata:
-  st.subheader("📍 Dati e Progressive Chilometriche - Tavola 23")
-  ubicazione_testo_23 = st.text_area(
-      "Ubicazione / Direzione (Tavola 23)", value="DIREZIONE SUD"
-  )
-  st.write("### Progressive Chilometriche (dal basso verso l'alto)")
-  col1, col2 = st.columns(2)
-  with col1:
-    km_23_restr1 = st.text_input(
-        "KM Restringimento 1 (In basso)", value="805+860"
-    )
-    km_23_limite60 = st.text_input("KM Limite 60 km/h", value="806+100")
-    km_23_restr2 = st.text_input("KM Restringimento 2", value="806+340")
-  with col2:
-    km_23_iniziotestata = st.text_input("KM Inizio testata", value="806+556")
-    km_23_finetestata = st.text_input("KM Fine testata", value="806+700")
-    km_23_vialibera = st.text_input(
-        "KM Via libera / Fine (In alto)", value="807+000"
-    )
+    st.subheader("📍 Dati e Progressive Chilometriche - Tavola 23 (Unificata)")
+    ubicazione_testo_23 = st.text_area("Ubicazione / Direzione (Tavola 23)", value="DIREZIONE SUD")
+    
+    st.write("### 🛣️ Progressive Chilometriche (In ordine dal basso verso l'alto)")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown("**Sezione Inferiore (Preavviso e Approccio)**")
+        km_23inf_lavori = st.text_input("KM Lavori in corso (In basso)", value="805+560")
+        km_23inf_limite110 = st.text_input("KM Limite 110 km/h", value="805+800")
+        km_23inf_restr = st.text_input("KM Restringimento", value="806+040")
+        km_23inf_limite80 = st.text_input("KM Limite 80 km/h", value="806+460")
+        km_23inf_obbligo = st.text_input("KM Passaggio obbligatorio", value="806+556")
+        km_23inf_sorpasso = st.text_input("KM Divieto di sorpasso", value="806+650")
+    with col2:
+        st.markdown("**Sezione Superiore (Chiusura e Rientro)**")
+        km_23_restr1 = st.text_input("KM Restringimento 1", value="806+860")
+        km_23_limite60 = st.text_input("KM Limite 60 km/h", value="807+100")
+        km_23_restr2 = st.text_input("KM Restringimento 2", value="807+340")
+        km_23_iniziotestata = st.text_input("KM Inizio testata", value="807+556")
+        km_23_finetestata = st.text_input("KM Fine testata", value="807+700")
+        km_23_vialibera = st.text_input("KM Via libera / Fine (In alto)", value="808+000")
 
-  if st.button("Genera Abaco Segnaletica (Excel) - Tavola 23"):
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = "Abaco Tavola 23"
-    ws.merge_cells("A1:E1")
-    titolo_principale = ws["A1"]
-    titolo_principale.value = (
-        "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 23"
-    )
-
-    fill_verde_chiaro = PatternFill(
-        start_color="92D050", end_color="92D050", fill_type="solid"
-    )
-    fill_verde_scuro = PatternFill(
-        start_color="70AD47", end_color="70AD47", fill_type="solid"
-    )
-    font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
-    font_header = Font(name="Arial", size=10, bold=True, color="000000")
-    font_testo = Font(name="Arial", size=10, color="000000")
-    bordo_sottile = Border(
-        left=Side(style="thin", color="000000"),
-        right=Side(style="thin", color="000000"),
-        top=Side(style="thin", color="000000"),
-        bottom=Side(style="thin", color="000000"),
-    )
-
-    titolo_principale.fill = fill_verde_chiaro
-    titolo_principale.font = font_titolo
-    titolo_principale.alignment = Alignment(
-        horizontal="center", vertical="center"
-    )
-    for col in range(1, 6):
-      ws.cell(row=1, column=col).border = bordo_sottile
-
-    headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
-    for col_idx, header in enumerate(headers, 1):
-      cell = ws.cell(row=2, column=col_idx)
-      cell.value = header
-      cell.fill = fill_verde_scuro
-      cell.font = font_header
-      cell.alignment = Alignment(
-          horizontal="center", vertical="center", wrap_text=True
-      )
-      cell.border = bordo_sottile
-
-    dati_righe_23 = [
-        (
-            "fig_411a.jpg",
-            "FIG. II 411/a",
-            "SEGNALE DI CORSIA CHIUSA",
-            "",
-            "SEGNALI TEMPORANEI",
-        ),
-        (
-            "fig_050_lim60.jpg",
-            "FIG. II 050",
-            "LIMITE DI VELOCITÀ 60 KM/H",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-        (
-            "fig_082a.jpg",
-            "FIG. II 082/a",
-            "PASSAGGIO OBBLIGATORIO A SINISTRA",
-            "",
-            "SEGNALI DI OBBLIGO",
-        ),
-        (
-            "fig_070.jpg",
-            "FIG. II 070",
-            "VIA LIBERA / FINE CANTIERE",
-            "",
-            "SEGNALI DI PRESCRIZIONE",
-        ),
-    ]
-
-    ws.column_dimensions["A"].width = 18
-    ws.column_dimensions["B"].width = 16
-    ws.column_dimensions["C"].width = 45
-    ws.column_dimensions["D"].width = 20
-    ws.column_dimensions["E"].width = 25
-    ws.row_dimensions[1].height = 30
-    ws.row_dimensions[2].height = 25
-
-    immagini_inserite = 0
-    for i, row_data in enumerate(dati_righe_23, start=3):
-      img_nome, figura, descrizione, dettagli, segnaletica = row_data
-      ws.row_dimensions[i].height = 55
-      c_fig = ws.cell(row=i, column=2, value=figura)
-      c_desc = ws.cell(row=i, column=3, value=descrizione)
-      c_det = ws.cell(row=i, column=4, value=dettagli)
-      c_seg = ws.cell(row=i, column=5, value=segnaletica)
-      for cell in [c_fig, c_desc, c_det, c_seg]:
-        cell.font = font_testo
-        cell.alignment = Alignment(
-            horizontal="center", vertical="center", wrap_text=True
+    if st.button("Genera Abaco Segnaletica (Excel) - Tavola 23 Unificata"):
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Abaco Tavola 23 Completa"
+        ws.merge_cells("A1:E1")
+        
+        titolo_principale = ws["A1"]
+        titolo_principale.value = "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 23"
+        
+        fill_verde_chiaro = PatternFill(start_color="92D050", end_color="92D050", fill_type="solid")
+        fill_verde_scuro = PatternFill(start_color="70AD47", end_color="70AD47", fill_type="solid")
+        font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+        font_header = Font(name="Arial", size=10, bold=True, color="000000")
+        font_testo = Font(name="Arial", size=10, color="000000")
+        bordo_sottile = Border(
+            left=Side(style="thin", color="000000"), right=Side(style="thin", color="000000"),
+            top=Side(style="thin", color="000000"), bottom=Side(style="thin", color="000000")
         )
-        cell.border = bordo_sottile
-
-      c_segnale = ws.cell(row=i, column=1)
-      c_segnale.border = bordo_sottile
-
-      nomi_da_cercare = [
-          img_nome,
-          img_nome.replace(".jpg", ".png"),
-          img_nome.replace(".png", ".jpg"),
-      ]
-      percorso_trovato = None
-      for nome in nomi_da_cercare:
-        tentativo = os.path.join(dir_immagini, nome)
-        if os.path.exists(tentativo):
-          percorso_trovato = tentativo
-          break
-
-      if percorso_trovato:
-        try:
-          img_pil = Image.open(percorso_trovato).convert("RGB")
-          temp_path = os.path.join("/tmp", f"abaco_23_img_{i}.jpg")
-          img_pil.save(temp_path, "JPEG")
-          img_obj = OpenpyxlImage(temp_path)
-          marker_from = AnchorMarker(
-              col=0, colOff=150000, row=i - 1, rowOff=40000
-          )
-          marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
-          img_obj.anchor = TwoCellAnchor(
-              editAs="twoCell", _from=marker_from, to=marker_to
-          )
-          ws.add_image(img_obj)
-          immagini_inserite += 1
-        except Exception as e:
-          st.warning(f"Errore caricamento immagine per {figura}: {e}")
-      else:
-        c_segnale.value = "[Img non trovata]"
-        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
-        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
-
-    output = io.BytesIO()
-    wb.save(output)
-    excel_data = output.getvalue()
-    st.success(
-        "Abaco Excel Tavola 23 generato! (Immagini inserite:"
-        f" {immagini_inserite}/{len(dati_righe_23)})"
-    )
-    st.download_button(
-        label="📥 Scarica Excel Abaco Tavola 23",
-        data=excel_data,
-        file_name="Abaco_Segnaletica_Tavola_23.xlsx",
-        mime=(
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ),
-    )
-
-  st.divider()
-  st.subheader("🖼️ Anteprima Tavola 23 Personalizzata")
-  img_path_23 = os.path.join(cartella_app, "TAVOLA 23.jpg")
-  if os.path.exists(img_path_23):
-    try:
-      with Image.open(img_path_23) as immagine_originale:
-        base_img_23 = immagine_originale.convert("RGB")
-      width_23, height_23 = base_img_23.size
-      draw_23 = ImageDraw.Draw(base_img_23)
-      font_km = load_custom_font(23)
-      font_ub_23 = load_custom_font(31)
-      BORDO = 2
-
-      etichette_23 = [
-          (int(width_23 * 0.54), int(height_23 * 0.835), f"KM {km_23_restr1}"),
-          (int(width_23 * 0.54), int(height_23 * 0.727), f"KM {km_23_limite60}"),
-          (int(width_23 * 0.54), int(height_23 * 0.6350), f"KM {km_23_restr2}"),
-          (
-              int(width_23 * 0.54),
-              int(height_23 * 0.528),
-              f"KM {km_23_iniziotestata}",
-          ),
-          (int(width_23 * 0.54), int(height_23 * 0.415), f"KM {km_23_finetestata}"),
-          (int(width_23 * 0.54), int(height_23 * 0.215), f"KM {km_23_vialibera}"),
-      ]
-
-      for x, y, testo in etichette_23:
-        draw_23.text(
-            (x, y),
-            testo,
-            fill=(255, 0, 0),
-            font=font_km,
-            stroke_width=BORDO,
-            stroke_fill=(255, 255, 255),
+        
+        titolo_principale.fill = fill_verde_chiaro
+        titolo_principale.font = font_titolo
+        titolo_principale.alignment = Alignment(horizontal="center", vertical="center")
+        
+        for col in range(1, 6):
+            ws.cell(row=1, column=col).border = bordo_sottile
+            
+        headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+        for col_idx, header in enumerate(headers, 1):
+            cell = ws.cell(row=2, column=col_idx)
+            cell.value = header
+            cell.fill = fill_verde_scuro
+            cell.font = font_header
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            cell.border = bordo_sottile
+            
+        # Manteniamo la struttura estesa della parte inferiore (Abaco completo richiesto)
+        dati_righe_23completa = [
+            ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
+            ("fig050_lim110.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 110 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
+            ("fig050_lim80.jpg", "FIG. II 050", "LIMITE MASSIMO DI VELOCITÀ 80 KM/H", "", "SEGNALI DI DIVIETO"),
+            ("fig_050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
+            ("fig_048.jpg", "FIG. II 048", "DIVIETO DI SORPASSO", "", "SEGNALI DI DIVIETO"),
+            ("fig_411a.jpg", "FIG. II 411/a", "SEGNALE DI CORSIA CHIUSA", "", "SEGNALI TEMPORANEI"),
+            ("fig_082_b.jpg", "FIG. II 082/b", "PASSAGGIO OBBLIGATORIO A DESTRA", "", "SEGNALETICA DI OBBLIGO"),
+            ("fig_400.jpg", "FIG. II 400", "SEGNALE MOBILE DI PREAVVISO CON FRECCIA", "", "SEGNALI TEMPORANEI"),
+            ("fig_401.jpg", "FIG. II 401", "VEICOLO DI PROTEZIONE CON PANNELLO", "", "SEGNALI TEMPORANEI"),
+            ("fig_070.jpg", "FIG. II 070", "VIA LIBERA / FINE CANTIERE", "", "SEGNALI DI PRESCRIZIONE")
+        ]
+        
+        ws.column_dimensions["A"].width = 18
+        ws.column_dimensions["B"].width = 16
+        ws.column_dimensions["C"].width = 45
+        ws.column_dimensions["D"].width = 20
+        ws.column_dimensions["E"].width = 25
+        ws.row_dimensions[1].height = 30
+        ws.row_dimensions[2].height = 25
+        
+        immagini_inserite = 0
+        for i, row_data in enumerate(dati_righe_23completa, start=3):
+            img_nome, figura, descrizione, dettagli, segnaletica = row_data
+            ws.row_dimensions[i].height = 55
+            c_fig = ws.cell(row=i, column=2, value=figura)
+            c_desc = ws.cell(row=i, column=3, value=descrizione)
+            c_det = ws.cell(row=i, column=4, value=dettagli)
+            c_seg = ws.cell(row=i, column=5, value=segnaletica)
+            
+            for cell in [c_fig, c_desc, c_det, c_seg]:
+                cell.font = font_testo
+                cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                cell.border = bordo_sottile
+                
+            c_segnale = ws.cell(row=i, column=1)
+            c_segnale.border = bordo_sottile
+            
+            nomi_da_cercare = [img_nome, img_nome.replace(".jpg", ".png"), img_nome.replace(".png", ".jpg")]
+            percorso_trovato = None
+            for nome in nomi_da_cercare:
+                tentativo = os.path.join(dir_immagini, nome)
+                if os.path.exists(tentativo):
+                    percorso_trovato = tentativo
+                    break
+                    
+            if percorso_trovato:
+                try:
+                    img_pil = Image.open(percorso_trovato).convert("RGB")
+                    temp_path = os.path.join("/tmp", f"abaco_23completa_{i}.jpg")
+                    img_pil.save(temp_path, "JPEG")
+                    img_obj = OpenpyxlImage(temp_path)
+                    marker_from = AnchorMarker(col=0, colOff=150000, row=i-1, rowOff=40000)
+                    marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+                    img_obj.anchor = TwoCellAnchor(editAs="twoCell", _from=marker_from, to=marker_to)
+                    ws.add_image(img_obj)
+                    immagini_inserite += 1
+                except Exception as e:
+                    st.warning(f"Errore caricamento immagine per {figura}: {e}")
+            else:
+                c_segnale.value = "[Img non trovata]"
+                c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+                c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+                
+        output = io.BytesIO()
+        wb.save(output)
+        excel_data = output.getvalue()
+        st.success(f"Abaco Excel Unificato generato! (Immagini inserite: {immagini_inserite}/{len(dati_righe_23completa)})")
+        st.download_button(
+            label="📥 Scarica Excel Abaco Segnaletica Tavola 23 Completa",
+            data=excel_data,
+            file_name="Abaco_Segnaletica_Tavola_23_Completa.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
-      draw_23.multiline_text(
-          (int(width_23 * 0.64), int(height_23 * 0.2900)),
-          ubicazione_testo_23,
-          fill=(255, 0, 0),
-          font=font_ub_23,
-          align="center",
-          spacing=6,
-          stroke_width=BORDO,
-          stroke_fill=(255, 255, 255),
-      )
-
-      img_io_23 = io.BytesIO()
-      base_img_23.save(img_io_23, format="JPEG", quality=100, subsampling=0)
-      jpg_data_23 = img_io_23.getvalue()
-      st.image(
-          base_img_23,
-          caption="Tavola 23 - Configurazione completata",
-          use_container_width=True,
-      )
-      st.download_button(
-          label="📥 Scarica Tavola 23 in formato JPG",
-          data=jpg_data_23,
-          file_name="Tavola_23_Compilata.jpg",
-          mime="image/jpeg",
-      )
-    except Exception as errore:
-      st.error("Errore generazione Tavola 23.")
-      st.exception(errore)
-  else:
-    st.error("Immagine 'TAVOLA 23.jpg' non trovata nella cartella.")
+    st.divider()
+    st.subheader("🖼️ Anteprima Tavole Grafiche Compilate")
+    
+    # Renderizziamo graficamente entrambe le componenti visive all'interno della stessa pagina dell'app
+    col_tav1, col_tav2 = st.columns(2)
+    
+    # --- GESTIONE PARTE INFERIORE ---
+    with col_tav1:
+        st.markdown("#### 🔽 Parte Inferiore (Approccio)")
+        img_path_23inf = os.path.join(cartella_app, "TAVOLA 23 - PARTE INFERIORE.jpg")
+        if os.path.exists(img_path_23inf):
+            try:
+                with Image.open(img_path_23inf) as immagine_originale:
+                    base_img_23inf = immagine_originale.convert("RGB")
+                width_23inf, height_23inf = base_img_23inf.size
+                draw_23inf = ImageDraw.Draw(base_img_23inf)
+                font_km = load_custom_font(18)
+                font_ub_23inf = load_custom_font(25)
+                BORDO = 2
+                
+                etichette_23inf = [
+                    (int(width_23inf * 0.66), int(height_23inf * 0.847), f"KM {km_23inf_lavori}"),
+                    (int(width_23inf * 0.66), int(height_23inf * 0.690), f"KM {km_23inf_limite110}"),
+                    (int(width_23inf * 0.66), int(height_23inf * 0.490), f"KM {km_23inf_restr}"),
+                    (int(width_23inf * 0.66), int(height_23inf * 0.260), f"KM {km_23inf_limite80}"),
+                    (int(width_23inf * 0.66), int(height_23inf * 0.2000), f"KM {km_23inf_obbligo}"),
+                    (int(width_23inf * 0.66), int(height_23inf * 0.0850), f"KM {km_23inf_sorpasso}")
+                ]
+                for x, y, testo in etichette_23inf:
+                    draw_23inf.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+                    
+                draw_23inf.multiline_text((int(width_23inf * 0.68), int(height_23inf * 0.380)), ubicazione_testo_23, fill=(255, 0, 0), font=font_ub_23inf, align="center", spacing=6, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+                
+                img_io_23inf = io.BytesIO()
+                base_img_23inf.save(img_io_23inf, format="JPEG", quality=100, subsampling=0)
+st.image(base_img_23inf, caption="Tavola 23 - Parte Inferiore Compilata", use_container_width=True)
+st.download_button(label="📥 Scarica JPG Parte Inferiore", data=img_io_23inf.getvalue(), file_name="Tavola_23_Parte_Inferiore.jpg", mime="image/jpeg")
+except Exception as e:
+st.error(f"Errore grafica parte inferiore: {e}")
+else:
+st.error("Immagine 'TAVOLA 23 - PARTE INFERIORE.jpg' non trovata.")
+# --- GESTIONE PARTE SUPERIORE ---
+with col_tav2:
+st.markdown("#### 🔼 Parte Superiore (Chiusura)")
+img_path_23 = os.path.join(cartella_app, "TAVOLA 23.jpg")
+if os.path.exists(img_path_23):
+try:
+with Image.open(img_path_23) as immagine_originale:
+base_img_23 = immagine_originale.convert("RGB")
+width_23, height_23 = base_img_23.size
+draw_23 = ImageDraw.Draw(base_img_23)
+font_km = load_custom_font(23)
+font_ub_23 = load_custom_font(31)
+BORDO = 2
+etichette_23 = [
+(int(width_23 * 0.54), int(height_23 * 0.835), f"KM {km_23_restr1}"),
+(int(width_23 * 0.54), int(height_23 * 0.727), f"KM {km_23_limite60}"),
+(int(width_23 * 0.54), int(height_23 * 0.6350), f"KM {km_23_restr2}"),
+(int(width_23 * 0.54), int(height_23 * 0.528), f"KM {km_23_iniziotestata}"),
+(int(width_23 * 0.54), int(height_23 * 0.415), f"KM {km_23_finetestata}"),
+(int(width_23 * 0.54), int(height_23 * 0.215), f"KM {km_23_vialibera}")
+]
+for x, y, testo in etichette_23:
+draw_23.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+draw_23.multiline_text((int(width_23 * 0.64), int(height_23 * 0.2900)), ubicazione_testo_23, fill=(255, 0, 0), font=font_ub_23, align="center", spacing=6, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+img_io_23 = io.BytesIO()
+base_img_23.save(img_io_23, format="JPEG", quality=100, subsampling=0)
+st.image(base_img_23, caption="Tavola 23 - Parte Superiore Compilata", use_container_width=True)
+st.download_button(label="📥 Scarica JPG Parte Superiore", data=img_io_23.getvalue(), file_name="Tavola_23_Parte_Superiore.jpg", mime="image/jpeg")
+except Exception as e:
+st.error(f"Errore grafica parte superiore: {e}")
+else:
+st.error("Immagine 'TAVOLA 23.jpg' non trovata.")
