@@ -5260,45 +5260,45 @@ elif "Tavola 24" in tavola_selezionata:
                     base_img_24inf = immagine_originale.convert("RGB")
                 width_24inf, height_24inf = base_img_24inf.size
                 draw_24inf = ImageDraw.Draw(base_img_24inf)
-                font_km = load_custom_font(18)
-                font_ub_24inf = load_custom_font(25)
+                font_km = load_custom_font(25)
+                font_ub_24inf = load_custom_font(33)
                 BORDO = 2
 
                 # Coordinate percentuali adattate a "TAVOLA 24 PARTE BASSA.jpg" (dal basso verso l'alto)
                 etichette_24inf = [
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.745),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.710),
                         f"KM {km_24inf_lavori}",
                     ),
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.635),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.605),
                         f"KM {km_24inf_limite110}",
                     ),
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.525),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.510),
                         f"KM {km_24inf_restr}",
                     ),
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.415),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.412),
                         f"KM {km_24inf_limite80}",
                     ),
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.360),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.3250),
                         f"KM {km_24inf_limite60}",
                     ),
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.280),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.2650),
                         f"KM {km_24inf_iniziotestata}",
                     ),
                     (
-                        int(width_24inf * 0.66),
-                        int(height_24inf * 0.165),
+                        int(width_24inf * 0.65),
+                        int(height_24inf * 0.125),
                         f"KM {km_24inf_finetestata}",
                     ),
                 ]
@@ -5313,7 +5313,7 @@ elif "Tavola 24" in tavola_selezionata:
                     )
 
                 draw_24inf.multiline_text(
-                    (int(width_24inf * 0.68), int(height_24inf * 0.480)),
+                    (int(width_24inf * 0.66), int(height_24inf * 0.050)),
                     ubicazione_testo_24,
                     fill=(255, 0, 0),
                     font=font_ub_24inf,
