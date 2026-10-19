@@ -4897,9 +4897,8 @@ elif "Tavola 23" in tavola_selezionata:
             file_name="Abaco_Segnaletica_Tavola_23_Completa.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
-
     st.divider()
-    st.subheader("🖼️ Anteprima Tavole Grafiche Compilate")
+    st.subheader("🖼️ Anteprima Tavola 23 Personalizzata (Unificata)")
     
     # Renderizziamo graficamente entrambe le componenti visive all'interno della stessa pagina dell'app
     col_tav1, col_tav2 = st.columns(2)
@@ -4929,45 +4928,68 @@ elif "Tavola 23" in tavola_selezionata:
                 for x, y, testo in etichette_23inf:
                     draw_23inf.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
                     
-                draw_23inf.multiline_text((int(width_23inf * 0.68), int(height_23inf * 0.380)), ubicazione_testo_23, fill=(255, 0, 0), font=font_ub_23inf, align="center", spacing=6, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+                draw_23inf.multiline_text(
+                    (int(width_23inf * 0.68), int(height_23inf * 0.380)), 
+                    ubicazione_testo_23, 
+                    fill=(255, 0, 0), 
+                    font=font_ub_23inf, 
+                    align="center", 
+                    spacing=6, 
+                    stroke_width=BORDO, 
+                    stroke_fill=(255, 255, 255)
+                )
                 
                 img_io_23inf = io.BytesIO()
                 base_img_23inf.save(img_io_23inf, format="JPEG", quality=100, subsampling=0)
-st.image(base_img_23inf, caption="Tavola 23 - Parte Inferiore Compilata", use_container_width=True)
-st.download_button(label="📥 Scarica JPG Parte Inferiore", data=img_io_23inf.getvalue(), file_name="Tavola_23_Parte_Inferiore.jpg", mime="image/jpeg")
-except Exception as e:
-st.error(f"Errore grafica parte inferiore: {e}")
-else:
-st.error("Immagine 'TAVOLA 23 - PARTE INFERIORE.jpg' non trovata.")
-# --- GESTIONE PARTE SUPERIORE ---
-with col_tav2:
-st.markdown("#### 🔼 Parte Superiore (Chiusura)")
-img_path_23 = os.path.join(cartella_app, "TAVOLA 23.jpg")
-if os.path.exists(img_path_23):
-try:
-with Image.open(img_path_23) as immagine_originale:
-base_img_23 = immagine_originale.convert("RGB")
-width_23, height_23 = base_img_23.size
-draw_23 = ImageDraw.Draw(base_img_23)
-font_km = load_custom_font(23)
-font_ub_23 = load_custom_font(31)
-BORDO = 2
-etichette_23 = [
-(int(width_23 * 0.54), int(height_23 * 0.835), f"KM {km_23_restr1}"),
-(int(width_23 * 0.54), int(height_23 * 0.727), f"KM {km_23_limite60}"),
-(int(width_23 * 0.54), int(height_23 * 0.6350), f"KM {km_23_restr2}"),
-(int(width_23 * 0.54), int(height_23 * 0.528), f"KM {km_23_iniziotestata}"),
-(int(width_23 * 0.54), int(height_23 * 0.415), f"KM {km_23_finetestata}"),
-(int(width_23 * 0.54), int(height_23 * 0.215), f"KM {km_23_vialibera}")
-]
-for x, y, testo in etichette_23:
-draw_23.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
-draw_23.multiline_text((int(width_23 * 0.64), int(height_23 * 0.2900)), ubicazione_testo_23, fill=(255, 0, 0), font=font_ub_23, align="center", spacing=6, stroke_width=BORDO, stroke_fill=(255, 255, 255))
-img_io_23 = io.BytesIO()
-base_img_23.save(img_io_23, format="JPEG", quality=100, subsampling=0)
-st.image(base_img_23, caption="Tavola 23 - Parte Superiore Compilata", use_container_width=True)
-st.download_button(label="📥 Scarica JPG Parte Superiore", data=img_io_23.getvalue(), file_name="Tavola_23_Parte_Superiore.jpg", mime="image/jpeg")
-except Exception as e:
-st.error(f"Errore grafica parte superiore: {e}")
-else:
-st.error("Immagine 'TAVOLA 23.jpg' non trovata.")
+                st.image(base_img_23inf, caption="Tavola 23 - Parte Inferiore Compilata", use_container_width=True)
+                st.download_button(label="📥 Scarica JPG Parte Inferiore", data=img_io_23inf.getvalue(), file_name="Tavola_23_Parte_Inferiore.jpg", mime="image/jpeg")
+            except Exception as e:
+                st.error(f"Errore grafica parte inferiore: {e}")
+        else:
+            st.error("Immagine 'TAVOLA 23 - PARTE INFERIORE.jpg' non trovata.")
+
+    # --- GESTIONE PARTE SUPERIORE ---
+    with col_tav2:
+        st.markdown("#### 🔼 Parte Superiore (Chiusura)")
+        img_path_23 = os.path.join(cartella_app, "TAVOLA 23.jpg")
+        if os.path.exists(img_path_23):
+            try:
+                with Image.open(img_path_23) as immagine_originale:
+                    base_img_23 = immagine_originale.convert("RGB")
+                width_23, height_23 = base_img_23.size
+                draw_23 = ImageDraw.Draw(base_img_23)
+                font_km = load_custom_font(23)
+                font_ub_23 = load_custom_font(31)
+                BORDO = 2
+                
+                etichette_23 = [
+                    (int(width_23 * 0.54), int(height_23 * 0.835), f"KM {km_23_restr1}"),
+                    (int(width_23 * 0.54), int(height_23 * 0.727), f"KM {km_23_limite60}"),
+                    (int(width_23 * 0.54), int(height_23 * 0.6350), f"KM {km_23_restr2}"),
+                    (int(width_23 * 0.54), int(height_23 * 0.528), f"KM {km_23_iniziotestata}"),
+                    (int(width_23 * 0.54), int(height_23 * 0.415), f"KM {km_23_finetestata}"),
+                    (int(width_23 * 0.54), int(height_23 * 0.215), f"KM {km_23_vialibera}")
+                ]
+                for x, y, testo in etichette_23:
+                    draw_23.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+                    
+                draw_23.multiline_text(
+                    (int(width_23 * 0.64), int(height_23 * 0.2900)), 
+                    ubicazione_testo_23, 
+                    fill=(255, 0, 0), 
+                    font=font_ub_23, 
+                    align="center", 
+                    spacing=6, 
+                    stroke_width=BORDO, 
+                    stroke_fill=(255, 255, 255)
+                )
+                
+                img_io_23 = io.BytesIO()
+                base_img_23.save(img_io_23, format="JPEG", quality=100, subsampling=0)
+                st.image(base_img_23, caption="Tavola 23 - Parte Superiore Compilata", use_container_width=True)
+                st.download_button(label="📥 Scarica JPG Parte Superiore", data=img_io_23.getvalue(), file_name="Tavola_23_Parte_Superiore.jpg", mime="image/jpeg")
+            except Exception as e:
+                st.error(f"Errore grafica parte superiore: {e}")
+        else:
+            st.error("Immagine 'TAVOLA 23.jpg' non trovata.")
+
