@@ -1673,6 +1673,10 @@ if sezione_app == "Gestione Tavole & Abaco":
                 km_26_bassa_ingresso = st.text_input("KM Ingresso", value="807+400")
                 km_26_bassa_sorpasso = st.text_input("KM Divieto di sorpasso", value="807+550")
                 km_26_bassa_lim80 = st.text_input("KM Limite 80", value="807+700")
+                st.caption("--- Lato Sinistro (Nuovi Aggiunti) ---")
+                km_26_bassa_sx_vialibera = st.text_input("KM Via libera (Bassa Sx)", value="806+100")
+                km_26_bassa_sx_passaggio = st.text_input("KM Passaggio obbligatorio (Bassa Sx)", value="806+500")
+                km_26_bassa_sx_restringimento = st.text_input("KM Restringimento (Bassa Sx)", value="806+800")
             with col2:
                 st.markdown("**Sezione Superiore (Parte Alta)**")
                 km_26_alta_lim60 = st.text_input("KM Limite 60 (Alta)", value="807+900")
@@ -1816,7 +1820,6 @@ if sezione_app == "Gestione Tavole & Abaco":
             st.subheader("🖼️ Anteprima Tavola 26 Personalizzata (Unificata)")
 
             col_tav1, col_tav2 = st.columns(2)
-
             # --- GESTIONE PARTE BASSA ---
             with col_tav1:
                 st.markdown("#### 🔽 Parte Bassa")
@@ -1831,6 +1834,7 @@ if sezione_app == "Gestione Tavole & Abaco":
                         BORDO = 2
 
                         etichette_26b = [
+                            # Lato Destro Parte Bassa
                             (int(width_26b * 0.65), int(height_26b * 0.95), f"KM {km_26_bassa_lavori}"),
                             (int(width_26b * 0.65), int(height_26b * 0.90), f"KM {km_26_bassa_lim110}"),
                             (int(width_26b * 0.65), int(height_26b * 0.85), f"KM {km_26_bassa_lim90}"),
@@ -1844,6 +1848,11 @@ if sezione_app == "Gestione Tavole & Abaco":
                             (int(width_26b * 0.65), int(height_26b * 0.20), f"KM {km_26_bassa_ingresso}"),
                             (int(width_26b * 0.65), int(height_26b * 0.15), f"KM {km_26_bassa_sorpasso}"),
                             (int(width_26b * 0.65), int(height_26b * 0.10), f"KM {km_26_bassa_lim80}"),
+                            
+                            # Lato Sinistro Parte Bassa (Nuovi Aggiunti)
+                            (int(width_26b * 0.05), int(height_26b * 0.52), f"KM {km_26_bassa_sx_vialibera}"),
+                            (int(width_26b * 0.05), int(height_26b * 0.42), f"KM {km_26_bassa_sx_passaggio}"),
+                            (int(width_26b * 0.05), int(height_26b * 0.35), f"KM {km_26_bassa_sx_restringimento}"),
                         ]
                         for x, y, testo in etichette_26b:
                             draw_26b.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
@@ -1860,8 +1869,7 @@ if sezione_app == "Gestione Tavole & Abaco":
                     except Exception as e:
                         st.error(f"Errore grafica parte bassa: {e}")
                 else:
-                    st.error("Immagine 'TAVOLA 26 PARTE BASSA.jpg' non trovata[cite: 4].")
-
+                    st.error("Immagine 'TAVOLA 26 PARTE BASSA.jpg' non trovata[cite: 3].")
             # --- GESTIONE PARTE ALTA ---
             with col_tav2:
                 st.markdown("#### 🔼 Parte Alta")
