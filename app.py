@@ -24,38 +24,44 @@ st.set_page_config(
 # ==================================================
 st.markdown("""
 <style>
-    /* Import Font Inter da Google Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
     }
 
-    /* Sfondo Principale dell'App */
-    .stApp { 
-        background-color: #F8FAFC; 
-    }
-
+    .stApp { background-color: #F8FAFC; }
+    
     /* Sidebar Custom */
     [data-testid="stSidebar"] {
         background-color: #0F172A;
         border-right: 1px solid #1E293B;
     }
-    [data-testid="stSidebar"] * {
+    
+    /* Titoli ed etichette nella sidebar */
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] .stCaption {
         color: #F8FAFC !important;
     }
+    
     [data-testid="stSidebar"] .stSelectbox label {
         color: #94A3B8 !important;
         font-weight: 500;
     }
 
-    /* Hero Banner Moderno */
+    /* FIX SELECTBOX: Testo ben visibile ed etichette leggibili */
+    [data-testid="stSidebar"] div[data-baseweb="select"] * {
+        color: #0F172A !important;
+        background-color: #FFFFFF !important;
+    }
+
     .app-hero {
-        padding: 2rem;
-        margin-bottom: 2rem;
+        padding: 2rem; margin-bottom: 2rem;
         background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-        border-radius: 16px;
-        color: #FFFFFF;
+        border-radius: 16px; color: #FFFFFF;
         box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.2);
     }
     .app-hero h1 { 
@@ -71,17 +77,6 @@ st.markdown("""
         opacity: 0.95;
     }
 
-    /* Card/Box Contenitore Form */
-    .custom-card {
-        background-color: #FFFFFF;
-        padding: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-        margin-bottom: 1.5rem;
-    }
-
-    /* Pulsanti Custom */
     div.stButton > button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -95,7 +90,6 @@ st.markdown("""
     div.stButton > button:hover {
         background-color: #1D4ED8 !important;
         transform: translateY(-1px);
-        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3) !important;
     }
 
     div.stDownloadButton > button {
@@ -112,11 +106,7 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
-    /* Titoli Sezione */
-    h2, h3, h4 { 
-        color: #0F172A !important; 
-        font-weight: 600 !important;
-    }
+    h2, h3, h4 { color: #0F172A !important; font-weight: 600 !important; }
 </style>
 """, unsafe_allow_html=True)
 
