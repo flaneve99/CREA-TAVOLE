@@ -245,7 +245,7 @@ if sezione_app == "Gestione Tavole & Abaco":
     # ====================================================================
     # TAVOLA 39
     # ====================================================================
-    if "39" in tavola_selezionata:
+        if "39" in tavola_selezionata:
       st.subheader("📍 Dati e Progressive Chilometriche - Tavola 39")
       ubicazione_testo = st.text_area(
           "Ubicazione / Direzione (può essere divisa su più righe)",
