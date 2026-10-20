@@ -5588,7 +5588,7 @@ if sezione_app == "Gestione Tavole & Abaco":
 # ====================================================================
 elif sezione_app == "Programma Lavori Mensile":
     st.title("📅 Programma Lavori Mensile")
-    st.caption("Compila le lavorazioni e genera il file Excel formattato identico al modello aziendale.")
+    st.caption("Compila le lavorazioni e genera il file Excel formattato identico al modello originale.")
 
     mesi_dict = {
         1: "GENNAIO", 2: "FEBBRAIO", 3: "MARZO", 4: "APRILE",
@@ -5599,10 +5599,10 @@ elif sezione_app == "Programma Lavori Mensile":
     col1, col2 = st.columns(2)
     with col1:
         selected_month_num = st.selectbox(
-            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=0
+            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=9
         )
     with col2:
-        selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2027)
+        selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2026)
 
     st.markdown("### 📝 Inserisci le Lavorazioni")
     st.info("Puoi aggiungere, modificare o eliminare le righe delle lavorazioni secondo le tue esigenze.")
@@ -5625,12 +5625,12 @@ elif sezione_app == "Programma Lavori Mensile":
         ws = wb.active
         ws.title = mesi_dict[selected_month_num]
 
-        # Disattiva le griglie di sfondo predefinite di Excel per un aspetto pulito identico all'originale
+        # Griglie disattivate sullo sfondo per pulizia visiva identica all'originale
         ws.views.sheetView[0].showGridLines = False
 
-        # Font e stili fedeli al modello originale
-        font_title = Font(name="Franklin Gothic Medium", size=26, bold=False)
-        font_subtitle = Font(name="Franklin Gothic Book", size=11, bold=True)
+        # Font e stili identici al modello originale
+        font_title = Font(name="Franklin Gothic Medium", size=36, bold=False)
+        font_subtitle = Font(name="Franklin Gothic Book", size=16, bold=True)
         font_month = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_header = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_body = Font(name="Franklin Gothic Book", size=9, bold=True)
@@ -5640,6 +5640,14 @@ elif sezione_app == "Programma Lavori Mensile":
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
 
+        # Impostazione altezze righe come da originale
+        ws.row_dimensions[1].height = 4.9
+        ws.row_dimensions[2].height = 60.0
+        ws.row_dimensions[3].height = 39.0
+        ws.row_dimensions[4].height = 19.9
+        ws.row_dimensions[5].height = 19.9
+        ws.row_dimensions[6].height = 27.75
+
         # Intestazioni principali
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
@@ -5647,10 +5655,10 @@ elif sezione_app == "Programma Lavori Mensile":
 
         ws['B3'] = "S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce.  Lotto 1 – Stralcio 2 "
         ws['B3'].font = font_subtitle
-        ws['B3'].alignment = Alignment(horizontal="left", vertical="center")
+        ws['B3'].alignment = Alignment(horizontal="center", vertical="center")
 
-        # Formula mese e anno in E4
-        ws['E4'] = f'=UPPER(TEXT(E5, "mmmm")) & " " & {selected_year}'
+        # Mese in E4
+        ws['E4'] = '=UPPER(TEXT(E5, "mmmm"))'
         ws['E4'].font = font_month
         ws['E4'].alignment = Alignment(horizontal="center", vertical="center")
 
@@ -5665,32 +5673,46 @@ elif sezione_app == "Programma Lavori Mensile":
             cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
             cell.border = border_all
 
-        # Giorni del mese selezionato
+        # Calcolo giorni del mese selezionato
         num_days = calendar.monthrange(selected_year, selected_month_num)[1]
 
-        for col_idx in range(num_days):
-            col_letter = get_column_letter(5 + col_idx)
-            date_val = datetime.date(selected_year, selected_month_num, col_idx + 1)
+        # Primo giorno in E5
+        first_date = datetime.date(selected_year, selected_month_num, 1)
+        ws['E5'] = first_date
+        ws['E5'].number_format = 'd'
+        ws['E5'].font = font_header
+        ws['E5'].fill = fill_header
+        ws['E5'].alignment = Alignment(horizontal="center", vertical="center")
+        ws['E5'].border = border_all
+
+        ws['E6'] = '=CHOOSE(WEEKDAY(E5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do")'
+        ws['E6'].font = font_header
+        ws['E6'].fill = fill_header
+        ws['E6'].alignment = Alignment(horizontal="center", vertical="center")
+        ws['E6'].border = border_all
+
+        # Colonne successive dei giorni con formula dinamica identica all'originale
+        for col_idx in range(1, num_days):
+            col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
+            prev_col_letter = openpyxl.utils.get_column_letter(4 + col_idx)
             
-            # Riga 5: Data
             cell_date = ws[f'{col_letter}5']
-            cell_date.value = date_val
+            cell_date.value = f'=IF(MONTH($E$5+{col_idx})=MONTH($E$5), {prev_col_letter}5+1, "")'
             cell_date.number_format = 'd'
             cell_date.font = font_header
             cell_date.fill = fill_header
             cell_date.alignment = Alignment(horizontal="center", vertical="center")
             cell_date.border = border_all
-            
-            # Riga 6: Giorno settimana
+
             cell_wd = ws[f'{col_letter}6']
-            cell_wd.value = f'=CHOOSE(WEEKDAY({col_letter}5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do")'
+            cell_wd.value = f'=IF({col_letter}5<>"", CHOOSE(WEEKDAY({col_letter}5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do"), "")'
             cell_wd.font = font_header
             cell_wd.fill = fill_header
             cell_wd.alignment = Alignment(horizontal="center", vertical="center")
             cell_wd.border = border_all
 
-        # Colonna Importo Presunto Netto finale
-        last_col_letter = get_column_letter(5 + num_days)
+        # Ultima colonna Importo Presunto Netto
+        last_col_letter = openpyxl.utils.get_column_letter(5 + num_days)
         ws[f'{last_col_letter}5'] = "IMPORTO PRESUNTO\nNETTO"
         ws[f'{last_col_letter}5'].font = font_header
         ws[f'{last_col_letter}5'].fill = fill_header
@@ -5699,8 +5721,11 @@ elif sezione_app == "Programma Lavori Mensile":
 
         # Inserimento righe lavorazioni dinamiche
         start_row = 7
+        row_heights_default = [48.0, 47.25, 47.25, 48.75, 48.75, 48.75, 48.75]
+
         for idx, row in edited_df.iterrows():
             r = start_row + idx
+            ws.row_dimensions[r].height = row_heights_default[idx % len(row_heights_default)]
             
             c_desc = ws[f'B{r}']
             c_desc.value = row.get("Descrizione Lavori", "")
@@ -5720,9 +5745,9 @@ elif sezione_app == "Programma Lavori Mensile":
             c_imp.alignment = Alignment(horizontal="left", vertical="center")
             c_imp.border = border_all
 
-            # Applica bordi a tutte le celle del calendario per questa riga
+            # Bordi celle calendario riga
             for col_idx in range(num_days + 1):
-                col_letter = get_column_letter(5 + col_idx)
+                col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
                 cell_cal = ws[f'{col_letter}{r}']
                 cell_cal.font = font_body
                 cell_cal.border = border_all
@@ -5731,34 +5756,36 @@ elif sezione_app == "Programma Lavori Mensile":
         pers_row = start_row + len(edited_df)
         mezzi_row = pers_row + 1
 
-        for r_fin in [pers_row, mezzi_row]:
-            label_testo = "PERSONALE STIMATO" if r_fin == pers_row else "MEZZI STIMATI"
+        ws.row_dimensions[pers_row].height = 18.95
+        ws.row_dimensions[mezzi_row].height = 18.95
+
+        for r_fin, label_testo in [(pers_row, "PERSONALE STIMATO"), (mezzi_row, "MEZZI STIMATI")]:
             ws[f'B{r_fin}'] = label_testo
             ws[f'B{r_fin}'].font = font_footer
-            ws[f'B{r_fin}'].alignment = Alignment(horizontal="center", vertical="center")
+            ws.merge_cells(start_row=r_fin, start_column=2, end_row=r_fin, end_column=4)
             
-            # Applica bordi e font a tutta la riga finale
-            for c_idx in range(1, 5 + num_days + 1):
-                col_let = get_column_letter(c_idx)
+            # Applica bordi a tutta la riga finale
+            for c_idx in range(2, 5 + num_days + 1):
+                col_let = openpyxl.utils.get_column_letter(c_idx)
                 cell_f = ws[f'{col_let}{r_fin}']
                 cell_f.font = font_footer
                 cell_f.border = border_all
 
-        # Larghezze colonne ottimizzate
-        ws.column_dimensions['B'].width = 35
-        ws.column_dimensions['C'].width = 20
-        ws.column_dimensions['D'].width = 16
+        # Larghezze colonne identiche all'originale
+        ws.column_dimensions['B'].width = 27.78
+        ws.column_dimensions['C'].width = 19.44
+        ws.column_dimensions['D'].width = 13.0
         for col_idx in range(num_days):
-            col_letter = get_column_letter(5 + col_idx)
-            ws.column_dimensions[col_letter].width = 4.5
-        ws.column_dimensions[last_col_letter].width = 20
+            col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
+            ws.column_dimensions[col_letter].width = 4.77
+        ws.column_dimensions[last_col_letter].width = 16.0
 
         # Esportazione in memoria
         output = BytesIO()
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato da zero con anno visibile, griglie pulite e simmetria perfetta!")
+        st.success("File Excel generato perfettamente identico al modello originale!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
