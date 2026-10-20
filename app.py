@@ -3889,7 +3889,7 @@ if sezione_app == "Gestione Tavole & Abaco":
                         )
                         
                     draw_15.multiline_text(
-                        (int(width_15 * 0.015), int(height_15 * 0.050)),
+                        (int(width_15 * 0.2), int(height_15 * 0.030)),
                         ubicazione_testo_15,
                         fill=(255, 0, 0),
                         font=font_ub_15,
