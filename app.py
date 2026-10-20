@@ -5576,6 +5576,9 @@ elif "Tavola 24" in tavola_selezionata:
         else:
             st.error("Immagine 'TAVOLA 24 PARTE ALTA.jpg' non trovata.")
 
+
+
+
 elif sezione_app == "Programma Lavori Mensile":
     
     # ---------------------------------------------------------
