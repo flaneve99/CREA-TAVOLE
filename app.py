@@ -1732,7 +1732,7 @@ if sezione_app == "Gestione Tavole & Abaco":
 
                 # Abaco completo Tavola 26 (incluse le nuove figure richieste)
                 dati_righe_26 = [
-                    ("fig050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
+                    ("fig_050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
                     ("fig050_lim40.jpg", "FIG. II 050", "LIMITE MASSIMO DI VELOCITÀ 40 KM/H", "", "SEGNALI DI DIVIETO"),
                     ("fig_412b.jpg", "FIG. II 412/b", "SEGNALE DI RIENTRO IN CARREGGIATA", "", "SEGNALI TEMPORANEI"),
                     ("fig_070.jpg", "FIG. II 070", "VIA LIBERA / FINE CANTIERE", "", "SEGNALI DI PRESCRIZIONE"),
