@@ -5931,7 +5931,9 @@ elif sezione_app == "Programma Lavori Settimanale":
         ws.title = "PROGRAMMA SS 16- L1S2"
         ws.views.sheetView[0].showGridLines = True
         
-        font_title_appalto = Font(name="Arial", size=10, bold=False)
+        # Stili grafici fedeli al modello originale
+        font_company = Font(name="Arial", size=10, bold=False)
+        font_appalto = Font(name="Arial", size=10, bold=False)
         font_subtitle_week = Font(name="Arial", size=11, bold=True)
         font_header = Font(name="Arial", size=10, bold=True, color="000000")
         font_body = Font(name="Arial", size=10)
@@ -5941,12 +5943,23 @@ elif sezione_app == "Programma Lavori Settimanale":
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
         
-        ws.cell(row=1, column=2, value="VALORI S.C.A.R.L.").font = font_title_appalto
-        ws.cell(row=1, column=3, value=intestazione_appalto).font = font_title_appalto
+        # Riga 1: Società e Intestazione Appalto
+        ws.cell(row=1, column=2, value="VALORI S.C.A.R.L.").font = font_company
+        ws.cell(row=1, column=2).alignment = Alignment(vertical="center")
         
+        cell_app = ws.cell(row=1, column=3, value=intestazione_appalto)
+        cell_app.font = font_appalto
+        cell_app.alignment = Alignment(vertical="center", wrap_text=True)
+        ws.row_dimensions[1].height = 35
+        
+        # Riga 2: Periodo settimana
         str_periodo = f"Programma Lavori Settimanale - dal {data_inizio_settimana.strftime('%d/%m/%Y')} al {data_fine_settimana.strftime('%d/%m/%Y')}"
-        ws.cell(row=2, column=3, value=str_periodo).font = font_subtitle_week
+        cell_per = ws.cell(row=2, column=3, value=str_periodo)
+        cell_per.font = font_subtitle_week
+        cell_per.alignment = Alignment(vertical="center")
+        ws.row_dimensions[2].height = 25
         
+        # Riga 3: Intestazioni colonne
         headers_sett = [
             "DESCRIZIONE LAVORI", "Area Intervento", "Impresa",
             data_inizio_settimana,
@@ -5959,6 +5972,7 @@ elif sezione_app == "Programma Lavori Settimanale":
             "IMPORTO PRESUNTO NETTO (lavori+sic)"
         ]
         
+        ws.row_dimensions[3].height = 30
         for c_idx, h_text in enumerate(headers_sett, start=2):
             cell = ws.cell(row=3, column=c_idx, value=h_text)
             cell.font = font_header
@@ -5968,14 +5982,29 @@ elif sezione_app == "Programma Lavori Settimanale":
             if isinstance(h_text, datetime.date):
                 cell.number_format = 'yyyy-mm-dd'
                 
+        # Inserimento righe lavorazioni
         start_row_sett = 4
         current_row = start_row_sett
         
         for idx, row in edited_df_sett.iterrows():
-            ws.cell(row=current_row, column=2, value=row.get("DESCRIZIONE LAVORI", "")).font = font_body
-            ws.cell(row=current_row, column=3, value=row.get("Area Intervento", "")).font = font_body
-            ws.cell(row=current_row, column=4, value=row.get("Impresa", "")).font = font_body
+            ws.row_dimensions[current_row].height = 22
             
+            c_desc = ws.cell(row=current_row, column=2, value=row.get("DESCRIZIONE LAVORI", ""))
+            c_desc.font = font_body
+            c_desc.alignment = Alignment(horizontal="left", vertical="center")
+            c_desc.border = border_all
+            
+            c_area = ws.cell(row=current_row, column=3, value=row.get("Area Intervento", ""))
+            c_area.font = font_body
+            c_area.alignment = Alignment(horizontal="left", vertical="center")
+            c_area.border = border_all
+            
+            c_imp = ws.cell(row=current_row, column=4, value=row.get("Impresa", ""))
+            c_imp.font = font_body
+            c_imp.alignment = Alignment(horizontal="center", vertical="center")
+            c_imp.border = border_all
+            
+            # Giorni (colonne 5 a 11)
             giorni_keys = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]
             for g_i, g_key in enumerate(giorni_keys):
                 val_g = row.get(g_key, "")
@@ -5984,61 +6013,80 @@ elif sezione_app == "Programma Lavori Settimanale":
                 cell_g.font = font_body
                 cell_g.border = border_all
                 
+            # Importo presunto
             imp_val = row.get("IMPORTO PRESUNTO NETTO", None)
-            cell_imp = ws.cell(row=current_row, column=12, value=imp_val if pd.notnull(imp_val) and imp_val != "" else "")
-            cell_imp.font = font_body
+            cell_importo = ws.cell(row=current_row, column=12, value=imp_val if pd.notnull(imp_val) and imp_val != "" else "")
+            cell_importo.font = font_body
+            cell_importo.alignment = Alignment(horizontal="right", vertical="center")
             if pd.notnull(imp_val) and imp_val != "":
-                cell_imp.number_format = '#,##0'
-            cell_imp.border = border_all
-            
-            for c_i in [2, 3, 4]:
-                ws.cell(row=current_row, column=c_i).border = border_all
+                cell_importo.number_format = '#,##0'
+            cell_importo.border = border_all
                 
             current_row += 1
             
-        pers_row = current_row + 2
-        mezzi_row = pers_row + 1
+        # Righe vuote intermedie (come nel modello originale)
+        current_row += 2 # Riga 7 e 8 vuote
         
+        # Personale Stimato
+        pers_row = current_row
+        ws.row_dimensions[pers_row].height = 20
         ws.cell(row=pers_row, column=2, value="PERSONALE STIMATO").font = font_footer
+        ws.cell(row=pers_row, column=2).alignment = Alignment(horizontal="left", vertical="center")
+        for c_i in range(2, 5):
+            ws.cell(row=pers_row, column=c_i).border = border_all
+            
         pers_valori = [pers_lun, pers_mar, pers_mer, pers_gio, pers_ven, pers_sab, pers_dom]
         for p_i, p_val in enumerate(pers_valori):
-            ws.cell(row=pers_row, column=5 + p_i, value=p_val).alignment = Alignment(horizontal="center", vertical="center")
-            ws.cell(row=pers_row, column=5 + p_i).font = font_body
-            ws.cell(row=pers_row, column=5 + p_i).border = border_all
+            cell_p = ws.cell(row=pers_row, column=5 + p_i, value=p_val)
+            cell_p.alignment = Alignment(horizontal="center", vertical="center")
+            cell_p.font = font_body
+            cell_p.border = border_all
+        ws.cell(row=pers_row, column=12).border = border_all
             
+        # Mezzi Stimati
+        mezzi_row = pers_row + 1
+        ws.row_dimensions[mezzi_row].height = 20
         ws.cell(row=mezzi_row, column=2, value="MEZZI STIMATI").font = font_footer
+        ws.cell(row=mezzi_row, column=2).alignment = Alignment(horizontal="left", vertical="center")
+        for c_i in range(2, 5):
+            ws.cell(row=mezzi_row, column=c_i).border = border_all
+            
         mezzi_valori = [mez_lun, mez_mar, mez_mer, mez_gio, mez_ven, mez_sab, mez_dom]
         for m_i, m_val in enumerate(mezzi_valori):
-            ws.cell(row=mezzi_row, column=5 + m_i, value=m_val).alignment = Alignment(horizontal="center", vertical="center")
-            ws.cell(row=mezzi_row, column=5 + m_i).font = font_body
-            ws.cell(row=mezzi_row, column=5 + m_i).border = border_all
+            cell_m = ws.cell(row=mezzi_row, column=5 + m_i, value=m_val)
+            cell_m.alignment = Alignment(horizontal="center", vertical="center")
+            cell_m.font = font_body
+            cell_m.border = border_all
+        ws.cell(row=mezzi_row, column=12).border = border_all
             
-        for r_f in [pers_row, mezzi_row]:
-            for c_f in range(2, 5):
-                ws.cell(row=r_f, column=c_f).border = border_all
-            ws.cell(row=r_f, column=12).border = border_all
-            
-        tot_row = mezzi_row + 2
-        ws.cell(row=tot_row, column=11, value="TOTALE").font = font_footer
+        # Riga Totale
+        tot_row = mezzi_row + 3
+        ws.row_dimensions[tot_row].height = 22
+        cell_t_label = ws.cell(row=tot_row, column=11, value="TOTALE")
+        cell_t_label.font = font_footer
+        cell_t_label.alignment = Alignment(horizontal="right", vertical="center")
+        
         cell_tot_sett = ws.cell(row=tot_row, column=12)
-        cell_tot_sett.value = f"=SUM(L{start_row_sett}:L{current_row-1})"
+        cell_tot_sett.value = f"=SUM(L{start_row_sett}:L{current_row-3})"
         cell_tot_sett.font = font_footer
+        cell_tot_sett.alignment = Alignment(horizontal="right", vertical="center")
         cell_tot_sett.number_format = '#,##0'
         cell_tot_sett.border = border_all
         
-        ws.column_dimensions['A'].width = 4
-        ws.column_dimensions['B'].width = 25
-        ws.column_dimensions['C'].width = 32
-        ws.column_dimensions['D'].width = 15
+        # Larghezze colonne ottimizzate
+        ws.column_dimensions['A'].width = 3
+        ws.column_dimensions['B'].width = 32
+        ws.column_dimensions['C'].width = 35
+        ws.column_dimensions['D'].width = 16
         for col_idx in range(5, 12):
-            ws.column_dimensions[get_column_letter(col_idx)].width = 14
-        ws.column_dimensions['L'].width = 28
+            ws.column_dimensions[get_column_letter(col_idx)].width = 12
+        ws.column_dimensions['L'].width = 30
         
         output = BytesIO()
         wb.save(output)
         output.seek(0)
         
-        st.success("File Excel Programma Settimanale generato con successo!")
+        st.success("File Excel Programma Settimanale formattato professionalmente generato con successo!")
         st.download_button(
             label="📥 Scarica Programma Settimanale Excel",
             data=output,
