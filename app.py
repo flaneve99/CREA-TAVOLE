@@ -235,6 +235,7 @@ if sezione_app == "Gestione Tavole & Abaco":
         "Tavola 23 - Chiusura delle corsie di destra e centrale su carreggiata a tre corsie priva di corsia di emergenza (Unificata)",
         "Tavola 24 - Chiusura delle corsie di sorpasso e centrale su carreggiata a tre corsie priva di corsia di emergenza e spartitraffico ridotto (Unificata)",
         "Tavola 25 - Deviazione con una sola corsia per senso di marcia su carreggiata a due corsie",
+        "Tavola 26 - Deviazione con due corsie per la corrente di traffico non deviata su carreggiata a due corsie",
         "Tavola 37 - Restringimento della carreggiata su rampa a senso unico",
         "Tavola 39 - Cantiere mobile carreggiata a due corsie",
         "Tavola 40 - Cantiere mobile su carreggiata a due corsie chiusura della corsia di sorpasso",
