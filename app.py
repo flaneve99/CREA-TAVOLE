@@ -5656,23 +5656,22 @@ elif sezione_app == "Programma Lavori Mensile":
         importo_col_idx = last_calendar_col_idx + 1
         importo_col_letter = get_column_letter(importo_col_idx)
 
-        # 1. Titolo principale in B2 (ingrandito)
-        ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=last_calendar_col_idx)
+        # 1. Titolo principale in B2 (unito solo fino al penultimo giorno per lasciare spazio all'anno)
+        col_fine_titolo = last_calendar_col_idx - 3
+        ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=col_fine_titolo)
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
         ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
-        # 2. Anno ingrandito e unito su 3-4 celle sulla destra
-        anno_start_col = max(5, importo_col_idx - 3)
+        # 2. Anno posizionato e unito nelle ultime 3-4 colonne a destra (senza sovrapposizioni)
+        anno_start_col = col_fine_titolo + 1
         anno_end_col = importo_col_idx
         
-        # IMPORTANTE: Impostare il valore e lo stile PRIMA di unire le celle
         cell_anno = ws.cell(row=2, column=anno_start_col)
         cell_anno.value = selected_year
         cell_anno.font = font_year
         cell_anno.alignment = Alignment(horizontal="right", vertical="center")
         
-        # Ora uniamo le celle
         ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
 
         # 3. Sottotitolo in B3 unito
