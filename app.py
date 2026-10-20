@@ -5641,14 +5641,13 @@ elif sezione_app == "Programma Lavori Mensile":
         font_header = Font(name="Franklin Gothic Book", size=9, bold=True, color="FFFFFF")
         font_body = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_footer = Font(name="Franklin Gothic Book", size=11, bold=True)
+        font_total = Font(name="Franklin Gothic Book", size=11, bold=True)
 
         fill_header_dark = PatternFill(start_color="595959", end_color="595959", fill_type="solid")
-        fill_weekend = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid") # Grigio weekend più scuro
+        fill_weekend = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
         
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
-        
-        # Sottolineatura continua (solo bordo inferiore)
         border_underline = Border(bottom=Side(style='thin', color='000000'))
 
         # Altezze righe
@@ -5665,7 +5664,7 @@ elif sezione_app == "Programma Lavori Mensile":
         importo_col_idx = last_calendar_col_idx + 1
         importo_col_letter = get_column_letter(importo_col_idx)
 
-        # 1. Titolo principale in B2 (con sola sottolineatura continua)
+        # 1. Titolo principale in B2 (sottolineatura continua)
         col_fine_titolo = max(5, last_calendar_col_idx - 4)
         ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=col_fine_titolo)
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
@@ -5675,7 +5674,7 @@ elif sezione_app == "Programma Lavori Mensile":
         for c_idx in range(2, col_fine_titolo + 1):
             ws.cell(row=2, column=c_idx).border = border_underline
 
-        # 2. Anno in alto a destra (con sola sottolineatura continua)
+        # 2. Anno in alto a destra
         anno_start_col = col_fine_titolo + 1
         anno_end_col = importo_col_idx
         
@@ -5803,7 +5802,7 @@ elif sezione_app == "Programma Lavori Mensile":
                 if c_idx in weekend_cols:
                     cell_cal.fill = fill_weekend
 
-        # 9. Righe finali Personale e Mezzi Stimati (i weekend continuano fino a qui)
+        # 9. Righe finali Personale e Mezzi Stimati
         pers_row = start_row + len(edited_df)
         mezzi_row = pers_row + 1
 
@@ -5825,6 +5824,15 @@ elif sezione_app == "Programma Lavori Mensile":
                 if c_idx in weekend_cols:
                     cell_f.fill = fill_weekend
 
+        # 10. Cella Totale Importo Presunto Netto (due righe sotto i Mezzi Stimati)
+        total_row = mezzi_row + 2
+        ws.row_dimensions[total_row].height = 22.0
+        cell_total = ws.cell(row=total_row, column=importo_col_idx)
+        cell_total.value = f"=SUM({importo_col_letter}{start_row}:{importo_col_letter}{start_row + len(edited_df) - 1})"
+        cell_total.font = font_total
+        cell_total.alignment = Alignment(horizontal="center", vertical="center")
+        cell_total.border = border_all
+
         # Larghezze colonne ottimizzate
         ws.column_dimensions['B'].width = 27.78
         ws.column_dimensions['C'].width = 19.44
@@ -5839,7 +5847,7 @@ elif sezione_app == "Programma Lavori Mensile":
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato con sottolineatura continua e colonne weekend estese fino ai Mezzi Stimati!")
+        st.success("File Excel generato con successo con la cella del totale Importo Presunto Netto inserita!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
