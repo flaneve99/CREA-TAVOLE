@@ -5599,7 +5599,7 @@ elif sezione_app == "Programma Lavori Mensile":
     col1, col2 = st.columns(2)
     with col1:
         selected_month_num = st.selectbox(
-            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=3
+            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=0
         )
     with col2:
         selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2027)
@@ -5625,12 +5625,12 @@ elif sezione_app == "Programma Lavori Mensile":
         ws = wb.active
         ws.title = mesi_dict[selected_month_num]
 
-        # Mostra le griglie del foglio Excel
-        ws.views.sheetView[0].showGridLines = True
+        # Disattiva le griglie di sfondo predefinite di Excel per un aspetto pulito identico all'originale
+        ws.views.sheetView[0].showGridLines = False
 
         # Font e stili fedeli al modello originale
-        font_title = Font(name="Franklin Gothic Medium", size=36, bold=False)
-        font_subtitle = Font(name="Franklin Gothic Book", size=16, bold=True)
+        font_title = Font(name="Franklin Gothic Medium", size=26, bold=False)
+        font_subtitle = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_month = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_header = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_body = Font(name="Franklin Gothic Book", size=9, bold=True)
@@ -5643,12 +5643,14 @@ elif sezione_app == "Programma Lavori Mensile":
         # Intestazioni principali
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
+        ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
         ws['B3'] = "S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce.  Lotto 1 – Stralcio 2 "
         ws['B3'].font = font_subtitle
-        ws['B3'].alignment = Alignment(horizontal="center", vertical="center")
+        ws['B3'].alignment = Alignment(horizontal="left", vertical="center")
 
-        ws['E4'] = '=UPPER(TEXT(E5, "mmmm"))'
+        # Formula mese e anno in E4
+        ws['E4'] = f'=UPPER(TEXT(E5, "mmmm")) & " " & {selected_year}'
         ws['E4'].font = font_month
         ws['E4'].alignment = Alignment(horizontal="center", vertical="center")
 
@@ -5735,7 +5737,7 @@ elif sezione_app == "Programma Lavori Mensile":
             ws[f'B{r_fin}'].font = font_footer
             ws[f'B{r_fin}'].alignment = Alignment(horizontal="center", vertical="center")
             
-            # Applica bordi e font a tutta la riga finale (colonne B fino all'ultima colonna del calendario)
+            # Applica bordi e font a tutta la riga finale
             for c_idx in range(1, 5 + num_days + 1):
                 col_let = get_column_letter(c_idx)
                 cell_f = ws[f'{col_let}{r_fin}']
@@ -5756,7 +5758,7 @@ elif sezione_app == "Programma Lavori Mensile":
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato da zero con formattazione e bordi completi!")
+        st.success("File Excel generato da zero con anno visibile, griglie pulite e simmetria perfetta!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
