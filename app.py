@@ -5588,7 +5588,7 @@ if sezione_app == "Gestione Tavole & Abaco":
 # ====================================================================
 elif sezione_app == "Programma Lavori Mensile":
     st.title("📅 Programma Lavori Mensile")
-    st.caption("Compila le lavorazioni e genera il file Excel formattato con le nuove specifiche grafiche.")
+    st.caption("Compila le lavorazioni e genera il file Excel formattato con i testi ingranditi e formattati.")
 
     mesi_dict = {
         1: "GENNAIO", 2: "FEBBRAIO", 3: "MARZO", 4: "APRILE",
@@ -5628,10 +5628,10 @@ elif sezione_app == "Programma Lavori Mensile":
         # Griglie disattivate sullo sfondo per pulizia visiva identica all'originale
         ws.views.sheetView[0].showGridLines = False
 
-        # Font e stili aggiornati
-        font_title = Font(name="Franklin Gothic Medium", size=32, bold=False)
-        font_year = Font(name="Franklin Gothic Medium", size=26, bold=True)
-        font_subtitle = Font(name="Franklin Gothic Book", size=11, bold=True)
+        # Font e stili aggiornati alle nuove richieste
+        font_title = Font(name="Franklin Gothic Medium", size=48, bold=False)
+        font_year = Font(name="Franklin Gothic Medium", size=48, bold=True)
+        font_subtitle = Font(name="Franklin Gothic Book", size=14, bold=True)
         font_month = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_header = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_body = Font(name="Franklin Gothic Book", size=9, bold=True)
@@ -5642,11 +5642,11 @@ elif sezione_app == "Programma Lavori Mensile":
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
 
-        # Altezze righe come da originale
+        # Altezze righe adattate per i testi grandi in alto
         ws.row_dimensions[1].height = 4.9
-        ws.row_dimensions[2].height = 60.0
-        ws.row_dimensions[3].height = 39.0
-        ws.row_dimensions[4].height = 19.9
+        ws.row_dimensions[2].height = 65.0
+        ws.row_dimensions[3].height = 45.0
+        ws.row_dimensions[4].height = 22.0
         ws.row_dimensions[5].height = 19.9
         ws.row_dimensions[6].height = 27.75
 
@@ -5656,14 +5656,14 @@ elif sezione_app == "Programma Lavori Mensile":
         importo_col_idx = last_calendar_col_idx + 1
         importo_col_letter = get_column_letter(importo_col_idx)
 
-        # 1. Titolo principale in B2 (unito solo fino al penultimo giorno per lasciare spazio all'anno)
-        col_fine_titolo = last_calendar_col_idx - 3
+        # 1. Titolo principale in B2 (dimensione 48)
+        col_fine_titolo = max(5, last_calendar_col_idx - 4)
         ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=col_fine_titolo)
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
         ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
-        # 2. Anno posizionato e unito nelle ultime 3-4 colonne a destra (senza sovrapposizioni)
+        # 2. Anno in alto a destra (dimensione 48, unito)
         anno_start_col = col_fine_titolo + 1
         anno_end_col = importo_col_idx
         
@@ -5674,7 +5674,7 @@ elif sezione_app == "Programma Lavori Mensile":
         
         ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
 
-        # 3. Sottotitolo in B3 unito
+        # 3. Sottotitolo in B3 (dimensione 14, unito e centrato)
         ws.merge_cells(start_row=3, start_column=2, end_row=3, end_column=importo_col_idx)
         ws['B3'] = "S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce.  Lotto 1 – Stralcio 2 "
         ws['B3'].font = font_subtitle
@@ -5807,7 +5807,7 @@ elif sezione_app == "Programma Lavori Mensile":
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato con titolo grande, anno unito e celle delle date scure!")
+        st.success("File Excel generato con successo con i testi a dimensione 48 e sottotitolo a dimensione 14!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
