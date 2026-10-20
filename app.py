@@ -224,6 +224,7 @@ if sezione_app == "Gestione Tavole & Abaco":
     # ==================================================
     # Sostituisci il vecchio blocco selectbox con questo:
         tavola_selezionata = st.sidebar.selectbox("Tavola di cantiere", [
+        "Tavola 15 - Chiusura della corsia per la sosta di emergenza",
         "Tavola 16 - Chiusura della corsia di marcia su carreggiata a due corsie",
         "Tavola 17 - Chiusura della corsia di sorpasso su carreggiata a due corsie",
         "Tavola 18 - Chiusura della corsia di destra su carreggiata a tre corsie",
