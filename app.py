@@ -3875,8 +3875,8 @@ if sezione_app == "Gestione Tavole & Abaco":
                     BORDO = 2
                     
                     etichette_15 = [
-                        (int(width_15 * 0.58), int(height_15 * 0.950), f"KM {km_15_lavori}"),
-                        (int(width_15 * 0.58), int(height_15 * 0.730), f"KM {km_15_passaggio}"),
+                        (int(width_15 * 0.655), int(height_15 * 0.920), f"KM {km_15_lavori}"),
+                        (int(width_15 * 0.655), int(height_15 * 0.743), f"KM {km_15_passaggio}"),
                     ]
                     for x, y, testo in etichette_15:
                         draw_15.text(
@@ -3889,7 +3889,7 @@ if sezione_app == "Gestione Tavole & Abaco":
                         )
                         
                     draw_15.multiline_text(
-                        (int(width_15 * 0.65), int(height_15 * 0.150)),
+                        (int(width_15 * 0.015), int(height_15 * 0.050)),
                         ubicazione_testo_15,
                         fill=(255, 0, 0),
                         font=font_ub_15,
