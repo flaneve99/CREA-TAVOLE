@@ -202,6 +202,16 @@ def load_custom_font(size):
     return ImageFont.load_default(size=size)
   except TypeError:
     return ImageFont.load_default()
+# =============================================================
+# CONTENUTO PRINCIPALE DELL'APP
+# =============================================================
+
+if sezione_app == "Gestione Tavole & Abaco":
+    
+    # ---------------------------------------------------------
+    # QUI LASCIA TUTTO IL TUO CODICE ESISTENTE SULLE TAVOLE/ABACO
+    # (Indentalo semplicemente dentro questo "if")
+    # ---------------------------------------------------------
 # ==================================================
 # SELEZIONE DELLA TAVOLA
 # ==================================================
