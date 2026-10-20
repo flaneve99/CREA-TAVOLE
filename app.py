@@ -1837,8 +1837,8 @@ if sezione_app == "Gestione Tavole & Abaco":
                             # Lato Destro Parte Bassa
                             (int(width_26b * 0.695), int(height_26b * 0.953), f"KM {km_26_bassa_lavori}"),
                             (int(width_26b * 0.695), int(height_26b * 0.9120), f"KM {km_26_bassa_lim110}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.8750), f"KM {km_26_bassa_lim90}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.8260), f"KM {km_26_bassa_restr1}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.86650), f"KM {km_26_bassa_lim90}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.8360), f"KM {km_26_bassa_restr1}"),
                             (int(width_26b * 0.695), int(height_26b * 0.785), f"KM {km_26_bassa_lim60}"),
                             (int(width_26b * 0.695), int(height_26b * 0.730), f"KM {km_26_bassa_restr2}"),
                             (int(width_26b * 0.60), int(height_26b * 0.680), f"KM {km_26_bassa_testata1}"),
