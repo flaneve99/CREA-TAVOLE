@@ -5877,6 +5877,9 @@ elif sezione_app == "Programma Lavori Mensile":
 # =============================================================
 # SEZIONE 3: PROGRAMMA LAVORI SETTIMANALE
 # =============================================================
+# =============================================================
+# SEZIONE 3: PROGRAMMA LAVORI SETTIMANALE
+# =============================================================
 elif sezione_app == "Programma Lavori Settimanale":
     st.title("📅 Programma Lavori Settimanale")
     st.caption("Configura il programma settimanale di cantiere con le spunte giornaliere e genera l'Excel conforme al modello.")
@@ -5887,7 +5890,7 @@ elif sezione_app == "Programma Lavori Settimanale":
     with col_d2:
         data_fine_settimana = st.date_input("Data Fine Settimana (Domenica)", value=datetime.date(2026, 10, 18))
         
-     intestazione_appalto = st.text_area(
+    intestazione_appalto = st.text_area(
         "Intestazione / Descrizione Appalto (Cella C1 del file):",
         value="S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce. \nLotto 1 – Stralcio 6 - Cod. SIL: AANOBA00234."
     )
@@ -5938,15 +5941,12 @@ elif sezione_app == "Programma Lavori Settimanale":
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
         
-        # Riga 1: Appalto / VALORI S.C.A.R.L.
         ws.cell(row=1, column=2, value="VALORI S.C.A.R.L.").font = font_title_appalto
         ws.cell(row=1, column=3, value=intestazione_appalto).font = font_title_appalto
         
-        # Riga 2: Periodo settimana
         str_periodo = f"Programma Lavori Settimanale - dal {data_inizio_settimana.strftime('%d/%m/%Y')} al {data_fine_settimana.strftime('%d/%m/%Y')}"
         ws.cell(row=2, column=3, value=str_periodo).font = font_subtitle_week
         
-        # Riga 3: Intestazioni colonne
         headers_sett = [
             "DESCRIZIONE LAVORI", "Area Intervento", "Impresa",
             data_inizio_settimana,
@@ -5968,7 +5968,6 @@ elif sezione_app == "Programma Lavori Settimanale":
             if isinstance(h_text, datetime.date):
                 cell.number_format = 'yyyy-mm-dd'
                 
-        # Inserimento righe lavorazioni
         start_row_sett = 4
         current_row = start_row_sett
         
@@ -5977,7 +5976,6 @@ elif sezione_app == "Programma Lavori Settimanale":
             ws.cell(row=current_row, column=3, value=row.get("Area Intervento", "")).font = font_body
             ws.cell(row=current_row, column=4, value=row.get("Impresa", "")).font = font_body
             
-            # Giorni (colonne 5 a 11)
             giorni_keys = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]
             for g_i, g_key in enumerate(giorni_keys):
                 val_g = row.get(g_key, "")
@@ -5986,7 +5984,6 @@ elif sezione_app == "Programma Lavori Settimanale":
                 cell_g.font = font_body
                 cell_g.border = border_all
                 
-            # Importo presunto
             imp_val = row.get("IMPORTO PRESUNTO NETTO", None)
             cell_imp = ws.cell(row=current_row, column=12, value=imp_val if pd.notnull(imp_val) and imp_val != "" else "")
             cell_imp.font = font_body
@@ -5999,7 +5996,6 @@ elif sezione_app == "Programma Lavori Settimanale":
                 
             current_row += 1
             
-        # Righe vuote di spaziatura se necessarie o direttamente Personale e Mezzi
         pers_row = current_row + 2
         mezzi_row = pers_row + 1
         
@@ -6022,7 +6018,6 @@ elif sezione_app == "Programma Lavori Settimanale":
                 ws.cell(row=r_f, column=c_f).border = border_all
             ws.cell(row=r_f, column=12).border = border_all
             
-        # Riga Totale
         tot_row = mezzi_row + 2
         ws.cell(row=tot_row, column=11, value="TOTALE").font = font_footer
         cell_tot_sett = ws.cell(row=tot_row, column=12)
@@ -6031,7 +6026,6 @@ elif sezione_app == "Programma Lavori Settimanale":
         cell_tot_sett.number_format = '#,##0'
         cell_tot_sett.border = border_all
         
-        # Larghezze colonne
         ws.column_dimensions['A'].width = 4
         ws.column_dimensions['B'].width = 25
         ws.column_dimensions['C'].width = 32
