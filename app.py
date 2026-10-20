@@ -5662,14 +5662,18 @@ elif sezione_app == "Programma Lavori Mensile":
         ws['B2'].font = font_title
         ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
-        # 2. Anno ingrandito e unito su 3-4 celle sulla destra (es. ultime 4 colonne)
+        # 2. Anno ingrandito e unito su 3-4 celle sulla destra
         anno_start_col = max(5, importo_col_idx - 3)
         anno_end_col = importo_col_idx
-        ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
+        
+        # IMPORTANTE: Impostare il valore e lo stile PRIMA di unire le celle
         cell_anno = ws.cell(row=2, column=anno_start_col)
         cell_anno.value = selected_year
         cell_anno.font = font_year
         cell_anno.alignment = Alignment(horizontal="right", vertical="center")
+        
+        # Ora uniamo le celle
+        ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
 
         # 3. Sottotitolo in B3 unito
         ws.merge_cells(start_row=3, start_column=2, end_row=3, end_column=importo_col_idx)
