@@ -30,15 +30,18 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
 
-    .stApp { background-color: #F8FAFC; }
-    
-    /* Sidebar Custom */
-    [data-testid="stSidebar"] {
-        background-color: #0F172A;
-        border-right: 1px solid #1E293B;
+    /* Sfondo Principale Scuro */
+    .stApp { 
+        background-color: #0B0F19 !important; 
+        color: #F8FAFC !important;
     }
     
-    /* Titoli ed etichette nella sidebar */
+    /* Sidebar Custom Scura */
+    [data-testid="stSidebar"] {
+        background-color: #111827 !important;
+        border-right: 1px style solid #1F2937 !important;
+    }
+    
     [data-testid="stSidebar"] h1, 
     [data-testid="stSidebar"] h2, 
     [data-testid="stSidebar"] h3, 
@@ -48,21 +51,28 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"] .stSelectbox label {
-        color: #94A3B8 !important;
+        color: #9CA3AF !important;
         font-weight: 500;
     }
 
-    /* FIX SELECTBOX: Testo ben visibile ed etichette leggibili */
+    /* Selectbox nella sidebar: Sfondo scuro e testo chiaro leggibile */
+    [data-testid="stSidebar"] div[data-baseweb="select"] > div {
+        background-color: #1F2937 !important;
+        color: #F8FAFC !important;
+        border-color: #374151 !important;
+    }
     [data-testid="stSidebar"] div[data-baseweb="select"] * {
-        color: #0F172A !important;
-        background-color: #FFFFFF !important;
+        color: #F8FAFC !important;
     }
 
+    /* Hero Banner Stile Dark Mode */
     .app-hero {
-        padding: 2rem; margin-bottom: 2rem;
-        background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-        border-radius: 16px; color: #FFFFFF;
-        box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.2);
+        padding: 2rem; 
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+        border-radius: 16px; 
+        color: #FFFFFF;
+        box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
     }
     .app-hero h1 { 
         color: #FFFFFF !important; 
@@ -77,6 +87,19 @@ st.markdown("""
         opacity: 0.95;
     }
 
+    /* Titoli generali della pagina principale */
+    h1, h2, h3, h4 { 
+        color: #F8FAFC !important; 
+        font-weight: 600 !important; 
+    }
+
+    /* Etichette dei campi di input e testo */
+    .stTextInput label, .stTextArea label, .stSelectbox label {
+        color: #E2E8F0 !important;
+        font-weight: 500;
+    }
+
+    /* Pulsanti Principali */
     div.stButton > button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -85,13 +108,14 @@ st.markdown("""
         border: none !important;
         padding: 0.6rem 1.2rem !important;
         transition: all 0.2s ease-in-out !important;
-        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2) !important;
+        box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3) !important;
     }
     div.stButton > button:hover {
         background-color: #1D4ED8 !important;
         transform: translateY(-1px);
     }
 
+    /* Pulsanti di Download */
     div.stDownloadButton > button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -99,14 +123,12 @@ st.markdown("""
         color: #FFFFFF !important;
         border: none !important;
         padding: 0.6rem 1.2rem !important;
-        box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2) !important;
+        box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.3) !important;
     }
     div.stDownloadButton > button:hover {
         background-color: #047857 !important;
         transform: translateY(-1px);
     }
-
-    h2, h3, h4 { color: #0F172A !important; font-weight: 600 !important; }
 </style>
 """, unsafe_allow_html=True)
 
