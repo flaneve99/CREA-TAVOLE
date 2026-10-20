@@ -5588,7 +5588,7 @@ if sezione_app == "Gestione Tavole & Abaco":
 # ====================================================================
 elif sezione_app == "Programma Lavori Mensile":
     st.title("📅 Programma Lavori Mensile")
-    st.caption("Compila le lavorazioni e genera il file Excel formattato identico al modello originale.")
+    st.caption("Compila le lavorazioni e genera il file Excel formattato con le nuove specifiche grafiche.")
 
     mesi_dict = {
         1: "GENNAIO", 2: "FEBBRAIO", 3: "MARZO", 4: "APRILE",
@@ -5599,10 +5599,10 @@ elif sezione_app == "Programma Lavori Mensile":
     col1, col2 = st.columns(2)
     with col1:
         selected_month_num = st.selectbox(
-            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=9
+            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=10
         )
     with col2:
-        selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2026)
+        selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2030)
 
     st.markdown("### 📝 Inserisci le Lavorazioni")
     st.info("Puoi aggiungere, modificare o eliminare le righe delle lavorazioni secondo le tue esigenze.")
@@ -5628,16 +5628,17 @@ elif sezione_app == "Programma Lavori Mensile":
         # Griglie disattivate sullo sfondo per pulizia visiva identica all'originale
         ws.views.sheetView[0].showGridLines = False
 
-        # Font e stili identici al modello originale
-        font_title = Font(name="Franklin Gothic Medium", size=26, bold=False)
-        font_year = Font(name="Franklin Gothic Medium", size=22, bold=True)
+        # Font e stili aggiornati
+        font_title = Font(name="Franklin Gothic Medium", size=32, bold=False)
+        font_year = Font(name="Franklin Gothic Medium", size=26, bold=True)
         font_subtitle = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_month = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_header = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_body = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_footer = Font(name="Franklin Gothic Book", size=11, bold=True)
 
-        fill_header = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
+        fill_header_light = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid") # Grigio chiaro per Lu, Ma, Me
+        fill_header_dark = PatternFill(start_color="BFBFBF", end_color="BFBFBF", fill_type="solid")  # Grigio più scuro per le date
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
 
@@ -5649,20 +5650,23 @@ elif sezione_app == "Programma Lavori Mensile":
         ws.row_dimensions[5].height = 19.9
         ws.row_dimensions[6].height = 27.75
 
-      # Calcolo giorni del mese selezionato
+        # Calcolo giorni del mese selezionato
         num_days = calendar.monthrange(selected_year, selected_month_num)[1]
         last_calendar_col_idx = 4 + num_days
         importo_col_idx = last_calendar_col_idx + 1
         importo_col_letter = get_column_letter(importo_col_idx)
 
-        # 1. Titolo principale in B2 (unito fino al calendario)
+        # 1. Titolo principale in B2 (ingrandito)
         ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=last_calendar_col_idx)
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
         ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
-        # 2. Anno posizionato nella colonna dell'importo presunto (evitando conflitti di merge)
-        cell_anno = ws.cell(row=2, column=importo_col_idx)
+        # 2. Anno ingrandito e unito su 3-4 celle sulla destra (es. ultime 4 colonne)
+        anno_start_col = max(5, importo_col_idx - 3)
+        anno_end_col = importo_col_idx
+        ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
+        cell_anno = ws.cell(row=2, column=anno_start_col)
         cell_anno.value = selected_year
         cell_anno.font = font_year
         cell_anno.alignment = Alignment(horizontal="right", vertical="center")
@@ -5673,36 +5677,35 @@ elif sezione_app == "Programma Lavori Mensile":
         ws['B3'].font = font_subtitle
         ws['B3'].alignment = Alignment(horizontal="center", vertical="center")
 
-        # 4. Mese centrato sopra il blocco dei giorni (in E4)
+        # 4. Mese centrato in E4 sopra il blocco giorni
         ws.merge_cells(start_row=4, start_column=5, end_row=4, end_column=last_calendar_col_idx)
         ws['E4'] = mesi_dict[selected_month_num]
         ws['E4'].font = font_month
         ws['E4'].alignment = Alignment(horizontal="center", vertical="center")
 
-        # 4. Intestazioni principali con unione verticale (righe 5 e 6)
+        # 5. Intestazioni principali con unione verticale (righe 5 e 6)
         for col_let, col_idx, testo in [('B', 2, "DESCRIZIONE LAVORI"), ('C', 3, "AREA DI INTERVENTO"), ('D', 4, "IMPRESA")]:
             ws.merge_cells(start_row=5, start_column=col_idx, end_row=6, end_column=col_idx)
             cell = ws[f'{col_let}5']
             cell.value = testo
             cell.font = font_header
-            cell.fill = fill_header
+            cell.fill = fill_header_light
             cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-            # Applica bordi a entrambe le celle unite (5 e 6)
             ws[f'{col_let}5'].border = border_all
             ws[f'{col_let}6'].border = border_all
 
-        # 5. Primo giorno in E5 e giorno settimana in E6
+        # 6. Primo giorno in E5 (grigio scuro) e giorno settimana in E6 (grigio chiaro)
         first_date = datetime.date(selected_year, selected_month_num, 1)
         ws['E5'] = first_date
         ws['E5'].number_format = 'd'
         ws['E5'].font = font_header
-        ws['E5'].fill = fill_header
+        ws['E5'].fill = fill_header_dark   # Più scuro
         ws['E5'].alignment = Alignment(horizontal="center", vertical="center")
         ws['E5'].border = border_all
 
         ws['E6'] = '=CHOOSE(WEEKDAY(E5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do")'
         ws['E6'].font = font_header
-        ws['E6'].fill = fill_header
+        ws['E6'].fill = fill_header_light  # Più chiaro
         ws['E6'].alignment = Alignment(horizontal="center", vertical="center")
         ws['E6'].border = border_all
 
@@ -5715,28 +5718,28 @@ elif sezione_app == "Programma Lavori Mensile":
             cell_date.value = f'=IF(MONTH($E$5+{col_idx})=MONTH($E$5), {prev_col_letter}5+1, "")'
             cell_date.number_format = 'd'
             cell_date.font = font_header
-            cell_date.fill = fill_header
+            cell_date.fill = fill_header_dark   # Più scuro
             cell_date.alignment = Alignment(horizontal="center", vertical="center")
             cell_date.border = border_all
 
             cell_wd = ws[f'{col_letter}6']
             cell_wd.value = f'=IF({col_letter}5<>"", CHOOSE(WEEKDAY({col_letter}5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do"), "")'
             cell_wd.font = font_header
-            cell_wd.fill = fill_header
+            cell_wd.fill = fill_header_light  # Più chiaro
             cell_wd.alignment = Alignment(horizontal="center", vertical="center")
             cell_wd.border = border_all
 
-        # 6. Colonna Importo Presunto Netto con unione verticale (righe 5 e 6)
+        # 7. Colonna Importo Presunto Netto con unione verticale (righe 5 e 6)
         ws.merge_cells(start_row=5, start_column=importo_col_idx, end_row=6, end_column=importo_col_idx)
         cell_imp_header = ws.cell(row=5, column=importo_col_idx)
         cell_imp_header.value = "IMPORTO PRESUNTO\nNETTO"
         cell_imp_header.font = font_header
-        cell_imp_header.fill = fill_header
+        cell_imp_header.fill = fill_header_light
         cell_imp_header.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         ws.cell(row=5, column=importo_col_idx).border = border_all
         ws.cell(row=6, column=importo_col_idx).border = border_all
 
-        # 7. Inserimento righe lavorazioni dinamiche
+        # 8. Inserimento righe lavorazioni dinamiche
         start_row = 7
         row_heights_default = [48.0, 47.25, 47.25, 48.75, 48.75, 48.75, 48.75]
 
@@ -5769,7 +5772,7 @@ elif sezione_app == "Programma Lavori Mensile":
                 cell_cal.font = font_body
                 cell_cal.border = border_all
 
-        # 8. Righe finali Personale e Mezzi Stimati
+        # 9. Righe finali Personale e Mezzi Stimati
         pers_row = start_row + len(edited_df)
         mezzi_row = pers_row + 1
 
@@ -5801,7 +5804,7 @@ elif sezione_app == "Programma Lavori Mensile":
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato con celle unite verticalmente, anno laterale e mese centrato!")
+        st.success("File Excel generato con titolo grande, anno unito e celle delle date scure!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
