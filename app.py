@@ -5649,37 +5649,31 @@ elif sezione_app == "Programma Lavori Mensile":
         ws.row_dimensions[5].height = 19.9
         ws.row_dimensions[6].height = 27.75
 
-        # Calcolo giorni del mese selezionato
+      # Calcolo giorni del mese selezionato
         num_days = calendar.monthrange(selected_year, selected_month_num)[1]
         last_calendar_col_idx = 4 + num_days
         importo_col_idx = last_calendar_col_idx + 1
         importo_col_letter = get_column_letter(importo_col_idx)
 
-        # 1. Titolo principale in B2
+        # 1. Titolo principale in B2 (unito fino al calendario)
         ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=last_calendar_col_idx)
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
         ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
-        # Anno sulla destra (es. da colonna AB a AF o ultime colonne)
-        anno_start_col = importo_col_idx - 2 if importo_col_idx >= 7 else last_calendar_col_idx
-        anno_end_col = importo_col_idx
-        
-        # Assegniamo prima il valore alla cella in alto a sinistra, poi uniamo
-        cell_anno = ws.cell(row=2, column=anno_start_col)
+        # 2. Anno posizionato nella colonna dell'importo presunto (evitando conflitti di merge)
+        cell_anno = ws.cell(row=2, column=importo_col_idx)
         cell_anno.value = selected_year
         cell_anno.font = font_year
         cell_anno.alignment = Alignment(horizontal="right", vertical="center")
-        
-        ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
 
-        # 2. Sottotitolo in B3 unito
+        # 3. Sottotitolo in B3 unito
         ws.merge_cells(start_row=3, start_column=2, end_row=3, end_column=importo_col_idx)
         ws['B3'] = "S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce.  Lotto 1 – Stralcio 2 "
         ws['B3'].font = font_subtitle
         ws['B3'].alignment = Alignment(horizontal="center", vertical="center")
 
-        # 3. Mese centrato in E4 (o sopra il blocco giorni)
+        # 4. Mese centrato sopra il blocco dei giorni (in E4)
         ws.merge_cells(start_row=4, start_column=5, end_row=4, end_column=last_calendar_col_idx)
         ws['E4'] = mesi_dict[selected_month_num]
         ws['E4'].font = font_month
