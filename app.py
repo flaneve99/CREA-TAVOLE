@@ -154,7 +154,14 @@ st.markdown("""
 # Sidebar
 with st.sidebar:
     st.markdown("### 🛠️ Configurazione Cantiere")
-    st.caption("Seleziona la tavola di cantiere da elaborare:")
+    
+    # ➕ AGGIUNGI QUESTA SELEZIONE
+    sezione_app = st.radio(
+        "Seleziona Funzione:",
+        ["Gestione Tavole & Abaco", "Programma Lavori Mensile"]
+    )
+    
+    st.divider() # Riga divisoria per pulizia grafica
 # ==================================================
 # CARICAMENTO FONT COMPATIBILE CON STREAMLIT CLOUD
 # ==================================================
