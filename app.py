@@ -5877,6 +5877,9 @@ elif sezione_app == "Programma Lavori Mensile":
 # =============================================================
 # SEZIONE 3: PROGRAMMA LAVORI SETTIMANALE
 # =============================================================
+# =============================================================
+# SEZIONE 3: PROGRAMMA LAVORI SETTIMANALE
+# =============================================================
 elif sezione_app == "Programma Lavori Settimanale":
     st.title("📅 Programma Lavori Settimanale")
     st.caption("Configura il programma settimanale di cantiere e genera l'Excel conforme alle specifiche.")
@@ -5933,7 +5936,8 @@ elif sezione_app == "Programma Lavori Settimanale":
         wb = openpyxl.Workbook()
         ws = wb.active
         ws.title = "PROGRAMMA SS 16- L1S2"
-        ws.views.sheetView[0].showGridLines = True
+        # Nasconde la griglia di default di Excel all'esterno della tabella
+        ws.views.sheetView[0].showGridLines = False
         
         font_company = Font(name="Arial", size=10, bold=True)
         font_appalto = Font(name="Arial", size=11, bold=True)
@@ -5944,8 +5948,10 @@ elif sezione_app == "Programma Lavori Settimanale":
         
         fill_header = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
         fill_yellow = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
-        fill_green = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid") # Verde chiaro elegante
+        fill_green = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+        
         thin_side = Side(style='thin', color='000000')
+        thick_side = Side(style='medium', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
         
         # Unione celle B1:B2 e riempimento giallo (Datore di lavoro)
@@ -5957,7 +5963,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         for r in range(1, 3):
             ws.cell(row=r, column=2).border = border_all
             
-        # Unione celle C1:L1 (Intestazione Appalto: Dimensione 11, Grassetto, Giallo)
+        # Unione celle C1:L1 (Intestazione Appalto)
         ws.merge_cells("C1:L1")
         cell_c1 = ws.cell(row=1, column=3, value=intestazione_appalto)
         cell_c1.font = font_appalto
@@ -5977,28 +5983,38 @@ elif sezione_app == "Programma Lavori Settimanale":
             ws.cell(row=2, column=c).border = border_all
         ws.row_dimensions[2].height = 25
         
-        # Riga 3: Intestazioni colonne
-        headers_sett = [
-            "DESCRIZIONE LAVORI", "Area Intervento", "Impresa",
-            data_inizio_settimana,
-            data_inizio_settimana + datetime.timedelta(days=1),
-            data_inizio_settimana + datetime.timedelta(days=2),
-            data_inizio_settimana + datetime.timedelta(days=3),
-            data_inizio_settimana + datetime.timedelta(days=4),
-            data_inizio_settimana + datetime.timedelta(days=5),
-            data_inizio_settimana + datetime.timedelta(days=6),
-            "IMPORTO PRESUNTO NETTO (lavori+sic)"
-        ]
+        # Mappa giorni in italiano abbreviato
+        giorni_nomi = {0: "Lun", 1: "Mar", 2: "Mer", 3: "Gio", 4: "Ven", 5: "Sab", 6: "Dom"}
         
+        # Riga 3: Intestazioni colonne
+        headers_base = ["DESCRIZIONE LAVORI", "Area Intervento", "Impresa"]
         ws.row_dimensions[3].height = 30
-        for c_idx, h_text in enumerate(headers_sett, start=2):
+        
+        # Inserimento intestazioni fisse
+        for c_idx, h_text in enumerate(headers_base, start=2):
             cell = ws.cell(row=3, column=c_idx, value=h_text)
             cell.font = font_header
             cell.fill = fill_header
             cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
             cell.border = border_all
-            if isinstance(h_text, datetime.date):
-                cell.number_format = 'yyyy-mm-dd'
+            
+        # Intestazioni giorni con formato ". Lun 12/10"
+        for i in range(7):
+            current_d = data_inizio_settimana + datetime.timedelta(days=i)
+            nome_g = giorni_nomi[current_d.weekday()]
+            testo_giorno = f". {nome_g} {current_d.strftime('%d/%m')}"
+            cell_g = ws.cell(row=3, column=5 + i, value=testo_giorno)
+            cell_g.font = font_header
+            cell_g.fill = fill_header
+            cell_g.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            cell_g.border = border_all
+            
+        # Ultima intestazione (Importo)
+        cell_imp_h = ws.cell(row=3, column=12, value="IMPORTO PRESUNTO NETTO (lavori+sic)")
+        cell_imp_h.font = font_header
+        cell_imp_h.fill = fill_header
+        cell_imp_h.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        cell_imp_h.border = border_all
                 
         # Inserimento righe lavorazioni
         start_row_sett = 4
@@ -6031,7 +6047,7 @@ elif sezione_app == "Programma Lavori Settimanale":
                 cell_g.font = font_body
                 cell_g.border = border_all
                 
-            # Importo presunto (formattato in Euro, vuoto se non inserito)
+            # Importo presunto
             imp_val = row.get("IMPORTO PRESUNTO NETTO", None)
             cell_importo = ws.cell(row=current_row, column=12)
             if pd.notnull(imp_val) and imp_val != "":
@@ -6045,11 +6061,10 @@ elif sezione_app == "Programma Lavori Settimanale":
                 
             current_row += 1
             
-        # Subito dopo le lavorazioni inseriamo Personale e Mezzi Stimati (senza righe vuote)
         pers_row = current_row
         mezzi_row = pers_row + 1
         
-        # Personale Stimato (B9-C9-D9 unite e riempite di verde)
+        # Personale Stimato (B-C-D unite e verde)
         ws.row_dimensions[pers_row].height = 20
         ws.merge_cells(start_row=pers_row, start_column=2, end_row=pers_row, end_column=4)
         cell_p_label = ws.cell(row=pers_row, column=2, value="PERSONALE STIMATO")
@@ -6065,9 +6080,14 @@ elif sezione_app == "Programma Lavori Settimanale":
             cell_p.alignment = Alignment(horizontal="center", vertical="center")
             cell_p.font = font_body
             cell_p.border = border_all
-        ws.cell(row=pers_row, column=12).border = border_all
             
-        # Mezzi Stimati (B10-C10-D10 unite e riempite di verde)
+        # Cella K10 / L10 con bordatura spessa come richiesto
+        cell_k10 = ws.cell(row=pers_row, column=11)
+        cell_k10.border = Border(left=thin_side, right=thick_side, top=thin_side, bottom=thin_side)
+        cell_l10 = ws.cell(row=pers_row, column=12)
+        cell_l10.border = Border(left=thick_side, right=thick_side, top=thin_side, bottom=thin_side)
+            
+        # Mezzi Stimati (B-C-D unite e verde)
         ws.row_dimensions[mezzi_row].height = 20
         ws.merge_cells(start_row=mezzi_row, start_column=2, end_row=mezzi_row, end_column=4)
         cell_m_label = ws.cell(row=mezzi_row, column=2, value="MEZZI STIMATI")
@@ -6083,6 +6103,7 @@ elif sezione_app == "Programma Lavori Settimanale":
             cell_m.alignment = Alignment(horizontal="center", vertical="center")
             cell_m.font = font_body
             cell_m.border = border_all
+            
         ws.cell(row=mezzi_row, column=12).border = border_all
             
         # Riga Totale
@@ -6099,20 +6120,32 @@ elif sezione_app == "Programma Lavori Settimanale":
         cell_tot_sett.number_format = '€ #,##0.00'
         cell_tot_sett.border = border_all
         
+        # Applicazione della BORDATURA SPESSA al PERIMETRO ESTERNO della tabella (dalla riga 1 alla riga 10, colonne da B a L)
+        max_r_tabella = mezzi_row
+        for r_idx in range(1, max_r_tabella + 1):
+            for c_idx in range(2, 13):
+                cell = ws.cell(row=r_idx, column=c_idx)
+                # Mantieni i bordi interni ma applica lo spessore esterno
+                t_top = thick_side if r_idx == 1 else cell.border.top
+                t_bottom = thick_side if r_idx == max_r_tabella else cell.border.bottom
+                t_left = thick_side if c_idx == 2 else cell.border.left
+                t_right = thick_side if c_idx == 12 else cell.border.right
+                cell.border = Border(top=t_top, bottom=t_bottom, left=t_left, right=t_right)
+        
         # Larghezze colonne ottimizzate
         ws.column_dimensions['A'].width = 3
         ws.column_dimensions['B'].width = 22
         ws.column_dimensions['C'].width = 35
         ws.column_dimensions['D'].width = 16
         for col_idx in range(5, 12):
-            ws.column_dimensions[get_column_letter(col_idx)].width = 12
+            ws.column_dimensions[get_column_letter(col_idx)].width = 14
         ws.column_dimensions['L'].width = 32
         
         output = BytesIO()
         wb.save(output)
         output.seek(0)
         
-        st.success("File Excel Programma Settimanale generato con successo e perfettamente formattato!")
+        st.success("File Excel Programma Settimanale generato con successo e formattato come richiesto!")
         st.download_button(
             label="📥 Scarica Programma Settimanale Excel",
             data=output,
