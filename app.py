@@ -5588,7 +5588,7 @@ if sezione_app == "Gestione Tavole & Abaco":
 # ====================================================================
 elif sezione_app == "Programma Lavori Mensile":
     st.title("📅 Programma Lavori Mensile")
-    st.caption("Compila le lavorazioni e genera il file Excel formattato identico al modello originale.")
+    st.caption("Compila le lavorazioni e genera il file Excel formattato identico al modello aziendale.")
 
     mesi_dict = {
         1: "GENNAIO", 2: "FEBBRAIO", 3: "MARZO", 4: "APRILE",
@@ -5599,10 +5599,10 @@ elif sezione_app == "Programma Lavori Mensile":
     col1, col2 = st.columns(2)
     with col1:
         selected_month_num = st.selectbox(
-            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=9
+            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=3
         )
     with col2:
-        selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2026)
+        selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2027)
 
     st.markdown("### 📝 Inserisci le Lavorazioni")
     st.info("Puoi aggiungere, modificare o eliminare le righe delle lavorazioni secondo le tue esigenze.")
@@ -5625,10 +5625,10 @@ elif sezione_app == "Programma Lavori Mensile":
         ws = wb.active
         ws.title = mesi_dict[selected_month_num]
 
-        # Mostra griglia excel
+        # Mostra le griglie del foglio Excel
         ws.views.sheetView[0].showGridLines = True
 
-        # Stili e Font identici all'originale
+        # Font e stili fedeli al modello originale
         font_title = Font(name="Franklin Gothic Medium", size=36, bold=False)
         font_subtitle = Font(name="Franklin Gothic Book", size=16, bold=True)
         font_month = Font(name="Franklin Gothic Book", size=11, bold=True)
@@ -5640,7 +5640,7 @@ elif sezione_app == "Programma Lavori Mensile":
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
 
-        # Intestazioni fisse
+        # Intestazioni principali
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
 
@@ -5679,7 +5679,7 @@ elif sezione_app == "Programma Lavori Mensile":
             cell_date.alignment = Alignment(horizontal="center", vertical="center")
             cell_date.border = border_all
             
-            # Riga 6: Formula giorno settimana
+            # Riga 6: Giorno settimana
             cell_wd = ws[f'{col_letter}6']
             cell_wd.value = f'=CHOOSE(WEEKDAY({col_letter}5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do")'
             cell_wd.font = font_header
@@ -5695,49 +5695,54 @@ elif sezione_app == "Programma Lavori Mensile":
         ws[f'{last_col_letter}5'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         ws[f'{last_col_letter}5'].border = border_all
 
-        # Inserimento dinamico delle lavorazioni
+        # Inserimento righe lavorazioni dinamiche
         start_row = 7
         for idx, row in edited_df.iterrows():
             r = start_row + idx
-            c_desc = ws[f'B{r}']
-            c_area = ws[f'C{r}']
-            c_imp = ws[f'D{r}']
             
+            c_desc = ws[f'B{r}']
             c_desc.value = row.get("Descrizione Lavori", "")
             c_desc.font = font_body
             c_desc.alignment = Alignment(horizontal="left", vertical="center")
             c_desc.border = border_all
             
+            c_area = ws[f'C{r}']
             c_area.value = row.get("Area di Intervento", "")
             c_area.font = font_body
             c_area.alignment = Alignment(horizontal="center", vertical="center")
             c_area.border = border_all
             
+            c_imp = ws[f'D{r}']
             c_imp.value = row.get("Impresa", "TESORO SRL")
             c_imp.font = font_body
             c_imp.alignment = Alignment(horizontal="left", vertical="center")
             c_imp.border = border_all
 
-            # Bordi celle vuote calendario per la riga
+            # Applica bordi a tutte le celle del calendario per questa riga
             for col_idx in range(num_days + 1):
                 col_letter = get_column_letter(5 + col_idx)
-                ws[f'{col_letter}{r}'].border = border_all
+                cell_cal = ws[f'{col_letter}{r}']
+                cell_cal.font = font_body
+                cell_cal.border = border_all
 
         # Righe finali Personale e Mezzi Stimati
         pers_row = start_row + len(edited_df)
         mezzi_row = pers_row + 1
 
-        ws[f'B{pers_row}'] = "PERSONALE STIMATO"
-        ws[f'B{pers_row}'].font = font_footer
-        ws[f'B{pers_row}'].alignment = Alignment(horizontal="center", vertical="center")
-        ws[f'B{pers_row}'].border = border_all
+        for r_fin in [pers_row, mezzi_row]:
+            label_testo = "PERSONALE STIMATO" if r_fin == pers_row else "MEZZI STIMATI"
+            ws[f'B{r_fin}'] = label_testo
+            ws[f'B{r_fin}'].font = font_footer
+            ws[f'B{r_fin}'].alignment = Alignment(horizontal="center", vertical="center")
+            
+            # Applica bordi e font a tutta la riga finale (colonne B fino all'ultima colonna del calendario)
+            for c_idx in range(1, 5 + num_days + 1):
+                col_let = get_column_letter(c_idx)
+                cell_f = ws[f'{col_let}{r_fin}']
+                cell_f.font = font_footer
+                cell_f.border = border_all
 
-        ws[f'B{mezzi_row}'] = "MEZZI STIMATI"
-        ws[f'B{mezzi_row}'].font = font_footer
-        ws[f'B{mezzi_row}'].alignment = Alignment(horizontal="center", vertical="center")
-        ws[f'B{mezzi_row}'].border = border_all
-
-        # Larghezze colonne ottimali
+        # Larghezze colonne ottimizzate
         ws.column_dimensions['B'].width = 35
         ws.column_dimensions['C'].width = 20
         ws.column_dimensions['D'].width = 16
@@ -5751,7 +5756,7 @@ elif sezione_app == "Programma Lavori Mensile":
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato da zero con successo e perfettamente formattato!")
+        st.success("File Excel generato da zero con formattazione e bordi completi!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
