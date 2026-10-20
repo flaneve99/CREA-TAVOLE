@@ -5879,7 +5879,7 @@ elif sezione_app == "Programma Lavori Mensile":
 # =============================================================
 elif sezione_app == "Programma Lavori Settimanale":
     st.title("📅 Programma Lavori Settimanale")
-    st.caption("Configura il programma settimanale di cantiere con le spunte giornaliere e genera l'Excel conforme alle specifiche.")
+    st.caption("Configura il programma settimanale di cantiere e genera l'Excel conforme alle specifiche.")
     
     col_d1, col_d2 = st.columns(2)
     with col_d1:
@@ -5936,7 +5936,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         ws.views.sheetView[0].showGridLines = True
         
         font_company = Font(name="Arial", size=10, bold=True)
-        font_appalto = Font(name="Arial", size=10, bold=False)
+        font_appalto = Font(name="Arial", size=11, bold=True)
         font_subtitle_week = Font(name="Arial", size=11, bold=True)
         font_header = Font(name="Arial", size=10, bold=True, color="000000")
         font_body = Font(name="Arial", size=10)
@@ -5944,6 +5944,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         
         fill_header = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
         fill_yellow = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
+        fill_green = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid") # Verde chiaro elegante
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
         
@@ -5956,10 +5957,11 @@ elif sezione_app == "Programma Lavori Settimanale":
         for r in range(1, 3):
             ws.cell(row=r, column=2).border = border_all
             
-        # Unione celle C1:L1 (Intestazione Appalto)
+        # Unione celle C1:L1 (Intestazione Appalto: Dimensione 11, Grassetto, Giallo)
         ws.merge_cells("C1:L1")
         cell_c1 = ws.cell(row=1, column=3, value=intestazione_appalto)
         cell_c1.font = font_appalto
+        cell_c1.fill = fill_yellow
         cell_c1.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
         for c in range(3, 13):
             ws.cell(row=1, column=c).border = border_all
@@ -6043,15 +6045,18 @@ elif sezione_app == "Programma Lavori Settimanale":
                 
             current_row += 1
             
-        # Righe vuote intermedie
-        current_row += 2 
-        
-        # Personale Stimato
+        # Subito dopo le lavorazioni inseriamo Personale e Mezzi Stimati (senza righe vuote)
         pers_row = current_row
+        mezzi_row = pers_row + 1
+        
+        # Personale Stimato (B9-C9-D9 unite e riempite di verde)
         ws.row_dimensions[pers_row].height = 20
-        ws.cell(row=pers_row, column=2, value="PERSONALE STIMATO").font = font_footer
-        ws.cell(row=pers_row, column=2).alignment = Alignment(horizontal="center", vertical="center")
+        ws.merge_cells(start_row=pers_row, start_column=2, end_row=pers_row, end_column=4)
+        cell_p_label = ws.cell(row=pers_row, column=2, value="PERSONALE STIMATO")
+        cell_p_label.font = font_footer
+        cell_p_label.alignment = Alignment(horizontal="center", vertical="center")
         for c_i in range(2, 5):
+            ws.cell(row=pers_row, column=c_i).fill = fill_green
             ws.cell(row=pers_row, column=c_i).border = border_all
             
         pers_valori = [pers_lun, pers_mar, pers_mer, pers_gio, pers_ven, pers_sab, pers_dom]
@@ -6062,12 +6067,14 @@ elif sezione_app == "Programma Lavori Settimanale":
             cell_p.border = border_all
         ws.cell(row=pers_row, column=12).border = border_all
             
-        # Mezzi Stimati
-        mezzi_row = pers_row + 1
+        # Mezzi Stimati (B10-C10-D10 unite e riempite di verde)
         ws.row_dimensions[mezzi_row].height = 20
-        ws.cell(row=mezzi_row, column=2, value="MEZZI STIMATI").font = font_footer
-        ws.cell(row=mezzi_row, column=2).alignment = Alignment(horizontal="center", vertical="center")
+        ws.merge_cells(start_row=mezzi_row, start_column=2, end_row=mezzi_row, end_column=4)
+        cell_m_label = ws.cell(row=mezzi_row, column=2, value="MEZZI STIMATI")
+        cell_m_label.font = font_footer
+        cell_m_label.alignment = Alignment(horizontal="center", vertical="center")
         for c_i in range(2, 5):
+            ws.cell(row=mezzi_row, column=c_i).fill = fill_green
             ws.cell(row=mezzi_row, column=c_i).border = border_all
             
         mezzi_valori = [mez_lun, mez_mar, mez_mer, mez_gio, mez_ven, mez_sab, mez_dom]
@@ -6079,14 +6086,14 @@ elif sezione_app == "Programma Lavori Settimanale":
         ws.cell(row=mezzi_row, column=12).border = border_all
             
         # Riga Totale
-        tot_row = mezzi_row + 3
+        tot_row = mezzi_row + 2
         ws.row_dimensions[tot_row].height = 22
         cell_t_label = ws.cell(row=tot_row, column=11, value="TOTALE")
         cell_t_label.font = font_footer
         cell_t_label.alignment = Alignment(horizontal="center", vertical="center")
         
         cell_tot_sett = ws.cell(row=tot_row, column=12)
-        cell_tot_sett.value = f"=SUM(L{start_row_sett}:L{current_row-3})"
+        cell_tot_sett.value = f"=SUM(L{start_row_sett}:L{pers_row-1})"
         cell_tot_sett.font = font_footer
         cell_tot_sett.alignment = Alignment(horizontal="center", vertical="center")
         cell_tot_sett.number_format = '€ #,##0.00'
