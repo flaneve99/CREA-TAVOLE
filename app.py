@@ -240,8 +240,8 @@ if sezione_app == "Gestione Tavole & Abaco":
         "CHIUSURA CON SVINCOLO NJ - Chiusura con Svincolo e New Jersey",
         "CORSIA DI EMERGENZA NJ - Chiusura della corsia di emergenza"
     ])
-    st.sidebar.divider()
-    st.sidebar.caption("Compila i campi nella pagina principale, poi genera i file.")
+        st.sidebar.divider()
+        st.sidebar.caption("Compila i campi nella pagina principale, poi genera i file.")
     # ====================================================================
     # TAVOLA 39
     # ====================================================================
