@@ -5580,16 +5580,13 @@ if sezione_app == "Gestione Tavole & Abaco":
     
 
 elif sezione_app == "Programma Lavori Mensile":
-    
-    # ---------------------------------------------------------
-    # INCOLLA QUI IL NUOVO BLOCCO PER IL PROGRAMMA LAVORI
-    # ---------------------------------------------------------
     st.title("📅 Programma Lavori Mensile")
-    st.caption("Compila le lavorazioni e scarica il file Excel formattato.")
+    st.caption("Compila le lavorazioni e scarica il file Excel formattato identico al modello originale.")
 
     import calendar
     import datetime
     from io import BytesIO
+    import openpyxl
 
     mesi_dict = {
         1: "GENNAIO", 2: "FEBBRAIO", 3: "MARZO", 4: "APRILE",
@@ -5600,7 +5597,7 @@ elif sezione_app == "Programma Lavori Mensile":
     col1, col2 = st.columns(2)
     with col1:
         selected_month_num = st.selectbox(
-            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=8
+            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=9
         )
     with col2:
         selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2026)
@@ -5621,64 +5618,55 @@ elif sezione_app == "Programma Lavori Mensile":
     edited_df = st.data_editor(df_lavori, num_rows="dynamic", use_container_width=True)
 
     if st.button("🚀 Genera File Excel Programma Lavori"):
-        wb = openpyxl.Workbook()
-        ws = wb.active
-        ws.title = mesi_dict[selected_month_num]
-
-        font_title = Font(name="Calibri", size=14, bold=True)
-        font_subtitle = Font(name="Calibri", size=10, italic=True)
-
-        ws['B2'] = "PROGRAMMA LAVORI MENSILE"
-        ws['B2'].font = font_title
-
-        ws['B3'] = "S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce. Lotto 1 – Stralcio 2 "
-        ws['B3'].font = font_subtitle
-
-        num_days = calendar.monthrange(selected_year, selected_month_num)[1]
+        template_path = os.path.join(cartella_app, "PROGRAMMA MENSILE TESORO SRL.xlsx")
         
-        ws['E4'] = f'=UPPER(TEXT(E5, "mmmm"))'
-        ws['E4'].font = Font(name="Calibri", size=11, bold=True)
-        ws['E4'].alignment = Alignment(horizontal="center")
+        if os.path.exists(template_path):
+            wb = openpyxl.load_workbook(template_path)
+            ws = wb.active
+            ws.title = mesi_dict[selected_month_num]
 
-        ws['B5'] = "DESCRIZIONE LAVORI"
-        ws['C5'] = "AREA DI INTERVENTO"
-        ws['D5'] = "IMPRESA"
+            # Pulisce le vecchie righe di lavorazione (dalla riga 7 in poi fino alla 30)
+            for r in range(7, 30):
+                for c in range(2, 40):
+                    ws.cell(row=r, column=c).value = None
 
-        for col_idx in range(num_days):
-            col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
-            date_val = datetime.date(selected_year, selected_month_num, col_idx + 1)
-            ws[f'{col_letter}5'] = date_val
-            ws[f'{col_letter}5'].number_format = 'yyyy-mm-dd'
-            
-            ws[f'{col_letter}6'] = f'=CHOOSE(WEEKDAY({col_letter}5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do")'
-            ws[f'{col_letter}6'].alignment = Alignment(horizontal="center")
+            # Calcolo giorni del mese selezionato
+            num_days = calendar.monthrange(selected_year, selected_month_num)[1]
 
-        last_col_idx = 5 + num_days
-        last_col_letter = openpyxl.utils.get_column_letter(last_col_idx)
-        ws[f'{last_col_letter}5'] = "IMPORTO PRESUNTO\nNETTO"
-        ws[f'{last_col_letter}5'].alignment = Alignment(wrap_text=True, horizontal="center", vertical="center")
+            # Inserimento date nelle colonne da E (colonna 5) in poi
+            for col_idx in range(num_days):
+                col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
+                date_val = datetime.date(selected_year, selected_month_num, col_idx + 1)
+                ws[f'{col_letter}5'] = date_val
+                ws[f'{col_letter}5'].number_format = 'd'
+                ws[f'{col_letter}6'] = f'=CHOOSE(WEEKDAY({col_letter}5, 2), "Lu", "Ma", "Me", "Gi", "Ve", "Sa", "Do")'
 
-        start_row = 7
-        for idx, row in edited_df.iterrows():
-            r = start_row + idx
-            ws[f'B{r}'] = row.get("Descrizione Lavori", "")
-            ws[f'C{r}'] = row.get("Area di Intervento", "")
-            ws[f'D{r}'] = row.get("Impresa", "TESORO SRL")
+            # Inserimento dinamico delle nuove righe lavorazioni inserite dall'utente
+            start_row = 7
+            for idx, row in edited_df.iterrows():
+                r = start_row + idx
+                ws[f'B{r}'] = row.get("Descrizione Lavori", "")
+                ws[f'C{r}'] = row.get("Area di Intervento", "")
+                ws[f'D{r}'] = row.get("Impresa", "TESORO SRL")
 
-        pers_row = start_row + len(edited_df)
-        mezzi_row = pers_row + 1
+            # Posizionamento righe finali Personale e Mezzi Stimati subito dopo le lavorazioni
+            pers_row = start_row + len(edited_df)
+            mezzi_row = pers_row + 1
 
-        ws[f'B{pers_row}'] = "PERSONALE STIMATO"
-        ws[f'B{mezzi_row}'] = "MEZZI STIMATI"
+            ws[f'B{pers_row}'] = "PERSONALE STIMATO"
+            ws[f'B{mezzi_row}'] = "MEZZI STIMATI"
 
-        output = BytesIO()
-        wb.save(output)
-        output.seek(0)
+            # Esportazione in memoria
+            output = BytesIO()
+            wb.save(output)
+            output.seek(0)
 
-        st.success("File generato con successo!")
-        st.download_button(
-            label="📥 Scarica Programma Lavori Excel",
-            data=output,
-            file_name=f"PROGRAMMA_MENSILE_{mesi_dict[selected_month_num]}_{selected_year}.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
+            st.success("File Excel generato perfettamente con la formattazione originale!")
+            st.download_button(
+                label="📥 Scarica Programma Lavori Excel Formattato",
+                data=output,
+                file_name=f"PROGRAMMA_MENSILE_{mesi_dict[selected_month_num]}_{selected_year}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+        else:
+            st.error("Il file modello 'PROGRAMMA MENSILE TESORO SRL.xlsx' non è stato trovato nella cartella dell'applicazione.")
