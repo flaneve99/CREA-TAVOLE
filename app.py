@@ -5599,7 +5599,7 @@ elif sezione_app == "Programma Lavori Mensile":
     col1, col2 = st.columns(2)
     with col1:
         selected_month_num = st.selectbox(
-            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=10
+            "Seleziona Mese", options=list(mesi_dict.keys()), format_func=lambda x: mesi_dict[x], index=5
         )
     with col2:
         selected_year = st.number_input("Anno", min_value=2024, max_value=2030, value=2027)
@@ -5766,7 +5766,7 @@ elif sezione_app == "Programma Lavori Mensile":
         ws.cell(row=5, column=importo_col_idx).border = border_all
         ws.cell(row=6, column=importo_col_idx).border = border_all
 
-        # 8. Inserimento righe lavorazioni dinamiche
+        # 8. Inserimento righe lavorazioni dinamiche (con formato euro)
         start_row = 7
         row_heights_default = [48.0, 47.25, 47.25, 48.75, 48.75, 48.75, 48.75]
 
@@ -5799,6 +5799,8 @@ elif sezione_app == "Programma Lavori Mensile":
                 cell_cal.font = font_body
                 cell_cal.alignment = Alignment(horizontal="center", vertical="center")
                 cell_cal.border = border_all
+                if c_idx == importo_col_idx:
+                    cell_cal.number_format = '€ #,##0.00' # Formato euro per le quote lavorazioni
                 if c_idx in weekend_cols:
                     cell_cal.fill = fill_weekend
 
@@ -5827,9 +5829,26 @@ elif sezione_app == "Programma Lavori Mensile":
         # 10. Cella Totale Importo Presunto Netto (due righe sotto i Mezzi Stimati)
         total_row = mezzi_row + 2
         ws.row_dimensions[total_row].height = 22.0
+
+        # Unione 3 celle a sinistra per la scritta "TOTALE"
+        label_start_col = importo_col_idx - 3
+        label_end_col = importo_col_idx - 1
+        ws.merge_cells(start_row=total_row, start_column=label_start_col, end_row=total_row, end_column=label_end_col)
+        
+        cell_label = ws.cell(row=total_row, column=label_start_col)
+        cell_label.value = "TOTALE"
+        cell_label.font = font_total
+        cell_label.alignment = Alignment(horizontal="right", vertical="center")
+        
+        # Applica i bordi all'etichetta unita
+        for c_idx in range(label_start_col, label_end_col + 1):
+            ws.cell(row=total_row, column=c_idx).border = border_all
+
+        # Cella del totale con formula SUM e formato euro
         cell_total = ws.cell(row=total_row, column=importo_col_idx)
         cell_total.value = f"=SUM({importo_col_letter}{start_row}:{importo_col_letter}{start_row + len(edited_df) - 1})"
         cell_total.font = font_total
+        cell_total.number_format = '€ #,##0.00'
         cell_total.alignment = Alignment(horizontal="center", vertical="center")
         cell_total.border = border_all
 
@@ -5847,7 +5866,7 @@ elif sezione_app == "Programma Lavori Mensile":
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato con successo con la cella del totale Importo Presunto Netto inserita!")
+        st.success("File Excel generato con successo: etichetta TOTALE a 3 celle e formattazione Euro applicata!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
