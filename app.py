@@ -1645,7 +1645,283 @@ if sezione_app == "Gestione Tavole & Abaco":
               st.exception(errore)
           else:
             st.error("Immagine 'TAVOLA 25.jpg' non trovata nella cartella.")
-        
+        # ====================================================================
+        # TAVOLA 26 - UNIFICATA (PARTE BASSA + PARTE ALTA)
+        # ====================================================================
+        elif "Tavola 26" in tavola_selezionata:
+            st.subheader("📍 Dati e Progressive Chilometriche - Tavola 26 (Unificata)")
+            ubicazione_testo_26 = st.text_area(
+                "Ubicazione / Direzione (Tavola 26)", value="DIREZIONE SUD"
+            )
+
+            st.write(
+                "### 🛣️ Progressive Chilometriche (Parte Bassa e Parte Alta)"
+            )
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("**Sezione Inferiore (Parte Bassa)**")
+                km_26_bassa_lavori = st.text_input("KM Lavori in corso (Basso)", value="805+560")
+                km_26_bassa_lim110 = st.text_input("KM Limite 110", value="805+800")
+                km_26_bassa_lim90 = st.text_input("KM Limite 90", value="806+000")
+                km_26_bassa_restr1 = st.text_input("KM Restringimento 1", value="806+200")
+                km_26_bassa_lim60 = st.text_input("KM Limite 60", value="806+400")
+                km_26_bassa_restr2 = st.text_input("KM Restringimento 2", value="806+600")
+                km_26_bassa_testata1 = st.text_input("KM Testata 1", value="806+750")
+                km_26_bassa_testata2 = st.text_input("KM Testata 2", value="806+900")
+                km_26_bassa_lim40 = st.text_input("KM Limite 40", value="807+100")
+                km_26_bassa_deviazione = st.text_input("KM Deviazione", value="807+250")
+                km_26_bassa_ingresso = st.text_input("KM Ingresso", value="807+400")
+                km_26_bassa_sorpasso = st.text_input("KM Divieto di sorpasso", value="807+550")
+                km_26_bassa_lim80 = st.text_input("KM Limite 80", value="807+700")
+            with col2:
+                st.markdown("**Sezione Superiore (Parte Alta)**")
+                km_26_alta_lim60 = st.text_input("KM Limite 60 (Alta)", value="807+900")
+                km_26_alta_lim40 = st.text_input("KM Limite 40 (Alta)", value="808+050")
+                km_26_alta_deviazione = st.text_input("KM Deviazione (Alta)", value="808+200")
+                km_26_alta_ingresso = st.text_input("KM Ingresso (Alta)", value="808+350")
+                km_26_alta_vialibera = st.text_input("KM Via libera (Alta)", value="808+600")
+                
+                st.markdown("---")
+                km_26_alta_sx_lim80 = st.text_input("KM Limite 80 (Sx Alta)", value="805+560")
+                km_26_alta_sx_corsie = st.text_input("KM Uso corsie disponibili", value="805+800")
+                km_26_alta_sx_sorpasso = st.text_input("KM Divieto sorpasso (Sx)", value="806+000")
+                km_26_alta_sx_senso = st.text_input("KM Senso unico alternato", value="806+200")
+                km_26_alta_sx_restr1 = st.text_input("KM Restringimento 1 (Sx)", value="806+400")
+                km_26_alta_sx_lim60 = st.text_input("KM Limite 60 (Sx)", value="806+600")
+                km_26_alta_sx_restr2 = st.text_input("KM Restringimento 2 (Sx)", value="806+800")
+                km_26_alta_sx_lim90 = st.text_input("KM Limite 90 (Sx)", value="807+000")
+                km_26_alta_sx_lim110 = st.text_input("KM Limite 110 (Sx)", value="807+200")
+                km_26_alta_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="807+500")
+
+            if st.button("Genera Abaco Segnaletica (Excel) - Tavola 26 Unificata"):
+                wb = openpyxl.Workbook()
+                ws = wb.active
+                ws.title = "Abaco Tavola 26"
+                ws.merge_cells("A1:E1")
+
+                titolo_principale = ws["A1"]
+                titolo_principale.value = "TABELLA RIEPILOGATIVA SEGNALETICA DI CANTIERE - TAVOLA 26"
+
+                fill_verde_chiaro = PatternFill(start_color="92D050", end_color="92D050", fill_type="solid")
+                fill_verde_scuro = PatternFill(start_color="70AD47", end_color="70AD47", fill_type="solid")
+                font_titolo = Font(name="Arial", size=11, bold=True, color="000000")
+                font_header = Font(name="Arial", size=10, bold=True, color="000000")
+                font_testo = Font(name="Arial", size=10, color="000000")
+                bordo_sottile = Border(
+                    left=Side(style="thin", color="000000"),
+                    right=Side(style="thin", color="000000"),
+                    top=Side(style="thin", color="000000"),
+                    bottom=Side(style="thin", color="000000"),
+                )
+
+                titolo_principale.fill = fill_verde_chiaro
+                titolo_principale.font = font_titolo
+                titolo_principale.alignment = Alignment(horizontal="center", vertical="center")
+
+                for col in range(1, 6):
+                    ws.cell(row=1, column=col).border = bordo_sottile
+
+                headers = ["SEGNALE", "FIGURA", "DESCRIZIONE", "DETTAGLI", "SEGNALETICA"]
+                for col_idx, header in enumerate(headers, 1):
+                    cell = ws.cell(row=2, column=col_idx)
+                    cell.value = header
+                    cell.fill = fill_verde_scuro
+                    cell.font = font_header
+                    cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                    cell.border = bordo_sottile
+
+                # Abaco completo Tavola 26 (incluse le nuove figure richieste)
+                dati_righe_26 = [
+                    ("fig050_lim60.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 60 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
+                    ("fig050_lim40.jpg", "FIG. II 050", "LIMITE MASSIMO DI VELOCITÀ 40 KM/H", "", "SEGNALI DI DIVIETO"),
+                    ("fig_412b.jpg", "FIG. II 412/b", "SEGNALE DI RIENTRO IN CARREGGIATA", "", "SEGNALI TEMPORANEI"),
+                    ("fig_070.jpg", "FIG. II 070", "VIA LIBERA / FINE CANTIERE", "", "SEGNALI DI PRESCRIZIONE"),
+                    ("fig_383.jpg", "FIG. II 383", "LAVORI IN CORSO", "", "SEGNALI TEMPORANEI"),
+                    ("fig050_lim110.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 110 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
+                    ("fig050_lim90.jpg", "FIG. II 050", "LIMITE DI VELOCITÀ 90 KM/H", "", "SEGNALI DI PRESCRIZIONE"),
+                    ("fig_387.jpg", "FIG. II 387", "DOPPIO SENSO DI CIRCOLAZIONE", "", "SEGNALI TEMPORANEI"),
+                    ("fig_052.jpg", "FIG. II 052", "DIVIETO DI SORPASSO PER AUTOCARRI", "", "SEGNALI DI DIVIETO"),
+                    ("fig_082a.jpg", "FIG. II 082/a", "PASSAGGIO OBBLIGATORIO A SINISTRA", "", "SEGNALI DI OBBLIGO"),
+                    ("fig_082_b.jpg", "FIG. II 082/b", "PASSAGGIO OBBLIGATORIO A DESTRA", "", "SEGNALETICA DI OBBLIGO"),
+                    ("fig_048.jpg", "FIG. II 048", "DIVIETO DI SORPASSO", "", "SEGNALI DI DIVIETO"),
+                    ("fig_411a.jpg", "FIG. II 411/a", "SEGNALE DI CORSIA CHIUSA", "", "SEGNALI TEMPORANEI"),
+                    ("fig_412a.jpg", "FIG. II 412/a", "SEGNALE DI CARREGGIATA CHIUSA", "", "SEGNALI DI INDICAZIONE"),
+                    ("fig_412e.jpg", "FIG. II 412/e", "SEGNALE DI RIENTRO IN CARREGGIATA", "", "SEGNALI DI INDICAZIONE"),
+                    ("fig_414.jpg", "FIG. II 414", "USO CORSIE DISPONIBILI", "", "SEGNALI TEMPORANEI"),
+                ]
+
+                ws.column_dimensions["A"].width = 18
+                ws.column_dimensions["B"].width = 16
+                ws.column_dimensions["C"].width = 45
+                ws.column_dimensions["D"].width = 20
+                ws.column_dimensions["E"].width = 25
+                ws.row_dimensions[1].height = 30
+                ws.row_dimensions[2].height = 25
+
+                immagini_inserite = 0
+                for i, row_data in enumerate(dati_righe_26, start=3):
+                    img_nome, figura, descrizione, dettagli, segnaletica = row_data
+                    ws.row_dimensions[i].height = 55
+                    c_fig = ws.cell(row=i, column=2, value=figura)
+                    c_desc = ws.cell(row=i, column=3, value=descrizione)
+                    c_det = ws.cell(row=i, column=4, value=dettagli)
+                    c_seg = ws.cell(row=i, column=5, value=segnaletica)
+
+                    for cell in [c_fig, c_desc, c_det, c_seg]:
+                        cell.font = font_testo
+                        cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+                        cell.border = bordo_sottile
+
+                    c_segnale = ws.cell(row=i, column=1)
+                    c_segnale.border = bordo_sottile
+
+                    nomi_da_cercare = [img_nome, img_nome.replace(".jpg", ".png"), img_nome.replace(".png", ".jpg")]
+                    percorso_trovato = None
+                    for nome in nomi_da_cercare:
+                        tentativo = os.path.join(dir_immagini, nome)
+                        if os.path.exists(tentativo):
+                            percorso_trovato = tentativo
+                            break
+
+                    if percorso_trovato:
+                        try:
+                            img_pil = Image.open(percorso_trovato).convert("RGB")
+                            temp_path = os.path.join("/tmp", f"abaco_26_{i}.jpg")
+                            img_pil.save(temp_path, "JPEG")
+                            img_obj = OpenpyxlImage(temp_path)
+                            marker_from = AnchorMarker(col=0, colOff=150000, row=i - 1, rowOff=40000)
+                            marker_to = AnchorMarker(col=1, colOff=-150000, row=i, rowOff=-40000)
+                            img_obj.anchor = TwoCellAnchor(editAs="twoCell", _from=marker_from, to=marker_to)
+                            ws.add_image(img_obj)
+                            immagini_inserite += 1
+                        except Exception as e:
+                            st.warning(f"Errore caricamento immagine per {figura}: {e}")
+                    else:
+                        c_segnale.value = "[Img non trovata]"
+                        c_segnale.font = Font(name="Arial", size=8, color="FF0000")
+                        c_segnale.alignment = Alignment(horizontal="center", vertical="center")
+
+                output = io.BytesIO()
+                wb.save(output)
+                excel_data = output.getvalue()
+                st.success(f"Abaco Excel Tavola 26 generato! (Immagini inserite: {immagini_inserite}/{len(dati_righe_26)})")
+                st.download_button(
+                    label="📥 Scarica Excel Abaco Segnaletica Tavola 26",
+                    data=excel_data,
+                    file_name="Abaco_Segnaletica_Tavola_26.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                )
+
+            st.divider()
+            st.subheader("🖼️ Anteprima Tavola 26 Personalizzata (Unificata)")
+
+            col_tav1, col_tav2 = st.columns(2)
+
+            # --- GESTIONE PARTE BASSA ---
+            with col_tav1:
+                st.markdown("#### 🔽 Parte Bassa")
+                img_path_26bassa = os.path.join(cartella_app, "TAVOLA 26 PARTE BASSA.jpg")
+                if os.path.exists(img_path_26bassa):
+                    try:
+                        with Image.open(img_path_26bassa) as immagine_originale:
+                            base_img_26bassa = immagine_originale.convert("RGB")
+                        width_26b, height_26b = base_img_26bassa.size
+                        draw_26b = ImageDraw.Draw(base_img_26bassa)
+                        font_km = load_custom_font(20)
+                        BORDO = 2
+
+                        etichette_26b = [
+                            (int(width_26b * 0.65), int(height_26b * 0.95), f"KM {km_26_bassa_lavori}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.90), f"KM {km_26_bassa_lim110}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.85), f"KM {km_26_bassa_lim90}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.80), f"KM {km_26_bassa_restr1}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.75), f"KM {km_26_bassa_lim60}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.70), f"KM {km_26_bassa_restr2}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.60), f"KM {km_26_bassa_testata1}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.50), f"KM {km_26_bassa_testata2}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.40), f"KM {km_26_bassa_lim40}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.30), f"KM {km_26_bassa_deviazione}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.20), f"KM {km_26_bassa_ingresso}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.15), f"KM {km_26_bassa_sorpasso}"),
+                            (int(width_26b * 0.65), int(height_26b * 0.10), f"KM {km_26_bassa_lim80}"),
+                        ]
+                        for x, y, testo in etichette_26b:
+                            draw_26b.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+
+                        img_io_26b = io.BytesIO()
+                        base_img_26bassa.save(img_io_26b, format="JPEG", quality=100, subsampling=0)
+                        st.image(base_img_26bassa, caption="Tavola 26 - Parte Bassa Compilata", use_container_width=True)
+                        st.download_button(
+                            label="📥 Scarica JPG Parte Bassa",
+                            data=img_io_26b.getvalue(),
+                            file_name="Tavola_26_Parte_Bassa.jpg",
+                            mime="image/jpeg",
+                        )
+                    except Exception as e:
+                        st.error(f"Errore grafica parte bassa: {e}")
+                else:
+                    st.error("Immagine 'TAVOLA 26 PARTE BASSA.jpg' non trovata[cite: 4].")
+
+            # --- GESTIONE PARTE ALTA ---
+            with col_tav2:
+                st.markdown("#### 🔼 Parte Alta")
+                img_path_26alta = os.path.join(cartella_app, "TAVOLA 26 PARTE ALTA.jpg")
+                if os.path.exists(img_path_26alta):
+                    try:
+                        with Image.open(img_path_26alta) as immagine_originale:
+                            base_img_26alta = immagine_originale.convert("RGB")
+                        width_26a, height_26a = base_img_26alta.size
+                        draw_26a = ImageDraw.Draw(base_img_26alta)
+                        font_km = load_custom_font(20)
+                        font_ub_26a = load_custom_font(30)
+                        BORDO = 2
+
+                        etichette_26a = [
+                            # Lato Destro Alta
+                            (int(width_26a * 0.65), int(height_26a * 0.95), f"KM {km_26_alta_lim60}"),
+                            (int(width_26a * 0.65), int(height_26a * 0.85), f"KM {km_26_alta_lim40}"),
+                            (int(width_26a * 0.65), int(height_26a * 0.75), f"KM {km_26_alta_deviazione}"),
+                            (int(width_26a * 0.65), int(height_26a * 0.65), f"KM {km_26_alta_ingresso}"),
+                            (int(width_26a * 0.65), int(height_26a * 0.55), f"KM {km_26_alta_vialibera}"),
+                            # Lato Sinistro Alta
+                            (int(width_26a * 0.05), int(height_26a * 0.20), f"KM {km_26_alta_sx_lim80}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.25), f"KM {km_26_alta_sx_corsie}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.35), f"KM {km_26_alta_sx_sorpasso}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.45), f"KM {km_26_alta_sx_senso}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.52), f"KM {km_26_alta_sx_restr1}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.60), f"KM {km_26_alta_sx_lim60}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.68), f"KM {km_26_alta_sx_restr2}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.75), f"KM {km_26_alta_sx_lim90}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.83), f"KM {km_26_alta_sx_lim110}"),
+                            (int(width_26a * 0.05), int(height_26a * 0.92), f"KM {km_26_alta_sx_lavori}"),
+                        ]
+                        for x, y, testo in etichette_26a:
+                            draw_26a.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
+
+                        draw_26a.multiline_text(
+                            (int(width_26a * 0.05), int(height_26a * 0.05)),
+                            ubicazione_testo_26,
+                            fill=(255, 0, 0),
+                            font=font_ub_26a,
+                            align="center",
+                            spacing=6,
+                            stroke_width=BORDO,
+                            stroke_fill=(255, 255, 255),
+                        )
+
+                        img_io_26a = io.BytesIO()
+                        base_img_26alta.save(img_io_26a, format="JPEG", quality=100, subsampling=0)
+                        st.image(base_img_26alta, caption="Tavola 26 - Parte Alta Compilata", use_container_width=True)
+                        st.download_button(
+                            label="📥 Scarica JPG Parte Alta",
+                            data=img_io_26a.getvalue(),
+                            file_name="Tavola_26_Parte_Alta.jpg",
+                            mime="image/jpeg",
+                        )
+                    except Exception as e:
+                        st.error(f"Errore grafica parte alta: {e}")
+                else:
+                    st.error("Immagine 'TAVOLA 26 PARTE ALTA.jpg' non trovata[cite: 3].")
         # ====================================================================
         # TAVOLA 66 NJ
         # ====================================================================
