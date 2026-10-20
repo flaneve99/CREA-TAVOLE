@@ -5913,7 +5913,7 @@ elif sezione_app == "Programma Lavori Settimanale":
     df_sett = pd.DataFrame(default_settimana)
     edited_df_sett = st.data_editor(df_sett, num_rows="dynamic", use_container_width=True)
     
-    st.markdown("### 👷 Risorse stimate giornaliere")
+    st.markdown("### 👷 Risorse stimate giornaliere (Lunedì - Venerdì)")
     col_r1, col_r2 = st.columns(2)
     with col_r1:
         pers_lun = st.text_input("Personale Lun", value="3/5")
@@ -5921,16 +5921,12 @@ elif sezione_app == "Programma Lavori Settimanale":
         pers_mer = st.text_input("Personale Mer", value="3/5")
         pers_gio = st.text_input("Personale Gio", value="3/5")
         pers_ven = st.text_input("Personale Ven", value="3/5")
-        pers_sab = st.text_input("Personale Sab", value="")
-        pers_dom = st.text_input("Personale Dom", value="")
     with col_r2:
         mez_lun = st.text_input("Mezzi Lun", value="2/3")
         mez_mar = st.text_input("Mezzi Mar", value="2/3")
         mez_mer = st.text_input("Mezzi Mer", value="2/3")
         mez_gio = st.text_input("Mezzi Gio", value="2/3")
         mez_ven = st.text_input("Mezzi Ven", value="2/3")
-        mez_sab = st.text_input("Mezzi Sab", value="")
-        mez_dom = st.text_input("Mezzi Dom", value="")
 
     if st.button("🚀 Genera File Excel Programma Lavori Settimanale"):
         wb = openpyxl.Workbook()
@@ -5948,7 +5944,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         fill_header = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
         fill_yellow = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
         fill_green = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
-        fill_weekend = PatternFill(start_color="FCE4D6", end_color="FCE4D6", fill_type="solid") # Rosso chiaro per sabato/domenica
+        fill_weekend = PatternFill(start_color="FCE4D6", end_color="FCE4D6", fill_type="solid")
         
         thin_side = Side(style='thin', color='000000')
         thick_side = Side(style='medium', color='000000')
@@ -5996,14 +5992,13 @@ elif sezione_app == "Programma Lavori Settimanale":
             cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
             cell.border = border_all
             
-        # Intestazioni giorni senza puntino (es. "Lun 12/10")
+        # Intestazioni giorni (Sabato e Domenica con sfondo rosso chiaro)
         for i in range(7):
             current_d = data_inizio_settimana + datetime.timedelta(days=i)
             nome_g = giorni_nomi[current_d.weekday()]
             testo_giorno = f"{nome_g} {current_d.strftime('%d/%m')}"
             cell_g = ws.cell(row=3, column=5 + i, value=testo_giorno)
             cell_g.font = font_header
-            # Se è sabato (5) o domenica (6), colora lo sfondo di rosso chiaro
             if current_d.weekday() >= 5:
                 cell_g.fill = fill_weekend
             else:
@@ -6046,7 +6041,6 @@ elif sezione_app == "Programma Lavori Settimanale":
                 cell_g = ws.cell(row=current_row, column=5 + g_i, value=val_g if val_g else "")
                 cell_g.alignment = Alignment(horizontal="center", vertical="center")
                 cell_g.font = font_body
-                # Evidenzia weekend con rosso chiaro anche nelle righe attività
                 if g_i >= 5:
                     cell_g.fill = fill_weekend
                 cell_g.border = border_all
@@ -6067,7 +6061,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         pers_row = current_row
         mezzi_row = pers_row + 1
         
-        # Personale Stimato (B-C-D unite e verde)
+        # Personale Stimato (Lun-Ven inseriti, Sab-Dom vuoti e rossi)
         ws.row_dimensions[pers_row].height = 20
         ws.merge_cells(start_row=pers_row, start_column=2, end_row=pers_row, end_column=4)
         cell_p_label = ws.cell(row=pers_row, column=2, value="PERSONALE STIMATO")
@@ -6075,27 +6069,21 @@ elif sezione_app == "Programma Lavori Settimanale":
         cell_p_label.alignment = Alignment(horizontal="center", vertical="center")
         for c_i in range(2, 5):
             ws.cell(row=pers_row, column=c_i).fill = fill_green
-            ws.cell(row=pers_row, column=c_i).border = border_all
+            ws.cell(row=pers_row, column=c_i).border = Border(top=thick_side, left=thin_side, right=thin_side, bottom=thin_side)
             
-        pers_valori = [pers_lun, pers_mar, pers_mer, pers_gio, pers_ven, pers_sab, pers_dom]
+        pers_valori = [pers_lun, pers_mar, pers_mer, pers_gio, pers_ven, "", ""]
         for p_i, p_val in enumerate(pers_valori):
             cell_p = ws.cell(row=pers_row, column=5 + p_i, value=p_val)
             cell_p.alignment = Alignment(horizontal="center", vertical="center")
             cell_p.font = font_body
-            # Bordo superiore spesso per la riga del personale
+            if p_i >= 5:
+                cell_p.fill = fill_weekend
             cell_p.border = Border(top=thick_side, left=thin_side, right=thin_side, bottom=thin_side)
             
-        for c_i in range(2, 5):
-            ws.cell(row=pers_row, column=c_i).border = Border(top=thick_side, left=thin_side, right=thin_side, bottom=thin_side)
-            ws.cell(row=pers_row, column=c_i).fill = fill_green
-
-        # Bordo normale per K e L alla riga personale
-        cell_k_p = ws.cell(row=pers_row, column=11)
-        cell_k_p.border = Border(top=thick_side, left=thin_side, right=thin_side, bottom=thin_side)
         cell_l_p = ws.cell(row=pers_row, column=12)
         cell_l_p.border = Border(top=thick_side, left=thin_side, right=thin_side, bottom=thin_side)
             
-        # Mezzi Stimati (B-C-D unite e verde)
+        # Mezzi Stimati (Lun-Ven inseriti, Sab-Dom vuoti e rossi)
         ws.row_dimensions[mezzi_row].height = 20
         ws.merge_cells(start_row=mezzi_row, start_column=2, end_row=mezzi_row, end_column=4)
         cell_m_label = ws.cell(row=mezzi_row, column=2, value="MEZZI STIMATI")
@@ -6105,11 +6093,13 @@ elif sezione_app == "Programma Lavori Settimanale":
             ws.cell(row=mezzi_row, column=c_i).fill = fill_green
             ws.cell(row=mezzi_row, column=c_i).border = border_all
             
-        mezzi_valori = [mez_lun, mez_mar, mez_mer, mez_gio, mez_ven, mez_sab, mez_dom]
+        mezzi_valori = [mez_lun, mez_mar, mez_mer, mez_gio, mez_ven, "", ""]
         for m_i, m_val in enumerate(mezzi_valori):
             cell_m = ws.cell(row=mezzi_row, column=5 + m_i, value=m_val)
             cell_m.alignment = Alignment(horizontal="center", vertical="center")
             cell_m.font = font_body
+            if m_i >= 5:
+                cell_m.fill = fill_weekend
             cell_m.border = border_all
             
         ws.cell(row=mezzi_row, column=12).border = border_all
@@ -6128,7 +6118,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         cell_tot_sett.number_format = '€ #,##0.00'
         cell_tot_sett.border = border_all
         
-        # Applicazione della BORDATURA SPESSA al PERIMETRO ESTERNO della tabella (dalla riga 1 alla riga 10)
+        # Applicazione della BORDATURA SPESSA al PERIMETRO ESTERNO della tabella
         max_r_tabella = mezzi_row
         for r_idx in range(1, max_r_tabella + 1):
             for c_idx in range(2, 13):
@@ -6139,18 +6129,12 @@ elif sezione_app == "Programma Lavori Settimanale":
                 t_right = thick_side if c_idx == 12 else cell.border.right
                 cell.border = Border(top=t_top, bottom=t_bottom, left=t_left, right=t_right)
         
-        # Larghezze colonne dinamiche basate sui testi inseriti
+        # Larghezze colonne dinamiche
         ws.column_dimensions['A'].width = 3
-        
-        # Calcolo larghezza Descrizione Lavori
         max_len_desc = max([len(str(r.get("DESCRIZIONE LAVORI", ""))) for r in edited_df_sett.to_dict("records")] + [20])
         ws.column_dimensions['B'].width = max(max_len_desc + 4, 25)
-        
-        # Calcolo larghezza Area Intervento
         max_len_area = max([len(str(r.get("Area Intervento", ""))) for r in edited_df_sett.to_dict("records")] + [20])
         ws.column_dimensions['C'].width = max(max_len_area + 4, 28)
-        
-        # Calcolo larghezza Impresa
         max_len_imp = max([len(str(r.get("Impresa", ""))) for r in edited_df_sett.to_dict("records")] + [10])
         ws.column_dimensions['D'].width = max(max_len_imp + 4, 15)
         
@@ -6162,7 +6146,7 @@ elif sezione_app == "Programma Lavori Settimanale":
         wb.save(output)
         output.seek(0)
         
-        st.success("File Excel Programma Settimanale generato con successo e perfettamente adattato!")
+        st.success("File Excel Programma Settimanale generato con successo!")
         st.download_button(
             label="📥 Scarica Programma Settimanale Excel",
             data=output,
