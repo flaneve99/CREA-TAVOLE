@@ -162,7 +162,7 @@ with st.sidebar:
     # ➕ AGGIUNGI QUESTA SELEZIONE
     sezione_app = st.radio(
         "Seleziona Funzione:",
-        ["Gestione Tavole & Abaco", "Programma Lavori Mensile"]
+        ["Gestione Tavole & Abaco", "Programma Lavori Mensile", "Programma Lavori Settimanale"]
     )
     
     st.divider() # Riga divisoria per pulizia grafica
@@ -5871,5 +5871,183 @@ elif sezione_app == "Programma Lavori Mensile":
             label="📥 Scarica Programma Lavori Excel",
             data=output,
             file_name=f"PROGRAMMA_MENSILE_{mesi_dict[selected_month_num]}_{selected_year}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+
+# =============================================================
+# SEZIONE 3: PROGRAMMA LAVORI SETTIMANALE
+# =============================================================
+elif sezione_app == "Programma Lavori Settimanale":
+    st.title("📅 Programma Lavori Settimanale")
+    st.caption("Configura il programma settimanale di cantiere con le spunte giornaliere e genera l'Excel conforme al modello.")
+    
+    col_d1, col_d2 = st.columns(2)
+    with col_d1:
+        data_inizio_settimana = st.date_input("Data Inizio Settimana (Lunedì)", value=datetime.date(2026, 10, 12))
+    with col_d2:
+        data_fine_settimana = st.date_input("Data Fine Settimana (Domenica)", value=datetime.date(2026, 10, 18))
+        
+     intestazione_appalto = st.text_area(
+        "Intestazione / Descrizione Appalto (Cella C1 del file):",
+        value="S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce. \nLotto 1 – Stralcio 6 - Cod. SIL: AANOBA00234."
+    )
+    
+    st.markdown("### 📝 Attività della Settimana")
+    st.info("Inserisci le lavorazioni, l'area d'intervento, l'impresa e spunta con 'X' i giorni in cui si lavora (da Lunedì a Domenica).")
+    
+    default_settimana = [
+        {"DESCRIZIONE LAVORI": "scavo plinto e armatura", "Area Intervento": "Portale tipo B2 km 827+553", "Impresa": "Tesoro Srl", "Lun": "X", "Mar": "", "Mer": "", "Gio": "", "Ven": "", "Sab": "", "Dom": "", "IMPORTO PRESUNTO NETTO": 30000},
+        {"DESCRIZIONE LAVORI": "Casseratura e Getto Cls", "Area Intervento": "Portale tipo B2 km 827+553", "Impresa": "Tesoro Srl", "Lun": "", "Mar": "X", "Mer": "", "Gio": "", "Ven": "", "Sab": "", "Dom": "", "IMPORTO PRESUNTO NETTO": None},
+        {"DESCRIZIONE LAVORI": "Scasseratura", "Area Intervento": "Portale tipo B2 km 827+553", "Impresa": "Tesoro Srl", "Lun": "", "Mar": "", "Mer": "X", "Gio": "", "Ven": "", "Sab": "", "Dom": "", "IMPORTO PRESUNTO NETTO": None},
+    ]
+    df_sett = pd.DataFrame(default_settimana)
+    edited_df_sett = st.data_editor(df_sett, num_rows="dynamic", use_container_width=True)
+    
+    st.markdown("### 👷 Risorse stimate giornaliere")
+    col_r1, col_r2 = st.columns(2)
+    with col_r1:
+        pers_lun = st.text_input("Personale Lun", value="3/5")
+        pers_mar = st.text_input("Personale Mar", value="3/5")
+        pers_mer = st.text_input("Personale Mer", value="3/5")
+        pers_gio = st.text_input("Personale Gio", value="3/5")
+        pers_ven = st.text_input("Personale Ven", value="3/5")
+        pers_sab = st.text_input("Personale Sab", value="")
+        pers_dom = st.text_input("Personale Dom", value="")
+    with col_r2:
+        mez_lun = st.text_input("Mezzi Lun", value="2/3")
+        mez_mar = st.text_input("Mezzi Mar", value="2/3")
+        mez_mer = st.text_input("Mezzi Mer", value="2/3")
+        mez_gio = st.text_input("Mezzi Gio", value="2/3")
+        mez_ven = st.text_input("Mezzi Ven", value="2/3")
+        mez_sab = st.text_input("Mezzi Sab", value="")
+        mez_dom = st.text_input("Mezzi Dom", value="")
+
+    if st.button("🚀 Genera File Excel Programma Lavori Settimanale"):
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "PROGRAMMA SS 16- L1S2"
+        ws.views.sheetView[0].showGridLines = True
+        
+        font_title_appalto = Font(name="Arial", size=10, bold=False)
+        font_subtitle_week = Font(name="Arial", size=11, bold=True)
+        font_header = Font(name="Arial", size=10, bold=True, color="000000")
+        font_body = Font(name="Arial", size=10)
+        font_footer = Font(name="Arial", size=10, bold=True)
+        
+        fill_header = PatternFill(start_color="D9D9D9", end_color="D9D9D9", fill_type="solid")
+        thin_side = Side(style='thin', color='000000')
+        border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
+        
+        # Riga 1: Appalto / VALORI S.C.A.R.L.
+        ws.cell(row=1, column=2, value="VALORI S.C.A.R.L.").font = font_title_appalto
+        ws.cell(row=1, column=3, value=intestazione_appalto).font = font_title_appalto
+        
+        # Riga 2: Periodo settimana
+        str_periodo = f"Programma Lavori Settimanale - dal {data_inizio_settimana.strftime('%d/%m/%Y')} al {data_fine_settimana.strftime('%d/%m/%Y')}"
+        ws.cell(row=2, column=3, value=str_periodo).font = font_subtitle_week
+        
+        # Riga 3: Intestazioni colonne
+        headers_sett = [
+            "DESCRIZIONE LAVORI", "Area Intervento", "Impresa",
+            data_inizio_settimana,
+            data_inizio_settimana + datetime.timedelta(days=1),
+            data_inizio_settimana + datetime.timedelta(days=2),
+            data_inizio_settimana + datetime.timedelta(days=3),
+            data_inizio_settimana + datetime.timedelta(days=4),
+            data_inizio_settimana + datetime.timedelta(days=5),
+            data_inizio_settimana + datetime.timedelta(days=6),
+            "IMPORTO PRESUNTO NETTO (lavori+sic)"
+        ]
+        
+        for c_idx, h_text in enumerate(headers_sett, start=2):
+            cell = ws.cell(row=3, column=c_idx, value=h_text)
+            cell.font = font_header
+            cell.fill = fill_header
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+            cell.border = border_all
+            if isinstance(h_text, datetime.date):
+                cell.number_format = 'yyyy-mm-dd'
+                
+        # Inserimento righe lavorazioni
+        start_row_sett = 4
+        current_row = start_row_sett
+        
+        for idx, row in edited_df_sett.iterrows():
+            ws.cell(row=current_row, column=2, value=row.get("DESCRIZIONE LAVORI", "")).font = font_body
+            ws.cell(row=current_row, column=3, value=row.get("Area Intervento", "")).font = font_body
+            ws.cell(row=current_row, column=4, value=row.get("Impresa", "")).font = font_body
+            
+            # Giorni (colonne 5 a 11)
+            giorni_keys = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]
+            for g_i, g_key in enumerate(giorni_keys):
+                val_g = row.get(g_key, "")
+                cell_g = ws.cell(row=current_row, column=5 + g_i, value=val_g if val_g else "")
+                cell_g.alignment = Alignment(horizontal="center", vertical="center")
+                cell_g.font = font_body
+                cell_g.border = border_all
+                
+            # Importo presunto
+            imp_val = row.get("IMPORTO PRESUNTO NETTO", None)
+            cell_imp = ws.cell(row=current_row, column=12, value=imp_val if pd.notnull(imp_val) and imp_val != "" else "")
+            cell_imp.font = font_body
+            if pd.notnull(imp_val) and imp_val != "":
+                cell_imp.number_format = '#,##0'
+            cell_imp.border = border_all
+            
+            for c_i in [2, 3, 4]:
+                ws.cell(row=current_row, column=c_i).border = border_all
+                
+            current_row += 1
+            
+        # Righe vuote di spaziatura se necessarie o direttamente Personale e Mezzi
+        pers_row = current_row + 2
+        mezzi_row = pers_row + 1
+        
+        ws.cell(row=pers_row, column=2, value="PERSONALE STIMATO").font = font_footer
+        pers_valori = [pers_lun, pers_mar, pers_mer, pers_gio, pers_ven, pers_sab, pers_dom]
+        for p_i, p_val in enumerate(pers_valori):
+            ws.cell(row=pers_row, column=5 + p_i, value=p_val).alignment = Alignment(horizontal="center", vertical="center")
+            ws.cell(row=pers_row, column=5 + p_i).font = font_body
+            ws.cell(row=pers_row, column=5 + p_i).border = border_all
+            
+        ws.cell(row=mezzi_row, column=2, value="MEZZI STIMATI").font = font_footer
+        mezzi_valori = [mez_lun, mez_mar, mez_mer, mez_gio, mez_ven, mez_sab, mez_dom]
+        for m_i, m_val in enumerate(mezzi_valori):
+            ws.cell(row=mezzi_row, column=5 + m_i, value=m_val).alignment = Alignment(horizontal="center", vertical="center")
+            ws.cell(row=mezzi_row, column=5 + m_i).font = font_body
+            ws.cell(row=mezzi_row, column=5 + m_i).border = border_all
+            
+        for r_f in [pers_row, mezzi_row]:
+            for c_f in range(2, 5):
+                ws.cell(row=r_f, column=c_f).border = border_all
+            ws.cell(row=r_f, column=12).border = border_all
+            
+        # Riga Totale
+        tot_row = mezzi_row + 2
+        ws.cell(row=tot_row, column=11, value="TOTALE").font = font_footer
+        cell_tot_sett = ws.cell(row=tot_row, column=12)
+        cell_tot_sett.value = f"=SUM(L{start_row_sett}:L{current_row-1})"
+        cell_tot_sett.font = font_footer
+        cell_tot_sett.number_format = '#,##0'
+        cell_tot_sett.border = border_all
+        
+        # Larghezze colonne
+        ws.column_dimensions['A'].width = 4
+        ws.column_dimensions['B'].width = 25
+        ws.column_dimensions['C'].width = 32
+        ws.column_dimensions['D'].width = 15
+        for col_idx in range(5, 12):
+            ws.column_dimensions[get_column_letter(col_idx)].width = 14
+        ws.column_dimensions['L'].width = 28
+        
+        output = BytesIO()
+        wb.save(output)
+        output.seek(0)
+        
+        st.success("File Excel Programma Settimanale generato con successo!")
+        st.download_button(
+            label="📥 Scarica Programma Settimanale Excel",
+            data=output,
+            file_name=f"PROGRAMMA_SETTIMANALE_{data_inizio_settimana.strftime('%Y%m%d')}.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
