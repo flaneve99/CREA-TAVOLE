@@ -1144,7 +1144,7 @@ elif "17" in tavola_selezionata:
         base_img_17 = immagine_originale.convert("RGB")
       width_17, height_17 = base_img_17.size
       draw_17 = ImageDraw.Draw(base_img_17)
-      font_km = load_custom_font(40)
+      font_km = load_custom_font(17)
       font_ub_17 = load_custom_font(25)
       BORDO = 2
       etichette_17 = [
