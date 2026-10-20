@@ -5838,7 +5838,7 @@ elif sezione_app == "Programma Lavori Mensile":
         cell_label = ws.cell(row=total_row, column=label_start_col)
         cell_label.value = "TOTALE"
         cell_label.font = font_total
-        cell_label.alignment = Alignment(horizontal="right", vertical="center")
+        cell_label.alignment = Alignment(horizontal="center", vertical="center")
         
         # Applica i bordi all'etichetta unita
         for c_idx in range(label_start_col, label_end_col + 1):
