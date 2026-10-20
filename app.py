@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 import streamlit as st
 
 # ==================================================
-# CONFIGURAZIONE STREAMLIT E PERCORSI
+# CONFIGURAZIONE STREAMLIT E PERCORSi
 # ==================================================
 st.set_page_config(
     page_title="Gestione Cantieri Stradali - Abaco & Tavole",
