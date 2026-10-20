@@ -39,7 +39,7 @@ st.markdown("""
     /* Sidebar Custom Scura */
     [data-testid="stSidebar"] {
         background-color: #111827 !important;
-        border-right: 1px style solid #1F2937 !important;
+        border-right: 1px solid #1F2937 !important;
     }
     
     [data-testid="stSidebar"] h1, 
@@ -49,20 +49,35 @@ st.markdown("""
     [data-testid="stSidebar"] .stCaption {
         color: #F8FAFC !important;
     }
-    
-    [data-testid="stSidebar"] .stSelectbox label {
-        color: #9CA3AF !important;
-        font-weight: 500;
+
+    /* FIX CAMPI DI TESTO (text_input e text_area): Sfondo scuro e testo chiaro ben visibile */
+    .stTextInput input, .stTextArea textarea {
+        background-color: #1F2937 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #374151 !important;
+        border-radius: 8px !important;
     }
 
-    /* Selectbox nella sidebar: Sfondo scuro e testo chiaro leggibile */
-    [data-testid="stSidebar"] div[data-baseweb="select"] > div {
-        background-color: #1F2937 !important;
-        color: #F8FAFC !important;
-        border-color: #374151 !important;
+    .stTextInput input:focus, .stTextArea textarea:focus {
+        border-color: #2563EB !important;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
     }
-    [data-testid="stSidebar"] div[data-baseweb="select"] * {
-        color: #F8FAFC !important;
+
+    /* Etichette sopra i campi di testo */
+    .stTextInput label, .stTextArea label, .stSelectbox label {
+        color: #E2E8F0 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Selectbox nella Sidebar e nella pagina */
+    div[data-baseweb="select"] > div {
+        background-color: #1F2937 !important;
+        color: #FFFFFF !important;
+        border-color: #374151 !important;
+        border-radius: 8px !important;
+    }
+    div[data-baseweb="select"] * {
+        color: #FFFFFF !important;
     }
 
     /* Hero Banner Stile Dark Mode */
@@ -87,19 +102,13 @@ st.markdown("""
         opacity: 0.95;
     }
 
-    /* Titoli generali della pagina principale */
+    /* Titoli generali */
     h1, h2, h3, h4 { 
         color: #F8FAFC !important; 
         font-weight: 600 !important; 
     }
 
-    /* Etichette dei campi di input e testo */
-    .stTextInput label, .stTextArea label, .stSelectbox label {
-        color: #E2E8F0 !important;
-        font-weight: 500;
-    }
-
-    /* Pulsanti Principali */
+    /* Pulsanti */
     div.stButton > button {
         border-radius: 8px !important;
         font-weight: 600 !important;
@@ -115,7 +124,6 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
-    /* Pulsanti di Download */
     div.stDownloadButton > button {
         border-radius: 8px !important;
         font-weight: 600 !important;
