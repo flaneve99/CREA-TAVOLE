@@ -5629,8 +5629,9 @@ elif sezione_app == "Programma Lavori Mensile":
         ws.views.sheetView[0].showGridLines = False
 
         # Font e stili identici al modello originale
-        font_title = Font(name="Franklin Gothic Medium", size=36, bold=False)
-        font_subtitle = Font(name="Franklin Gothic Book", size=16, bold=True)
+        font_title = Font(name="Franklin Gothic Medium", size=26, bold=False)
+        font_year = Font(name="Franklin Gothic Medium", size=22, bold=True)
+        font_subtitle = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_month = Font(name="Franklin Gothic Book", size=11, bold=True)
         font_header = Font(name="Franklin Gothic Book", size=9, bold=True)
         font_body = Font(name="Franklin Gothic Book", size=9, bold=True)
@@ -5640,7 +5641,7 @@ elif sezione_app == "Programma Lavori Mensile":
         thin_side = Side(style='thin', color='000000')
         border_all = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
 
-        # Impostazione altezze righe come da originale
+        # Altezze righe come da originale
         ws.row_dimensions[1].height = 4.9
         ws.row_dimensions[2].height = 60.0
         ws.row_dimensions[3].height = 39.0
@@ -5648,35 +5649,52 @@ elif sezione_app == "Programma Lavori Mensile":
         ws.row_dimensions[5].height = 19.9
         ws.row_dimensions[6].height = 27.75
 
-        # Intestazioni principali
+        # Calcolo giorni del mese selezionato
+        num_days = calendar.monthrange(selected_year, selected_month_num)[1]
+        last_calendar_col_idx = 4 + num_days
+        importo_col_idx = last_calendar_col_idx + 1
+        importo_col_letter = get_column_letter(importo_col_idx)
+
+        # 1. Titolo principale unito da B2 fino alla fine del calendario
+        ws.merge_cells(start_row=2, start_column=2, end_row=2, end_column=last_calendar_col_idx)
         ws['B2'] = "PROGRAMMA LAVORI MENSILE"
         ws['B2'].font = font_title
         ws['B2'].alignment = Alignment(horizontal="left", vertical="center")
 
+        # Anno sulla destra (es. colonne successive o ultime)
+        anno_start_col = importo_col_idx - 2 if importo_col_idx >= 7 else last_calendar_col_idx
+        anno_end_col = importo_col_idx
+        ws.merge_cells(start_row=2, start_column=anno_start_col, end_row=2, end_column=anno_end_col)
+        cell_anno = ws.cell(row=2, column=anno_start_col)
+        cell_anno.value = selected_year
+        cell_anno.font = font_year
+        cell_anno.alignment = Alignment(horizontal="right", vertical="center")
+
+        # 2. Sottotitolo in B3 unito
+        ws.merge_cells(start_row=3, start_column=2, end_row=3, end_column=importo_col_idx)
         ws['B3'] = "S.S. n° 16 “Adriatica”. Lavori di manutenzione straordinaria per la riqualificazione dell’itinerario Bari-Brindisi-Lecce.  Lotto 1 – Stralcio 2 "
         ws['B3'].font = font_subtitle
         ws['B3'].alignment = Alignment(horizontal="center", vertical="center")
 
-        # Mese in E4
-        ws['E4'] = '=UPPER(TEXT(E5, "mmmm"))'
+        # 3. Mese centrato in E4 (o sopra il blocco giorni)
+        ws.merge_cells(start_row=4, start_column=5, end_row=4, end_column=last_calendar_col_idx)
+        ws['E4'] = mesi_dict[selected_month_num]
         ws['E4'].font = font_month
         ws['E4'].alignment = Alignment(horizontal="center", vertical="center")
 
-        ws['B5'] = "DESCRIZIONE LAVORI"
-        ws['C5'] = "AREA DI INTERVENTO"
-        ws['D5'] = "IMPRESA"
-
-        for col in ['B', 'C', 'D']:
-            cell = ws[f'{col}5']
+        # 4. Intestazioni principali con unione verticale (righe 5 e 6)
+        for col_let, col_idx, testo in [('B', 2, "DESCRIZIONE LAVORI"), ('C', 3, "AREA DI INTERVENTO"), ('D', 4, "IMPRESA")]:
+            ws.merge_cells(start_row=5, start_column=col_idx, end_row=6, end_column=col_idx)
+            cell = ws[f'{col_let}5']
+            cell.value = testo
             cell.font = font_header
             cell.fill = fill_header
             cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-            cell.border = border_all
+            # Applica bordi a entrambe le celle unite (5 e 6)
+            ws[f'{col_let}5'].border = border_all
+            ws[f'{col_let}6'].border = border_all
 
-        # Calcolo giorni del mese selezionato
-        num_days = calendar.monthrange(selected_year, selected_month_num)[1]
-
-        # Primo giorno in E5
+        # 5. Primo giorno in E5 e giorno settimana in E6
         first_date = datetime.date(selected_year, selected_month_num, 1)
         ws['E5'] = first_date
         ws['E5'].number_format = 'd'
@@ -5691,10 +5709,10 @@ elif sezione_app == "Programma Lavori Mensile":
         ws['E6'].alignment = Alignment(horizontal="center", vertical="center")
         ws['E6'].border = border_all
 
-        # Colonne successive dei giorni con formula dinamica identica all'originale
+        # Colonne successive dei giorni
         for col_idx in range(1, num_days):
-            col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
-            prev_col_letter = openpyxl.utils.get_column_letter(4 + col_idx)
+            col_letter = get_column_letter(5 + col_idx)
+            prev_col_letter = get_column_letter(4 + col_idx)
             
             cell_date = ws[f'{col_letter}5']
             cell_date.value = f'=IF(MONTH($E$5+{col_idx})=MONTH($E$5), {prev_col_letter}5+1, "")'
@@ -5711,15 +5729,17 @@ elif sezione_app == "Programma Lavori Mensile":
             cell_wd.alignment = Alignment(horizontal="center", vertical="center")
             cell_wd.border = border_all
 
-        # Ultima colonna Importo Presunto Netto
-        last_col_letter = openpyxl.utils.get_column_letter(5 + num_days)
-        ws[f'{last_col_letter}5'] = "IMPORTO PRESUNTO\nNETTO"
-        ws[f'{last_col_letter}5'].font = font_header
-        ws[f'{last_col_letter}5'].fill = fill_header
-        ws[f'{last_col_letter}5'].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-        ws[f'{last_col_letter}5'].border = border_all
+        # 6. Colonna Importo Presunto Netto con unione verticale (righe 5 e 6)
+        ws.merge_cells(start_row=5, start_column=importo_col_idx, end_row=6, end_column=importo_col_idx)
+        cell_imp_header = ws.cell(row=5, column=importo_col_idx)
+        cell_imp_header.value = "IMPORTO PRESUNTO\nNETTO"
+        cell_imp_header.font = font_header
+        cell_imp_header.fill = fill_header
+        cell_imp_header.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        ws.cell(row=5, column=importo_col_idx).border = border_all
+        ws.cell(row=6, column=importo_col_idx).border = border_all
 
-        # Inserimento righe lavorazioni dinamiche
+        # 7. Inserimento righe lavorazioni dinamiche
         start_row = 7
         row_heights_default = [48.0, 47.25, 47.25, 48.75, 48.75, 48.75, 48.75]
 
@@ -5745,14 +5765,14 @@ elif sezione_app == "Programma Lavori Mensile":
             c_imp.alignment = Alignment(horizontal="left", vertical="center")
             c_imp.border = border_all
 
-            # Bordi celle calendario riga
-            for col_idx in range(num_days + 1):
-                col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
+            # Bordi celle calendario e importo per la riga
+            for c_idx in range(5, importo_col_idx + 1):
+                col_letter = get_column_letter(c_idx)
                 cell_cal = ws[f'{col_letter}{r}']
                 cell_cal.font = font_body
                 cell_cal.border = border_all
 
-        # Righe finali Personale e Mezzi Stimati
+        # 8. Righe finali Personale e Mezzi Stimati
         pers_row = start_row + len(edited_df)
         mezzi_row = pers_row + 1
 
@@ -5764,28 +5784,27 @@ elif sezione_app == "Programma Lavori Mensile":
             ws[f'B{r_fin}'].font = font_footer
             ws.merge_cells(start_row=r_fin, start_column=2, end_row=r_fin, end_column=4)
             
-            # Applica bordi a tutta la riga finale
-            for c_idx in range(2, 5 + num_days + 1):
-                col_let = openpyxl.utils.get_column_letter(c_idx)
+            for c_idx in range(2, importo_col_idx + 1):
+                col_let = get_column_letter(c_idx)
                 cell_f = ws[f'{col_let}{r_fin}']
                 cell_f.font = font_footer
                 cell_f.border = border_all
 
-        # Larghezze colonne identiche all'originale
+        # Larghezze colonne ottimizzate
         ws.column_dimensions['B'].width = 27.78
         ws.column_dimensions['C'].width = 19.44
         ws.column_dimensions['D'].width = 13.0
         for col_idx in range(num_days):
-            col_letter = openpyxl.utils.get_column_letter(5 + col_idx)
+            col_letter = get_column_letter(5 + col_idx)
             ws.column_dimensions[col_letter].width = 4.77
-        ws.column_dimensions[last_col_letter].width = 16.0
+        ws.column_dimensions[importo_col_letter].width = 16.0
 
         # Esportazione in memoria
         output = BytesIO()
         wb.save(output)
         output.seek(0)
 
-        st.success("File Excel generato perfettamente identico al modello originale!")
+        st.success("File Excel generato con celle unite verticalmente, anno laterale e mese centrato!")
         st.download_button(
             label="📥 Scarica Programma Lavori Excel",
             data=output,
