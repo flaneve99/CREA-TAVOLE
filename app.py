@@ -20,51 +20,121 @@ st.set_page_config(
 )
 
 # ==================================================
-# STILE GRAFICO PROFESSIONALE
+# STILE GRAFICO MODERNO E PROFESSIONALE (CSS)
 # ==================================================
 st.markdown("""
 <style>
-    .stApp { background-color: #F7F9FC; }
-    [data-testid="stHeader"] { background-color: rgba(247, 249, 252, 0.95); }
+    /* Import Font Inter da Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Sfondo Principale dell'App */
+    .stApp { 
+        background-color: #F8FAFC; 
+    }
+
+    /* Sidebar Custom */
     [data-testid="stSidebar"] {
-        background-color: #EDF2F8;
-        border-right: 1px solid #D9E2F0;
+        background-color: #0F172A;
+        border-right: 1px solid #1E293B;
     }
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3 { color: #17365D; }
+    [data-testid="stSidebar"] * {
+        color: #F8FAFC !important;
+    }
+    [data-testid="stSidebar"] .stSelectbox label {
+        color: #94A3B8 !important;
+        font-weight: 500;
+    }
+
+    /* Hero Banner Moderno */
     .app-hero {
-        padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;
-        background: linear-gradient(120deg, #17365D, #245A81);
-        border-radius: 12px; color: #FFFFFF;
-        border-left: 6px solid #7FB3D5;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        border-radius: 16px;
+        color: #FFFFFF;
+        box-shadow: 0 10px 15px -3px rgba(30, 58, 138, 0.2);
     }
-    .app-hero h1 { color: #FFFFFF; font-size: 1.75rem; margin: 0 0 .4rem 0; }
-    .app-hero p { color: #EAF2F8; margin: 0; font-size: 1rem; }
-    div.stButton > button, div.stDownloadButton > button {
-        border-radius: 8px; font-weight: 600;
-        border: 1px solid #245A81; min-height: 2.7rem;
+    .app-hero h1 { 
+        color: #FFFFFF !important; 
+        font-size: 2.1rem !important; 
+        font-weight: 700 !important;
+        margin: 0 0 0.5rem 0 !important; 
     }
-    div.stButton > button[kind="primary"] { background-color: #17365D; color: #FFFFFF; }
-    h2, h3 { color: #17365D; }
+    .app-hero p { 
+        color: #E0E7FF !important; 
+        margin: 0 !important; 
+        font-size: 1.05rem !important; 
+        opacity: 0.95;
+    }
+
+    /* Card/Box Contenitore Form */
+    .custom-card {
+        background-color: #FFFFFF;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
+    }
+
+    /* Pulsanti Custom */
+    div.stButton > button {
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        background-color: #2563EB !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        padding: 0.6rem 1.2rem !important;
+        transition: all 0.2s ease-in-out !important;
+        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2) !important;
+    }
+    div.stButton > button:hover {
+        background-color: #1D4ED8 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3) !important;
+    }
+
+    div.stDownloadButton > button {
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        background-color: #059669 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        padding: 0.6rem 1.2rem !important;
+        box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2) !important;
+    }
+    div.stDownloadButton > button:hover {
+        background-color: #047857 !important;
+        transform: translateY(-1px);
+    }
+
+    /* Titoli Sezione */
+    h2, h3, h4 { 
+        color: #0F172A !important; 
+        font-weight: 600 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
 cartella_app = os.path.dirname(os.path.abspath(__file__))
 dir_immagini = os.path.join(cartella_app, "immagini_segnali")
 
+# Header Hero
 st.markdown("""
 <div class="app-hero">
   <h1>🚧 Gestione Cantieri Stradali e Segnaletica</h1>
-  <p>Configurazione delle tavole di cantiere, abachi Excel e immagini JPG personalizzate.</p>
+  <p>Configurazione avanzata delle tavole di cantiere, generazione abachi Excel e immagini personalizzate.</p>
 </div>
 """, unsafe_allow_html=True)
 
+# Sidebar
 with st.sidebar:
-    st.markdown("## 🚧 Gestione cantiere")
-    st.caption("Seleziona la tavola da configurare")
-
-
+    st.markdown("### 🛠️ Configurazione Cantiere")
+    st.caption("Seleziona la tavola di cantiere da elaborare:")
 # ==================================================
 # CARICAMENTO FONT COMPATIBILE CON STREAMLIT CLOUD
 # ==================================================
