@@ -1666,7 +1666,7 @@ if sezione_app == "Gestione Tavole & Abaco":
                 km_26_bassa_restr1 = st.text_input("KM Restringimento 1", value="806+200")
                 km_26_bassa_lim60 = st.text_input("KM Limite 60", value="806+400")
                 km_26_bassa_restr2 = st.text_input("KM Restringimento 2", value="806+600")
-                km_26_bassa_testata1 = st.text_input("KM Testata 1", value="806+750")
+                km_26_bassa_testata1 = st.text_input("KM Testata 1", value="806+75")
                 km_26_bassa_testata2 = st.text_input("KM Testata 2", value="806+900")
                 km_26_bassa_lim40 = st.text_input("KM Limite 40", value="807+100")
                 km_26_bassa_deviazione = st.text_input("KM Deviazione", value="807+250")
@@ -1843,8 +1843,8 @@ if sezione_app == "Gestione Tavole & Abaco":
                             (int(width_26b * 0.695), int(height_26b * 0.742), f"KM {km_26_bassa_restr2}"),
                             (int(width_26b * 0.5350), int(height_26b * 0.6580), f"KM {km_26_bassa_testata1}"),
                             (int(width_26b * 0.695), int(height_26b * 0.5660), f"KM {km_26_bassa_testata2}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.4650), f"KM {km_26_bassa_lim40}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.430), f"KM {km_26_bassa_deviazione}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.4770), f"KM {km_26_bassa_lim40}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.4270), f"KM {km_26_bassa_deviazione}"),
                             (int(width_26b * 0.695), int(height_26b * 0.390), f"KM {km_26_bassa_ingresso}"),
                             (int(width_26b * 0.695), int(height_26b * 0.22), f"KM {km_26_bassa_sorpasso}"),
                             (int(width_26b * 0.695), int(height_26b * 0.1750), f"KM {km_26_bassa_lim80}"),
