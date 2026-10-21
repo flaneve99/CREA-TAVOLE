@@ -1686,16 +1686,16 @@ if sezione_app == "Gestione Tavole & Abaco":
                 km_26_alta_vialibera = st.text_input("KM Via libera (Alta)", value="808+600")
                 
                 st.markdown("---")
-                km_26_alta_sx_lim80 = st.text_input("KM Limite 80 (Sx Alta)", value="805+560")
-                km_26_alta_sx_corsie = st.text_input("KM Uso corsie disponibili", value="805+800")
-                km_26_alta_sx_sorpasso = st.text_input("KM Divieto sorpasso (Sx)", value="806+000")
-                km_26_alta_sx_senso = st.text_input("KM Senso unico alternato", value="806+200")
-                km_26_alta_sx_restr1 = st.text_input("KM Restringimento 1 (Sx)", value="806+400")
-                km_26_alta_sx_lim60 = st.text_input("KM Limite 60 (Sx)", value="806+600")
-                km_26_alta_sx_restr2 = st.text_input("KM Restringimento 2 (Sx)", value="806+800")
-                km_26_alta_sx_lim90 = st.text_input("KM Limite 90 (Sx)", value="807+000")
-                km_26_alta_sx_lim110 = st.text_input("KM Limite 110 (Sx)", value="807+200")
-                km_26_alta_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="807+500")
+                km_26_alta_sx_lim80 = st.text_input("KM Limite 80 (Sx Alta)", value="807+500")
+                km_26_alta_sx_corsie = st.text_input("KM Uso corsie disponibili", value="807+200")
+                km_26_alta_sx_sorpasso = st.text_input("KM Divieto sorpasso (Sx)", value="807+000")
+                km_26_alta_sx_senso = st.text_input("KM Senso unico alternato", value="806+800")
+                km_26_alta_sx_restr1 = st.text_input("KM Restringimento 1 (Sx)", value="806+600")
+                km_26_alta_sx_lim60 = st.text_input("KM Limite 60 (Sx)", value="806+400")
+                km_26_alta_sx_restr2 = st.text_input("KM Restringimento 2 (Sx)", value="806+200")
+                km_26_alta_sx_lim90 = st.text_input("KM Limite 90 (Sx)", value="806+000")
+                km_26_alta_sx_lim110 = st.text_input("KM Limite 110 (Sx)", value="805+800")
+                km_26_alta_sx_lavori = st.text_input("KM Lavori in corso (Sx)", value="805+560")
 
             if st.button("Genera Abaco Segnaletica (Excel) - Tavola 26 Unificata"):
                 wb = openpyxl.Workbook()
@@ -1881,27 +1881,27 @@ if sezione_app == "Gestione Tavole & Abaco":
                         width_26a, height_26a = base_img_26alta.size
                         draw_26a = ImageDraw.Draw(base_img_26alta)
                         font_km = load_custom_font(20)
-                        font_ub_26a = load_custom_font(30)
+                        font_ub_26a = load_custom_font(35)
                         BORDO = 2
 
                         etichette_26a = [
                             # Lato Destro Alta
-                            (int(width_26a * 0.65), int(height_26a * 0.95), f"KM {km_26_alta_lim60}"),
-                            (int(width_26a * 0.65), int(height_26a * 0.85), f"KM {km_26_alta_lim40}"),
-                            (int(width_26a * 0.65), int(height_26a * 0.75), f"KM {km_26_alta_deviazione}"),
-                            (int(width_26a * 0.65), int(height_26a * 0.65), f"KM {km_26_alta_ingresso}"),
-                            (int(width_26a * 0.65), int(height_26a * 0.55), f"KM {km_26_alta_vialibera}"),
+                            (int(width_26a * 0.72), int(height_26a * 0.93), f"KM {km_26_alta_lim60}"),
+                            (int(width_26a * 0.72), int(height_26a * 0.855), f"KM {km_26_alta_lim40}"),
+                            (int(width_26a * 0.72), int(height_26a * 0.785), f"KM {km_26_alta_deviazione}"),
+                            (int(width_26a * 0.72), int(height_26a * 0.635), f"KM {km_26_alta_ingresso}"),
+                            (int(width_26a * 0.72), int(height_26a * 0.5475), f"KM {km_26_alta_vialibera}"),
                             # Lato Sinistro Alta
-                            (int(width_26a * 0.05), int(height_26a * 0.20), f"KM {km_26_alta_sx_lim80}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.25), f"KM {km_26_alta_sx_corsie}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.35), f"KM {km_26_alta_sx_sorpasso}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.45), f"KM {km_26_alta_sx_senso}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.52), f"KM {km_26_alta_sx_restr1}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.60), f"KM {km_26_alta_sx_lim60}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.68), f"KM {km_26_alta_sx_restr2}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.75), f"KM {km_26_alta_sx_lim90}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.83), f"KM {km_26_alta_sx_lim110}"),
-                            (int(width_26a * 0.05), int(height_26a * 0.92), f"KM {km_26_alta_sx_lavori}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.2050), f"KM {km_26_alta_sx_lavori}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.245), f"KM {km_26_alta_sx_lim110}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.285), f"KM {km_26_alta_sx_lim90}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.32), f"KM {km_26_alta_sx_restr2}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.38), f"KM {km_26_alta_sx_lim60}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.42), f"KM {km_26_alta_sx_restr1}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.48), f"KM {km_26_alta_sx_senso}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.61), f"KM {km_26_alta_sx_sorpasso}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.73), f"KM {km_26_alta_sx_corsie}"),
+                            (int(width_26a * 0.25), int(height_26a * 0.85), f"KM {km_26_alta_sx_lim80}"),
                         ]
                         for x, y, testo in etichette_26a:
                             draw_26a.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
