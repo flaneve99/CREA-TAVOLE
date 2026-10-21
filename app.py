@@ -1838,21 +1838,21 @@ if sezione_app == "Gestione Tavole & Abaco":
                             (int(width_26b * 0.695), int(height_26b * 0.953), f"KM {km_26_bassa_lavori}"),
                             (int(width_26b * 0.695), int(height_26b * 0.910), f"KM {km_26_bassa_lim110}"),
                             (int(width_26b * 0.695), int(height_26b * 0.870), f"KM {km_26_bassa_lim90}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.831), f"KM {km_26_bassa_restr1}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.828), f"KM {km_26_bassa_restr1}"),
                             (int(width_26b * 0.695), int(height_26b * 0.785), f"KM {km_26_bassa_lim60}"),
                             (int(width_26b * 0.695), int(height_26b * 0.742), f"KM {km_26_bassa_restr2}"),
                             (int(width_26b * 0.5350), int(height_26b * 0.6580), f"KM {km_26_bassa_testata1}"),
                             (int(width_26b * 0.695), int(height_26b * 0.5660), f"KM {km_26_bassa_testata2}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.4750), f"KM {km_26_bassa_lim40}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.440), f"KM {km_26_bassa_deviazione}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.400), f"KM {km_26_bassa_ingresso}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.4650), f"KM {km_26_bassa_lim40}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.430), f"KM {km_26_bassa_deviazione}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.390), f"KM {km_26_bassa_ingresso}"),
                             (int(width_26b * 0.695), int(height_26b * 0.22), f"KM {km_26_bassa_sorpasso}"),
-                            (int(width_26b * 0.695), int(height_26b * 0.170), f"KM {km_26_bassa_lim80}"),
+                            (int(width_26b * 0.695), int(height_26b * 0.1750), f"KM {km_26_bassa_lim80}"),
                             
                             # Lato Sinistro Parte Bassa (Nuovi Aggiunti)
-                            (int(width_26b * 0.037), int(height_26b * 0.535), f"KM {km_26_bassa_sx_vialibera}"),
-                            (int(width_26b * 0.037), int(height_26b * 0.4772), f"KM {km_26_bassa_sx_passaggio}"),
-                            (int(width_26b * 0.037), int(height_26b * 0.37), f"KM {km_26_bassa_sx_restringimento}"),
+                            (int(width_26b * 0.036), int(height_26b * 0.536), f"KM {km_26_bassa_sx_vialibera}"),
+                            (int(width_26b * 0.036), int(height_26b * 0.478), f"KM {km_26_bassa_sx_passaggio}"),
+                            (int(width_26b * 0.036), int(height_26b * 0.37), f"KM {km_26_bassa_sx_restringimento}"),
                         ]
                         for x, y, testo in etichette_26b:
                             draw_26b.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
