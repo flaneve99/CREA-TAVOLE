@@ -1886,22 +1886,22 @@ if sezione_app == "Gestione Tavole & Abaco":
 
                         etichette_26a = [
                             # Lato Destro Alta
-                            (int(width_26a * 0.72), int(height_26a * 0.93), f"KM {km_26_alta_lim60}"),
-                            (int(width_26a * 0.72), int(height_26a * 0.855), f"KM {km_26_alta_lim40}"),
-                            (int(width_26a * 0.72), int(height_26a * 0.785), f"KM {km_26_alta_deviazione}"),
-                            (int(width_26a * 0.72), int(height_26a * 0.635), f"KM {km_26_alta_ingresso}"),
-                            (int(width_26a * 0.72), int(height_26a * 0.5475), f"KM {km_26_alta_vialibera}"),
+                            (int(width_26a * 0.76), int(height_26a * 0.925), f"KM {km_26_alta_lim60}"),
+                            (int(width_26a * 0.76), int(height_26a * 0.855), f"KM {km_26_alta_lim40}"),
+                            (int(width_26a * 0.76), int(height_26a * 0.785), f"KM {km_26_alta_deviazione}"),
+                            (int(width_26a * 0.76), int(height_26a * 0.635), f"KM {km_26_alta_ingresso}"),
+                            (int(width_26a * 0.76), int(height_26a * 0.552), f"KM {km_26_alta_vialibera}"),
                             # Lato Sinistro Alta
-                            (int(width_26a * 0.2), int(height_26a * 0.2050), f"KM {km_26_alta_sx_lavori}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.244), f"KM {km_26_alta_sx_lim110}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.287), f"KM {km_26_alta_sx_lim90}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.329), f"KM {km_26_alta_sx_restr2}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.372), f"KM {km_26_alta_sx_lim60}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.419), f"KM {km_26_alta_sx_restr1}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.47), f"KM {km_26_alta_sx_senso}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.61), f"KM {km_26_alta_sx_sorpasso}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.74), f"KM {km_26_alta_sx_corsie}"),
-                            (int(width_26a * 0.2), int(height_26a * 0.84), f"KM {km_26_alta_sx_lim80}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.2050), f"KM {km_26_alta_sx_lavori}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.244), f"KM {km_26_alta_sx_lim110}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.287), f"KM {km_26_alta_sx_lim90}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.331), f"KM {km_26_alta_sx_restr2}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.374), f"KM {km_26_alta_sx_lim60}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.419), f"KM {km_26_alta_sx_restr1}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.48), f"KM {km_26_alta_sx_senso}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.60), f"KM {km_26_alta_sx_sorpasso}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.737), f"KM {km_26_alta_sx_corsie}"),
+                            (int(width_26a * 0.17), int(height_26a * 0.844), f"KM {km_26_alta_sx_lim80}"),
                         ]
                         for x, y, testo in etichette_26a:
                             draw_26a.text((x, y), testo, fill=(255, 0, 0), font=font_km, stroke_width=BORDO, stroke_fill=(255, 255, 255))
